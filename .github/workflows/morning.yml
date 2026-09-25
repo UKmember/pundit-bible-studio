@@ -1,0 +1,33 @@
+name: Morning news posts
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 6 * * *'
+permissions:
+  contents: write
+concurrency: { group: morning, cancel-in-progress: false }
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node jobs/morning.mjs
+        env:
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
+          MONTHLY_BUDGET_GBP: ${{ vars.MONTHLY_BUDGET_GBP }}
+          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
+      # GitHub pauses scheduled jobs in repos with no activity for 60 days: a monthly heartbeat keeps them running
+      - name: Monthly heartbeat
+        if: github.event_name == 'schedule'
+        run: |
+          if [ "$(date +%d)" = "01" ]; then
+            date -u > data/heartbeat.txt
+            git config user.name "studio-bot"; git config user.email "studio-bot@users.noreply.github.com"
+            git add data/heartbeat.txt && git commit -m "Heartbeat" && git push
+          fi
