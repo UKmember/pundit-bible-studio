@@ -1,0 +1,11 @@
+/* extra styles for the installed app */
+body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);-webkit-tap-highlight-color:transparent}
+#pb-login{position:fixed;inset:0;z-index:50;background:linear-gradient(180deg,#0a2c78,#020a22);display:flex;align-items:center;justify-content:center;padding:24px}
+#pb-login form{background:#fff;padding:28px 24px;width:100%;max-width:380px;display:grid;gap:14px;justify-items:stretch;text-align:center;border-radius:6px}
+#pb-login img{justify-self:center;border-radius:50%}
+#pb-login h1{font-size:34px;color:#031F60}
+#pb-login h1 span{color:#d7262c}
+#pb-login label{display:flex;flex-direction:column;gap:4px;text-align:left;font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5b6582}
+#pb-login input{font:500 17px Barlow,sans-serif;padding:12px;border:1px solid #d6dcea}
+#pb-login p{margin:0;color:#5b6582;font-size:15px}
+.modal .row{justify-content:center}

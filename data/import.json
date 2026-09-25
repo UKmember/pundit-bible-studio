@@ -1,0 +1,1148 @@
+{
+ "posts": {
+  "cantona": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "Asked if he'd have signed for United in 1992 with Sir Jim Ratcliffe as co-owner, Eric Cantona didn't need long.\n\n\"No. Of course not.\"\n\nRatcliffe calls Cantona his favourite ever player. He even named his company after the King's famous trawler quote. That's awkward.\n\nShould club legends speak out about the owners, or stay out of it? 👇\n\n#ManUtd #Cantona #PunditBible",
+   "fields": {
+    "context": "On whether he would have joined United in 1992 under Ratcliffe",
+    "question": "He's right or he's out of order?",
+    "quote": [
+     "No. Of",
+     "course",
+     "not."
+    ],
+    "speaker": "Eric Cantona",
+    "tag": "MAN UTD · OWNERSHIP ROW"
+   },
+   "format": "Hot quote",
+   "order": 1,
+   "photo": {
+    "cut": true,
+    "dx": 0,
+    "dy": 0,
+    "id": "c2c0393deb6057bdbd2ad99fe555717a.png",
+    "ready": true,
+    "zoom": 1
+   },
+   "photoSearch": {
+    "term": "Eric Cantona",
+    "tip": "Already added. Only swap it if you find a sharper one."
+   },
+   "postedAt": "2026-09-24T11:04:42.244Z",
+   "sources": [
+    {
+     "t": "The Peoples Person",
+     "u": "https://thepeoplesperson.com/2026/09/23/eric-cantona-says-he-wouldnt-have-joined-man-united-if-this-man-had-been-at-the-club-30-years-ago-317018/"
+    }
+   ],
+   "status": "posted",
+   "template": "quote",
+   "theme": "red",
+   "title": "Cantona vs Ratcliffe",
+   "when": "Thu 24 Sept · 12:30",
+   "why": "The story United fans have shared most in the last 24 hours. Keep the caption about the club, not the politics."
+  },
+  "spurs-bottom": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "Spurs spent big, got bottom of the table. Simple as that.\n\nSpurs haven't been bottom after five games since 2008/09. De Zerbi kept them up last season, then got a huge summer budget, and they're still waiting for a first league win.\n\nDoes he make it to Christmas? Honest answers only 👇\n\n#Spurs #THFC #DeZerbi #PunditBible",
+   "fields": {
+    "body": "First time Spurs have been bottom after five games since 2008/09. The only team without a league win.",
+    "lines": [
+     {
+      "c": "white",
+      "t": "10 signings."
+     },
+     {
+      "c": "red",
+      "t": "2 points."
+     },
+     {
+      "c": "gold",
+      "t": "Bottom."
+     }
+    ],
+    "question": "Sack him now or too soon?",
+    "tag": "SPURS · BOTTOM OF THE LEAGUE"
+   },
+   "format": "Stat shock",
+   "order": 3,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Roberto De Zerbi Tottenham touchline",
+    "tip": "Head and shoulders on a plain or blurred background. Frustrated face is best."
+   },
+   "sources": [
+    {
+     "t": "Opta Analyst",
+     "u": "https://theanalyst.com/articles/premier-league-expected-points-table-matchday-5-man-utd-newcastle-spurs"
+    },
+    {
+     "t": "SI",
+     "u": "https://www.si.com/soccer/how-2026-27-premier-league-table-compares-2025-26-five-games/app/"
+    }
+   ],
+   "status": "todo",
+   "template": "headline",
+   "theme": "navy",
+   "title": "Spurs rock bottom",
+   "when": "Fri 25 Sept · 08:00",
+   "why": "Rival fans love it and Spurs fans need to vent, so you get comments from both sides."
+  },
+  "2026-09-24-fury-joshua-who-wins": {
+   "batch": "2026-09-24",
+   "batchLabel": "Breaking · Thu 24 Sept",
+   "caption": "IT'S ON. Fury v Joshua is finally happening 🥊\n\nPrincipality Stadium, Cardiff. 11 December. Live on Netflix worldwide.\n\nMore than a decade in the making, and they come face-to-face in London on 30 September.\n\nWho wins it?\nA: Fury\nB: Joshua\n\nOne letter 👇\n\n#FuryJoshua #Boxing #PunditBible",
+   "fields": {
+    "aColor": "red",
+    "aName": "Fury",
+    "aSub": "The Gypsy King",
+    "bColor": "blue",
+    "bName": "Joshua",
+    "bSub": "AJ",
+    "question": "Fury or AJ? One letter.",
+    "tag": "BREAKING · 11 DEC · CARDIFF",
+    "title": "Who wins?"
+   },
+   "format": "Who's better?",
+   "order": -20,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photo2": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Tyson Fury stare",
+    "tip": "Head and shoulders, face clearly visible. A hard stare or a shout works best."
+   },
+   "photoSearch2": {
+    "term": "Anthony Joshua stare",
+    "tip": "Head and shoulders, face clearly visible, looking into the camera if possible."
+   },
+   "postedAt": "2026-09-24T13:35:53.007Z",
+   "sources": [
+    {
+     "t": "BBC Sport",
+     "u": "https://www.bbc.co.uk/sport/boxing/articles/c89n188d53no"
+    }
+   ],
+   "status": "posted",
+   "template": "split",
+   "theme": "brand",
+   "title": "Fury v Joshua: who wins?",
+   "when": "Post now",
+   "why": "The biggest all-British fight in years, announced 20 minutes ago. Everyone has a pick and fans of both will pile in with A or B."
+  },
+  "england-5-out": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "Palmer. Rice. Rashford. Mainoo. Livramento.\n\nFive pulled out of the England squad before the Spain game. Kane has backed all of them to put their fitness first.\n\nWhich one will Tuchel miss most, and who steps in? 👇\n\n#England #ThreeLions #PunditBible",
+   "fields": {
+    "body": "Kane has backed all five. World champions Spain are up first.",
+    "items": [
+     "Cole Palmer",
+     "Declan Rice",
+     "Marcus Rashford",
+     "Kobbie Mainoo",
+     "Tino Livramento"
+    ],
+    "question": "Who's the biggest loss for Tuchel?",
+    "tag": "ENGLAND SQUAD · WITHDRAWALS",
+    "title": "5 out"
+   },
+   "format": "News card",
+   "order": 4,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Cole Palmer England",
+    "tip": "Head and shoulders in an England shirt. Declan Rice works too."
+   },
+   "sources": [
+    {
+     "t": "Football Today",
+     "u": "https://footballtoday.com/2026/09/24/harry-kane-i-trust-england-absentees-who-have-pulled-out-due-to-injury/"
+    }
+   ],
+   "status": "todo",
+   "template": "list",
+   "theme": "charcoal",
+   "title": "England: 5 out",
+   "when": "Fri 25 Sept · 12:30",
+   "why": "Fans of all five clubs join in, and \"club over country\" is a ready-made argument."
+  },
+  "2026-09-24-van-dijk-utter-nonsense-w2jh": {
+   "batch": "2026-09-24",
+   "batchLabel": "Breaking · Thu 24 Sept",
+   "caption": "Virgil van Dijk has had enough 😤\n\nAsked about claims it was his idea to switch to a back five at the World Cup: \"That is utter nonsense.\"\n\nAnd tonight his old boss Jurgen Klopp takes charge of Germany for the first time, against the Dutch in Amsterdam.\n\nWho's right: Van Dijk or the Dutch press? 👇\n\n#VanDijk #Klopp #NationsLeague #PunditBible",
+   "fields": {
+    "context": "On claims the World Cup back five was his idea",
+    "question": "Van Dijk or the Dutch press?",
+    "quote": [
+     "That is",
+     "utter",
+     "nonsense."
+    ],
+    "speaker": "Virgil van Dijk",
+    "tag": "BREAKING · NETHERLANDS"
+   },
+   "format": "Hot quote",
+   "order": -1790256342,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Virgil van Dijk Netherlands captain",
+    "tip": "Head and shoulders, serious or frustrated expression."
+   },
+   "sources": [
+    {
+     "t": "Sports Mole",
+     "u": "https://www.sportsmole.co.uk/football/netherlands/uefa-nations-league/news/utter-nonsense-klopp-defends-van-dijk-after-fiery-media-row-before-netherlands-vs-germany_605714.html"
+    },
+    {
+     "t": "Sky Sports",
+     "u": "https://www.skysports.com/football/video/13591153/virgil-van-dijk-klopp-very-important-to-me-but-well-make-sure-he-loses-germany-debut"
+    }
+   ],
+   "status": "todo",
+   "template": "quote",
+   "theme": "red",
+   "title": "Van Dijk: 'Utter nonsense'",
+   "when": "Post now",
+   "why": "Liverpool fans defend their captain, Dutch fans argue back, and Klopp's debut is tonight."
+  },
+  "top-four": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "Five games in and look at the top four 👀\n\nBrighton smashed the champions 3-0. Brentford put 3 past Chelsea and are still unbeaten.\n\nWill either one still be in the top four at Christmas?\n\n#PremierLeague #BHAFC #BrentfordFC #PunditBible",
+   "fields": {
+    "body": "Brighton beat the champions 3-0. Brentford beat Chelsea 3-0.",
+    "question": "Contenders or September tourists?",
+    "rows": [
+     {
+      "name": "Man City"
+     },
+     {
+      "name": "Arsenal"
+     },
+     {
+      "hi": "hi",
+      "name": "Brighton"
+     },
+     {
+      "hi": "hi",
+      "name": "Brentford"
+     }
+    ],
+    "tag": "PREMIER LEAGUE · AFTER 5 GAMES",
+    "title1": "The top four",
+    "title2": "Nobody predicted"
+   },
+   "format": "Table card",
+   "order": 5,
+   "photo": {
+    "dx": 0,
+    "dy": 0,
+    "id": null,
+    "mode": "full",
+    "zoom": 1
+   },
+   "photoSearch": {
+    "term": "Brighton celebrate Arsenal 3-0",
+    "tip": "A celebration or crowd shot. Fabian Hurzeler Brighton also works."
+   },
+   "sources": [
+    {
+     "t": "Opta Analyst",
+     "u": "https://theanalyst.com/articles/premier-league-expected-points-table-matchday-5-man-utd-newcastle-spurs"
+    },
+    {
+     "t": "NBC Sports",
+     "u": "https://www.nbcsports.com/soccer/news/premier-league-schedule-for-2026-27-season-released"
+    }
+   ],
+   "status": "todo",
+   "template": "ranking",
+   "theme": "green",
+   "title": "The top four nobody predicted",
+   "when": "Fri 25 Sept · 20:30",
+   "why": "Brighton and Brentford fans share it proudly. Everyone else says they won't last."
+  },
+  "2026-09-24-guess-the-player-alan-shearer-9srr": {
+   "batch": "2026-09-24",
+   "batchLabel": "Made in Studio · Thu 24 Sept",
+   "caption": "GUESS THE PLAYER 🔎\n\n1. Pleayed\n\nName him in the comments 👇 Answer tomorrow.\n\n#GuessThePlayer #Football #PunditBible",
+   "fields": {
+    "answer": "Alan Shearer",
+    "answerLine": "22",
+    "clues": [
+     "Pleayed"
+    ],
+    "question": "Name him in the comments",
+    "revealQuestion": "Did you get it?",
+    "tag": "GUESS THE PLAYER"
+   },
+   "format": "Guess the player",
+   "order": -1790257333,
+   "photo": {
+    "dx": 0,
+    "dy": 0,
+    "id": null,
+    "ready": false,
+    "zoom": 1
+   },
+   "photoSearch": {
+    "term": "Alan Shearer",
+    "tip": "A clear photo of him. The app hides it on the quiz slide and shows it on the answer slide."
+   },
+   "postedAt": "2026-09-24T13:42:29.113Z",
+   "sources": [],
+   "status": "posted",
+   "template": "guess",
+   "theme": "brand",
+   "title": "Guess the player: Alan Shearer",
+   "when": "Post now",
+   "why": "Everyone wants to prove they know it. Guesses pile up, and the answer tomorrow brings them back."
+  },
+  "sack-race": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "Four managers under pressure. Who's first out the door?\n\nA. De Zerbi, Spurs (bottom of the league)\nB. Arbeloa, Fulham\nC. Lampard, Coventry\nD. Carrick, Man Utd\n\nOne letter. Go 👇\n\n#PremierLeague #SackRace #PunditBible",
+   "fields": {
+    "options": [
+     {
+      "name": "De Zerbi",
+      "sub": "Spurs · 20th"
+     },
+     {
+      "name": "Arbeloa",
+      "sub": "Fulham"
+     },
+     {
+      "name": "Lampard",
+      "sub": "Coventry"
+     },
+     {
+      "name": "Carrick",
+      "sub": "Man Utd"
+     }
+    ],
+    "question": "Comment A, B, C or D",
+    "tag": "THE SACK RACE",
+    "title1": "Who goes",
+    "title2": "first?"
+   },
+   "format": "A/B/C/D poll",
+   "order": 8,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Roberto De Zerbi frustrated",
+    "tip": "One photo is enough. It sits darkened behind the four options."
+   },
+   "sources": [],
+   "status": "todo",
+   "template": "poll",
+   "theme": "maroon",
+   "title": "Sack race",
+   "when": "Sun 27 Sept · 11:00",
+   "why": "One letter is the easiest comment anyone can leave, and people come back to defend their manager."
+  },
+  "city-5-5": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "Everyone said City would struggle once Pep left.\n\nEnzo Maresca: played 5, won 5. The only 100% record in the league, and they just put 5 past Sunderland.\n\nIs the title race already over, or is it far too early? 👀\n\n#MCFC #ManCity #Maresca #PunditBible",
+   "fields": {
+    "body": "15 points and top of the league. The only 100% record in the Premier League under Enzo Maresca.",
+    "lines": [
+     {
+      "c": "white",
+      "t": "Played 5."
+     },
+     {
+      "c": "accent",
+      "t": "Won 5."
+     }
+    ],
+    "question": "Too early to call the title race?",
+    "tag": "LIFE AFTER PEP"
+   },
+   "format": "Stat shock",
+   "order": 7,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Enzo Maresca Man City touchline",
+    "tip": "Head and shoulders on a plain or blurred background."
+   },
+   "sources": [
+    {
+     "t": "Opta Analyst",
+     "u": "https://theanalyst.com/articles/premier-league-expected-points-table-matchday-5-man-utd-newcastle-spurs"
+    }
+   ],
+   "status": "todo",
+   "template": "headline",
+   "theme": "sky",
+   "title": "City after Pep",
+   "when": "Sat 26 Sept · 13:00",
+   "why": "\"Pep's gone and they're even better\" winds up City fans, doubters and Arsenal fans at once."
+  },
+  "eng-spain": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "World Cup bronze vs the world champions. Wembley. 7.45pm tonight.\n\nNo Palmer, no Rice, no Rashford. Can Tuchel's England get one over Spain?\n\nPut your score in the comments. Closest gets a shout-out on Monday 🏴󠁧󠁢󠁥󠁮󠁧󠁿🇪🇸\n\n#England #ENGESP #NationsLeague #PunditBible",
+   "fields": {
+    "away": "Spain",
+    "awaySub": "World champions",
+    "home": "England",
+    "homeSub": "World Cup bronze",
+    "info": "Saturday 26 Sept · 7.45pm · Wembley",
+    "question": "Drop your score. Closest gets a shout-out",
+    "tag": "NATIONS LEAGUE · MATCHDAY 1",
+    "title1": "Predict",
+    "title2": "the score"
+   },
+   "format": "Predictor",
+   "order": 6,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Harry Kane England Wembley",
+    "tip": "A wide Wembley or celebration shot. It sits darkened behind the score boxes."
+   },
+   "sources": [
+    {
+     "t": "England Football",
+     "u": "https://www.englandfootball.com/articles/2026/Sep/11/when-are-england-men-playing-in-2026-27-season-20260911"
+    }
+   ],
+   "status": "todo",
+   "template": "versus",
+   "theme": "england",
+   "title": "England v Spain",
+   "when": "Sat 26 Sept · 10:00",
+   "why": "A score is easy to comment, and shouting out the closest guesses gives you Monday's post."
+  },
+  "2026-09-24-fury-joshua-how-it-ends": {
+   "batch": "2026-09-24",
+   "batchLabel": "Breaking · Thu 24 Sept",
+   "caption": "Fury v Joshua. Cardiff. 11 December. Live on Netflix.\n\nNo more talking. How does it end?\n\nA. Fury by KO\nB. Fury on points\nC. Joshua by KO\nD. Joshua on points\n\nOne letter 👇\n\n#FuryJoshua #Boxing #PunditBible",
+   "fields": {
+    "options": [
+     {
+      "name": "Fury KO",
+      "sub": "Inside the distance"
+     },
+     {
+      "name": "Fury points",
+      "sub": "Goes the distance"
+     },
+     {
+      "name": "AJ KO",
+      "sub": "Inside the distance"
+     },
+     {
+      "name": "AJ points",
+      "sub": "Goes the distance"
+     }
+    ],
+    "question": "Comment A, B, C or D",
+    "tag": "FURY v JOSHUA · 11 DECEMBER",
+    "title1": "How does",
+    "title2": "it end?"
+   },
+   "format": "A/B/C/D poll",
+   "order": -19,
+   "photo": {
+    "dx": 0,
+    "dy": 0,
+    "id": null,
+    "ready": false,
+    "zoom": 1
+   },
+   "photoSearch": {
+    "term": "Fury Joshua face off",
+    "tip": "A shot of the two of them together if you can find one; otherwise a wide shot of either in the ring."
+   },
+   "postedAt": "2026-09-24T13:42:34.990Z",
+   "sources": [
+    {
+     "t": "BBC Sport",
+     "u": "https://www.bbc.co.uk/sport/boxing/articles/c89n188d53no"
+    }
+   ],
+   "status": "posted",
+   "template": "poll",
+   "theme": "brand",
+   "title": "Fury v Joshua: how does it end?",
+   "when": "Post tonight · 20:30",
+   "why": "A second angle on the same story: four answers split each camp, so people argue with fans of their own fighter too."
+  },
+  "manutd-money": {
+   "batch": "2026-09-24",
+   "batchLabel": "News check · Thu 24 Sept",
+   "caption": "£677.6m. The most money Manchester United have ever made in a year, with no European football.\n\nAnd they still lost £43m. Debt is still over £1 billion.\n\nHundreds of staff cut, and the club still ended the year in the red.\n\nWhere's the money actually going? 🤔\n\n#ManUtd #MUFC #PunditBible",
+   "fields": {
+    "big": "£677.6M",
+    "label": "Record revenue",
+    "question": "More money than ever. So where's it going?",
+    "rows": [
+     {
+      "c": "red",
+      "label": "Pre-tax loss",
+      "value": "£43M"
+     },
+     {
+      "c": "red",
+      "label": "Total debt",
+      "value": "£1BN+"
+     },
+     {
+      "c": "grey",
+      "label": "European games",
+      "value": "0"
+     }
+    ],
+    "tag": "MAN UTD ACCOUNTS 2025/26"
+   },
+   "format": "Stat shock",
+   "order": 2,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Jim Ratcliffe Old Trafford",
+    "tip": "Pick a wide shot. It sits darkened behind the numbers."
+   },
+   "postedAt": "2026-09-24T13:36:06.033Z",
+   "sources": [
+    {
+     "t": "Yahoo Sports",
+     "u": "https://sports.yahoo.com/articles/manchester-united-release-financial-results-150030187.html"
+    },
+    {
+     "t": "BusinessDay",
+     "u": "https://businessday.ng/sports/article/manchester-united-posts-record-revenue-but-loss-widens-to-43m/"
+    }
+   ],
+   "status": "posted",
+   "template": "stat",
+   "theme": "charcoal",
+   "title": "United's record money",
+   "when": "Thu 24 Sept · 20:30",
+   "why": "Sky's version got 536 comments. This one puts the loss and the debt right next to the record figure."
+  },
+  "2026-09-24-goal-rashford-33-man-united-1-0-chelsea-1e2n": {
+   "batch": "2026-09-24",
+   "batchLabel": "Live · Man United v Chelsea",
+   "caption": "GOAL! ⚽ Rashford 33'\n\nMan United 1-0 Chelsea\n\nWho scores next? 👇\n\n#manunited #chelsea #PunditBible",
+   "fields": {
+    "as": 0,
+    "away": "Chelsea",
+    "home": "Man United",
+    "hs": 1,
+    "minute": "33",
+    "question": "Who scores next?",
+    "scorer": "Rashford",
+    "tag": "TEST CUP"
+   },
+   "format": "Goal!",
+   "order": -1790257522,
+   "photo": {
+    "ready": false,
+    "id": null,
+    "zoom": 1,
+    "dx": 0,
+    "dy": 0
+   },
+   "photoSearch": {
+    "term": "Rashford Man United celebration",
+    "tip": "A celebration shot. Optional: the card works without a photo."
+   },
+   "postedAt": "2026-09-24T13:47:09.361Z",
+   "sources": [],
+   "status": "posted",
+   "template": "goal",
+   "theme": "brand",
+   "title": "GOAL: Rashford 33' (Man United 1-0 Chelsea)",
+   "when": "Post now",
+   "why": "Speed wins: first with the goal gets the shares."
+  }
+ },
+ "fixtures": {
+  "2026-10-10-sunderland-v-brighton": {
+   "as": 0,
+   "away": "Brighton",
+   "comp": "Premier League",
+   "date": "2026-10-10",
+   "goals": [],
+   "home": "Sunderland",
+   "hs": 0,
+   "ko": "15:00",
+   "status": "upcoming"
+  },
+  "2026-10-10-ipswich-v-fulham": {
+   "as": 0,
+   "away": "Fulham",
+   "comp": "Premier League",
+   "date": "2026-10-10",
+   "goals": [],
+   "home": "Ipswich",
+   "hs": 0,
+   "ko": "15:00",
+   "status": "upcoming"
+  },
+  "2026-10-10-chelsea-v-bournemouth": {
+   "as": 0,
+   "away": "Bournemouth",
+   "comp": "Premier League",
+   "date": "2026-10-10",
+   "goals": [],
+   "home": "Chelsea",
+   "hs": 0,
+   "ko": "15:00",
+   "status": "upcoming"
+  },
+  "2026-10-06-england-v-czechia": {
+   "as": 0,
+   "away": "Czechia",
+   "comp": "Nations League",
+   "date": "2026-10-06",
+   "goals": [],
+   "home": "England",
+   "hs": 0,
+   "ko": "19:45",
+   "status": "upcoming"
+  },
+  "2026-09-29-czechia-v-england": {
+   "as": 0,
+   "away": "England",
+   "comp": "Nations League",
+   "date": "2026-09-29",
+   "goals": [],
+   "home": "Czechia",
+   "hs": 0,
+   "ko": "19:45",
+   "status": "upcoming"
+  },
+  "2026-10-10-arsenal-v-leeds": {
+   "as": 0,
+   "away": "Leeds",
+   "comp": "Premier League",
+   "date": "2026-10-10",
+   "goals": [],
+   "home": "Arsenal",
+   "hs": 0,
+   "ko": "12:30",
+   "status": "upcoming"
+  },
+  "2026-09-24-netherlands-v-germany": {
+   "as": 0,
+   "away": "Germany",
+   "comp": "Nations League",
+   "date": "2026-09-24",
+   "goals": [],
+   "home": "Netherlands",
+   "hs": 0,
+   "ko": "19:45",
+   "status": "upcoming"
+  },
+  "2026-10-10-aston-villa-v-brentford": {
+   "as": 0,
+   "away": "Brentford",
+   "comp": "Premier League",
+   "date": "2026-10-10",
+   "goals": [],
+   "home": "Aston Villa",
+   "hs": 0,
+   "ko": "15:00",
+   "status": "upcoming"
+  },
+  "2026-10-03-croatia-v-england": {
+   "as": 0,
+   "away": "England",
+   "comp": "Nations League",
+   "date": "2026-10-03",
+   "goals": [],
+   "home": "Croatia",
+   "hs": 0,
+   "ko": "17:00",
+   "status": "upcoming"
+  },
+  "2026-10-11-crystal-palace-v-nottm-forest": {
+   "as": 0,
+   "away": "Nottm Forest",
+   "comp": "Premier League",
+   "date": "2026-10-11",
+   "goals": [],
+   "home": "Crystal Palace",
+   "hs": 0,
+   "ko": "14:00",
+   "status": "upcoming"
+  },
+  "2026-09-26-england-v-spain": {
+   "as": 0,
+   "away": "Spain",
+   "comp": "Nations League",
+   "date": "2026-09-26",
+   "goals": [],
+   "home": "England",
+   "hs": 0,
+   "ko": "19:45",
+   "status": "upcoming"
+  },
+  "2026-10-11-hull-v-everton": {
+   "as": 0,
+   "away": "Everton",
+   "comp": "Premier League",
+   "date": "2026-10-11",
+   "goals": [],
+   "home": "Hull",
+   "hs": 0,
+   "ko": "14:00",
+   "status": "upcoming"
+  },
+  "2026-10-11-liverpool-v-man-city": {
+   "as": 0,
+   "away": "Man City",
+   "comp": "Premier League",
+   "date": "2026-10-11",
+   "goals": [],
+   "home": "Liverpool",
+   "hs": 0,
+   "ko": "16:30",
+   "status": "upcoming"
+  },
+  "2026-10-10-man-utd-v-spurs": {
+   "as": 0,
+   "away": "Spurs",
+   "comp": "Premier League",
+   "date": "2026-10-10",
+   "goals": [],
+   "home": "Man Utd",
+   "hs": 0,
+   "ko": "17:30",
+   "status": "upcoming"
+  },
+  "2026-09-24-man-united-v-chelsea": {
+   "as": 0,
+   "away": "Chelsea",
+   "comp": "Test Cup",
+   "date": "2026-09-24",
+   "goals": [
+    {
+     "min": "33",
+     "scorer": "Rashford",
+     "side": "home"
+    }
+   ],
+   "home": "Man United",
+   "hs": 1,
+   "ko": "15:00",
+   "status": "live"
+  }
+ },
+ "breaking": {
+  "20260923-2252-ronaldo-1000-goals": {
+   "angle": "Stat shock: 979 and counting. Does he get to 1,000?",
+   "facts": [
+    "Ronaldo is 41",
+    "979 career goals for club and country",
+    "146 international goals",
+    "His 234th Portugal cap is set to come against Wales"
+   ],
+   "firstSeen": "2026-09-24T13:25:00Z",
+   "headline": "Ronaldo: I considered quitting Portugal, but I'm chasing 1,000 goals",
+   "heat": 5,
+   "heatWhy": "Ronaldo v Messi fans never miss a Ronaldo post; 1,000 goals is a yes/no everyone answers.",
+   "lastSeen": "2026-09-24T13:30:00Z",
+   "outlets": 8,
+   "post": {
+    "caption": "979 goals. 41 years old. Still not done 🐐\n\nRonaldo says he thought about quitting Portugal after the World Cup, but he's staying and chasing goal number 1,000.\n\n\"I will finish when I feel like I'm not doing anything here.\"\n\nDoes he get to 1,000? Yes or no 👇\n\n#Ronaldo #CR7 #Portugal #PunditBible",
+    "fields": {
+     "big": "979",
+     "label": "Career goals at 41",
+     "question": "Does he reach 1,000?",
+     "rows": [
+      {
+       "c": "gold",
+       "label": "Goals to 1,000",
+       "value": "21"
+      },
+      {
+       "c": "white",
+       "label": "Portugal goals",
+       "value": "146"
+      },
+      {
+       "c": "white",
+       "label": "Portugal caps",
+       "value": "233"
+      }
+     ],
+     "tag": "BREAKING · RONALDO"
+    },
+    "format": "Stat shock",
+    "photoSearch": {
+     "term": "Cristiano Ronaldo Portugal celebration",
+     "tip": "Close-up celebration with his face clearly visible."
+    },
+    "template": "stat",
+    "theme": "red",
+    "title": "Ronaldo: 979 and counting",
+    "why": "A simple yes/no everyone answers, and Ronaldo fans v haters fill the comments."
+   },
+   "publishedAt": "2026-09-23T21:52:00Z",
+   "quotes": [
+    {
+     "text": "I will finish when I feel like I'm not doing anything here.",
+     "who": "Cristiano Ronaldo"
+    },
+    {
+     "text": "Scoring my 1,000th goal for the national team would be the culmination of something - a beautiful story.",
+     "who": "Cristiano Ronaldo"
+    },
+    {
+     "text": "They are dying for me not to come to the national team anymore, but I can still move away from it.",
+     "who": "Cristiano Ronaldo"
+    }
+   ],
+   "sources": [
+    {
+     "t": "Sky Sports",
+     "u": "https://www.skysports.com/football/news/13591141/cristiano-ronaldo-portugal-legend-considered-international-retirement-after-2026-world-cup-but-is-still-targeting-1-000-goals"
+    }
+   ],
+   "sport": "Football",
+   "summary": "Cristiano Ronaldo, 41, says he thought about international retirement after the World Cup but is staying on and targeting his 1,000th career goal. He is on 979 goals for club and country and is set for his 234th Portugal cap against Wales.",
+   "trend": "trending"
+  },
+  "20260924-1300-fury-joshua-cardiff": {
+   "angle": "Who's better split (Fury v AJ), then a how-does-it-end poll tonight.",
+   "facts": [
+    "Venue: Principality Stadium, Cardiff",
+    "Date: 11 December",
+    "Broadcast globally on Netflix",
+    "Main event could be in the early hours of Saturday UK time for US audiences",
+    "Press conference in London on Wednesday 30 September",
+    "Promoted by Turki Alalshikh's The Ring and Dana White"
+   ],
+   "firstSeen": "2026-09-24T13:25:00Z",
+   "headline": "Fury v Joshua confirmed for Cardiff on 11 December",
+   "heat": 5,
+   "heatWhy": "The biggest all-British fight in a decade; everyone has a pick.",
+   "lastSeen": "2026-09-24T13:30:00Z",
+   "madeAt": "2026-09-24T12:25:00Z",
+   "outlets": 5,
+   "post": {
+    "caption": "IT'S ON. Fury v Joshua is finally happening 🥊\n\nPrincipality Stadium, Cardiff. 11 December. Live on Netflix worldwide.\n\nWho wins it?\nA: Fury\nB: Joshua\n\nOne letter 👇\n\n#FuryJoshua #Boxing #PunditBible",
+    "fields": {
+     "aColor": "red",
+     "aName": "Fury",
+     "aSub": "The Gypsy King",
+     "bColor": "blue",
+     "bName": "Joshua",
+     "bSub": "AJ",
+     "question": "Fury or AJ? One letter.",
+     "tag": "BREAKING · 11 DEC · CARDIFF",
+     "title": "Who wins?"
+    },
+    "format": "Who's better?",
+    "photoSearch": {
+     "term": "Tyson Fury stare",
+     "tip": "Head and shoulders, face clearly visible."
+    },
+    "photoSearch2": {
+     "term": "Anthony Joshua stare",
+     "tip": "Head and shoulders, face clearly visible."
+    },
+    "template": "split",
+    "theme": "brand",
+    "title": "Fury v Joshua: who wins?",
+    "why": "Everyone has a pick; fans of both pile in with A or B."
+   },
+   "publishedAt": "2026-09-24T12:00:00Z",
+   "quotes": [
+    {
+     "text": "I am inspiring a generation",
+     "who": "Anthony Joshua (Instagram)"
+    },
+    {
+     "text": "Two of the best heavyweights of this generation, finally in the ring together.",
+     "who": "Turki Alalshikh"
+    }
+   ],
+   "sources": [
+    {
+     "t": "BBC Sport",
+     "u": "https://www.bbc.co.uk/sport/boxing/articles/c89n188d53no"
+    }
+   ],
+   "sport": "Boxing",
+   "summary": "Tyson Fury and Anthony Joshua will finally meet at the Principality Stadium on 11 December, live on Netflix worldwide. The fighters come face-to-face at a London press conference on 30 September.",
+   "trend": "trending"
+  },
+  "20260924-1430-man-utd-record-revenue": {
+   "angle": "Record revenue without Europe – but £1bn debt. Good news or bad?",
+   "facts": [
+    "Revenue £677.6m (2026) vs £666.5m (2025)",
+    "Pre-tax loss £43m, up from £33m",
+    "Operating profit £22.6m vs an £18.4m loss the previous year",
+    "Gross debt £689m, plus an estimated £350m-£400m in transfer debt",
+    "Land secured for a planned 100,000-seat stadium"
+   ],
+   "firstSeen": "2026-09-24T13:30:00Z",
+   "headline": "Man Utd: record revenue, £1bn debt",
+   "heat": 3,
+   "heatWhy": "Man Utd money + debt always splits fans and rivals",
+   "lastSeen": "2026-09-24T13:30:00Z",
+   "outlets": 1,
+   "post": {
+    "caption": "Record money at Old Trafford 💰\nRevenue hit £677.6m – with no European football.\nBut the pre-tax loss grew to £43m and gross debt is £689m.\nGood news or bad news for United?\n#MUFC #ManUtd #PunditBible",
+    "fields": {
+     "big": "£677.6m",
+     "label": "Record revenue",
+     "question": "Good news or bad for United?",
+     "rows": [
+      {
+       "c": "red",
+       "label": "Pre-tax loss",
+       "value": "£43m"
+      },
+      {
+       "c": "gold",
+       "label": "Gross debt",
+       "value": "£689m"
+      },
+      {
+       "c": "white",
+       "label": "New stadium",
+       "value": "100,000 seats"
+      }
+     ],
+     "tag": "BREAKING · MAN UTD"
+    },
+    "format": "Stat card",
+    "photoSearch": {
+     "term": "Old Trafford stadium exterior",
+     "tip": "Wide shot of Old Trafford, no players needed"
+    },
+    "template": "stat",
+    "theme": "red",
+    "title": "United's numbers",
+    "why": "Big numbers, clear contrast, easy verdict question"
+   },
+   "publishedAt": "2026-09-23T17:14:00Z",
+   "quotes": [
+    {
+     "text": "This shows the direct impact of the work we have been doing over the past two years. It also proves Manchester United's enduring popularity and commercial strength.",
+     "who": "Omar Berrada"
+    },
+    {
+     "text": "So we have £1bn worth of football debt and traditional debt.",
+     "who": "Kieran Maguire"
+    }
+   ],
+   "sources": [
+    {
+     "t": "Sky Sports",
+     "u": "https://www.skysports.com/football/news/13590954/man-utd-red-devils-announced-record-revenues-in-2026-despite-not-playing-european-football"
+    }
+   ],
+   "sport": "Football",
+   "summary": "Manchester United posted record revenues of £677.6m despite no European football, and swung to an operating profit. But the pre-tax loss grew to £43m and total debt including transfer fees is estimated at around £1bn.",
+   "trend": "rising"
+  },
+  "20260924-1237-van-dijk-utter-nonsense": {
+   "angle": "Hot quote card now; a Netherlands v Germany predictor before 7.45pm.",
+   "facts": [
+    "Netherlands v Germany, UEFA Nations League, tonight 7.45pm at the Johan Cruijff Arena",
+    "It is Jurgen Klopp's first game as Germany manager",
+    "Netherlands lost to Morocco on penalties in the World Cup round of 32",
+    "Van Dijk is 35"
+   ],
+   "firstSeen": "2026-09-24T13:25:00Z",
+   "headline": "Van Dijk: 'utter nonsense' as Klopp's Germany debut arrives tonight",
+   "heat": 4,
+   "heatWhy": "Liverpool's captain v the Dutch press, plus Klopp's first game tonight. Liverpool fans will pile in.",
+   "lastSeen": "2026-09-24T13:30:00Z",
+   "madeAt": "2026-09-24T13:25:42.607Z",
+   "outlets": 6,
+   "post": {
+    "caption": "Virgil van Dijk has had enough 😤\n\nAsked about claims it was his idea to switch to a back five at the World Cup: \"That is utter nonsense.\"\n\nAnd tonight his old boss Jurgen Klopp takes charge of Germany for the first time, against the Dutch in Amsterdam.\n\nWho's right: Van Dijk or the Dutch press? 👇\n\n#VanDijk #Klopp #NationsLeague #PunditBible",
+    "fields": {
+     "context": "On claims the World Cup back five was his idea",
+     "question": "Van Dijk or the Dutch press?",
+     "quote": [
+      "That is",
+      "utter",
+      "nonsense."
+     ],
+     "speaker": "Virgil van Dijk",
+     "tag": "BREAKING · NETHERLANDS"
+    },
+    "format": "Hot quote",
+    "photoSearch": {
+     "term": "Virgil van Dijk Netherlands captain",
+     "tip": "Head and shoulders, serious or frustrated expression."
+    },
+    "template": "quote",
+    "theme": "red",
+    "title": "Van Dijk: 'Utter nonsense'",
+    "why": "Liverpool fans defend their captain, Dutch fans argue back, and Klopp's debut is tonight."
+   },
+   "publishedAt": "2026-09-24T11:37:00Z",
+   "quotes": [
+    {
+     "text": "One of your colleagues also said, of course, that it was my idea to switch to playing with a back five. That is utter nonsense.",
+     "who": "Virgil van Dijk"
+    },
+    {
+     "text": "The idea that I destroyed Dutch football makes absolutely no sense. I didn't decide that.",
+     "who": "Virgil van Dijk"
+    },
+    {
+     "text": "he gets singled out a bit.",
+     "who": "Jurgen Klopp"
+    }
+   ],
+   "sources": [
+    {
+     "t": "Sports Mole",
+     "u": "https://www.sportsmole.co.uk/football/netherlands/uefa-nations-league/news/utter-nonsense-klopp-defends-van-dijk-after-fiery-media-row-before-netherlands-vs-germany_605714.html"
+    },
+    {
+     "t": "Sky Sports",
+     "u": "https://www.skysports.com/football/video/13591153/virgil-van-dijk-klopp-very-important-to-me-but-well-make-sure-he-loses-germany-debut"
+    }
+   ],
+   "sport": "Football",
+   "summary": "Netherlands captain Virgil van Dijk has hit back at claims he pushed for the back five that failed at the World Cup, calling it \"utter nonsense\". His old Liverpool boss Jurgen Klopp takes charge of Germany for the first time against the Dutch in Amsterdam tonight.",
+   "trend": "rising"
+  },
+  "20260924-1430-arteta-new-deal": {
+   "angle": "Where does Arteta rank among Arsenal's greatest managers?",
+   "facts": [
+    "Arteta has agreed a new deal; formal signing expected during the international break",
+    "His previous contract, signed September 2024, ran until summer 2027",
+    "He has been Arsenal manager since 2019 and is 44",
+    "He led Arsenal to their first Premier League title in 22 years last season",
+    "Arsenal reached the Champions League final, losing to PSG on penalties"
+   ],
+   "firstSeen": "2026-09-24T13:30:00Z",
+   "headline": "Arteta agrees new Arsenal deal",
+   "heat": 3,
+   "heatWhy": "Champions' manager staying – Arsenal fans buzzing, rivals will bite",
+   "lastSeen": "2026-09-24T13:30:00Z",
+   "outlets": 5,
+   "post": {
+    "caption": "Arteta isn't going anywhere 🔴\nThe title-winning boss has agreed a new Arsenal deal.\nHis old contract ran to 2027 – signing expected this break.\nRight call from Arsenal?\n#Arsenal #Arteta #PunditBible",
+    "fields": {
+     "body": "Title-winning boss extends stay – signing due this international break",
+     "lines": [
+      {
+       "c": "white",
+       "t": "ARTETA"
+      },
+      {
+       "c": "gold",
+       "t": "AGREES"
+      },
+      {
+       "c": "white",
+       "t": "NEW DEAL"
+      }
+     ],
+     "question": "Right call from Arsenal?",
+     "tag": "BREAKING · ARSENAL"
+    },
+    "format": "Headline card",
+    "photoSearch": {
+     "term": "Mikel Arteta Arsenal Premier League trophy",
+     "tip": "Arteta celebrating or with the trophy"
+    },
+    "template": "headline",
+    "theme": "red",
+    "title": "Arteta staying",
+    "why": "Simple good-news story with a debate hook for Gooners and rivals"
+   },
+   "publishedAt": "2026-09-23T10:24:00Z",
+   "quotes": [
+    {
+     "text": "I think we are all very much aligned; whenever the time is right, we'll get that done. There is nothing to be concerned about.",
+     "who": "Mikel Arteta"
+    }
+   ],
+   "sources": [
+    {
+     "t": "Sky Sports",
+     "u": "https://www.skysports.com/football/news/13588507/mikel-arteta-contract-arsenal-boss-agrees-new-deal-to-extend-stay-at-premier-league-champions"
+    },
+    {
+     "t": "Yahoo Sports",
+     "u": "https://sports.yahoo.com/articles/mikel-arteta-agrees-long-term-154044828.html"
+    }
+   ],
+   "sport": "Football",
+   "summary": "Mikel Arteta has agreed a new contract with Premier League champions Arsenal, with the formal signing expected during this international break. His current deal ran to summer 2027.",
+   "trend": "trending"
+  }
+ },
+ "meta": {
+  "breaking": {
+   "found": 5,
+   "nextScan": "15:00",
+   "scannedAt": "2026-09-24T13:31:00Z"
+  },
+  "status": {
+   "lastRefresh": "2026-09-24T09:05:00Z",
+   "nextRun": "Fri 25 Sept, 7:00am"
+  }
+ }
+}

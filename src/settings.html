@@ -1,0 +1,49 @@
+
+    <div class="sgrid">
+      <section class="panel">
+        <div class="ph"><h2>Phone alerts</h2></div>
+        <p class="msg" id="st-pushmsg">Get a notification on this phone for goals, half-time, full-time and when a post is due. On iPhone this works once the Studio is on your home screen.</p>
+        <div class="row"><button type="button" id="st-push">Turn on alerts on this device</button><button type="button" class="ghost" id="st-test">Send a test</button></div>
+        <label class="lab">Alert me for
+          <span class="row" style="gap:14px;text-transform:none;letter-spacing:0;font:500 15px Barlow">
+            <label><input type="checkbox" id="st-a-goals"> Goals</label>
+            <label><input type="checkbox" id="st-a-ht"> Half-time</label>
+            <label><input type="checkbox" id="st-a-ft"> Full-time</label>
+            <label><input type="checkbox" id="st-a-rem"> Posting reminders</label>
+          </span></label>
+      </section>
+
+      <section class="panel">
+        <div class="ph"><h2>Teams &amp; competitions</h2></div>
+        <p class="msg">Alerts and automatic posts are only for games involving these teams (one per line; part of the name is fine).</p>
+        <textarea id="st-teams" rows="8" aria-label="Teams to watch"></textarea>
+        <label class="lab">Competitions
+          <span class="row" style="gap:14px;text-transform:none;letter-spacing:0;font:500 15px Barlow" id="st-comps"></span></label>
+      </section>
+
+      <section class="panel">
+        <div class="ph"><h2>Automatic match content</h2></div>
+        <p class="msg">Drafts appear in Posts (orange in the calendar) for your watched teams. Nothing is posted without you.</p>
+        <label class="row" style="gap:8px"><input type="checkbox" id="st-auto-pred"> “Predict the score” post the day before</label>
+        <label class="row" style="gap:8px"><input type="checkbox" id="st-auto-res"> Full-time result card when the game ends</label>
+        <label class="row" style="gap:8px"><input type="checkbox" id="st-auto-rat"> Player ratings draft about 90 minutes after full time (uses Claude, about 1p)</label>
+      </section>
+
+      <section class="panel">
+        <div class="ph"><h2>Posting slots</h2></div>
+        <p class="msg">The times your posts go into on the calendar (24-hour, comma separated).</p>
+        <input type="text" id="st-slots" aria-label="Posting slots">
+      </section>
+
+      <section class="panel">
+        <div class="ph"><h2>Connections &amp; spend</h2></div>
+        <div id="st-conn"></div>
+        <p class="msg">Keys are added through GitHub (see the setup guide), never typed in here.</p>
+      </section>
+
+      <section class="panel">
+        <div class="ph"><h2>Account</h2></div>
+        <div class="row"><button type="button" class="ghost" id="st-signout">Sign out</button></div>
+      </section>
+    </div>
+    <div class="row" style="margin-top:16px"><button type="button" id="st-save">Save settings</button><span class="msg" id="st-msg"></span></div>

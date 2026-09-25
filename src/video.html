@@ -1,0 +1,93 @@
+
+    <p class="note" style="margin-top:18px">Tools for video: brand your own clips, make YouTube thumbnails, and write a reel script you can read straight off the screen.</p>
+    <div class="pills" id="v-pills" style="margin-top:14px">
+      <button class="ghost" data-v="reel" aria-pressed="true" type="button">Brand my reel</button>
+      <button class="ghost" data-v="thumb" aria-pressed="false" type="button">YouTube thumbnail</button>
+      <button class="ghost" data-v="script" aria-pressed="false" type="button">Reel script + teleprompter</button>
+    </div>
+
+    <section class="vpane card" id="vp-reel" style="margin-top:14px">
+      <h3>Brand my reel</h3>
+      <p>Upload a clip you filmed. The app adds your headline, the question bar and your logo, keeps the original sound, and saves a 9:16 video ready for TikTok, Reels and Shorts. Works best in Chrome or Safari; keep the screen open while it records (it records in real time).</p>
+      <div class="vgrid">
+        <div class="vprev"><canvas id="r-canvas" width="1080" height="1920" aria-label="Branded reel preview"></canvas>
+          <div class="row" style="margin-top:8px"><button class="ghost" id="r-play" type="button" disabled>Play preview</button><input type="range" id="r-seek" min="0" max="1" step="0.01" value="0" aria-label="Scrub through the clip" style="flex:1" disabled></div></div>
+        <div style="display:grid;gap:10px;align-content:start">
+          <label class="drop" for="r-file"><div><b>Upload video</b><span>Tap to pick a clip from your phone.</span></div><input type="file" accept="video/*" id="r-file" aria-label="Upload video"></label>
+          <button class="ghost" id="r-pick" type="button">Choose video from phone</button>
+          <div class="msg" id="r-fmsg"></div>
+          <label>Fill from a post (optional)<select id="r-post"><option value="">Choose a post…</option></select></label>
+          <label>Label<input type="text" id="r-tag" placeholder="BREAKING" maxlength="40"></label>
+          <label>Headline (top)<textarea id="r-head" rows="2" placeholder="Van Dijk: ‘utter nonsense’"></textarea></label>
+          <label>Question bar (bottom)<input type="text" id="r-q" placeholder="Is he right?"></label>
+          <div class="two"><label>Start at (seconds)<input type="number" id="r-start" min="0" step="0.1" value="0" inputmode="decimal"></label><label>End at (seconds)<input type="number" id="r-end" min="0" step="0.1" inputmode="decimal"></label></div>
+          <label class="row" style="gap:8px;flex-direction:row;text-transform:none;letter-spacing:0;font:500 15px Barlow"><input type="checkbox" id="r-slide" checked> Slide the question bar in after 1 second</label>
+          <button id="r-rec" type="button" disabled>Make branded video</button>
+          <div class="msg" id="r-msg"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vpane card" id="vp-thumb" style="margin-top:14px" hidden>
+      <h3>YouTube thumbnail</h3>
+      <p>1280×720 in your brand style: a big face, 2–4 huge words and your logo. Faces and few words win clicks.</p>
+      <div class="vgrid wide">
+        <div><canvas id="t-canvas" width="1280" height="720" aria-label="Thumbnail preview" style="width:100%;height:auto;display:block;background:#0a1533"></canvas>
+          <div class="row" style="margin-top:8px"><button id="t-save" type="button">Save thumbnail</button><button class="ghost" id="t-look" type="button">Try another colour</button></div>
+          <div class="msg" id="t-smsg"></div>
+          <details style="margin-top:8px"><summary>Fine-tune the photo</summary><div class="sliders" style="display:grid;gap:10px;margin-top:8px">
+            <label>Size<input type="range" id="t-zoom" min="0.6" max="1.8" step="0.02" value="1"></label>
+            <label>Left / right<input type="range" id="t-dx" min="-400" max="400" step="5" value="0"></label>
+            <label>Up / down<input type="range" id="t-dy" min="-300" max="300" step="5" value="0"></label></div></details>
+        </div>
+        <div style="display:grid;gap:10px;align-content:start">
+          <label>Start from a post (optional)<select id="t-post"><option value="">Choose a post…</option></select></label>
+          <label class="drop" for="t-file"><div><b>Upload photo</b><span>A close-up where the face is big and clear.</span></div><input type="file" accept="image/*" id="t-file" aria-label="Upload thumbnail photo"></label>
+          <button class="ghost" id="t-pick" type="button">Choose photo from phone</button>
+          <div class="msg" id="t-fmsg"></div>
+          <label>Big words, 2–4 words, one line each<textarea id="t-words" rows="2" placeholder="HE'S DONE&#10;AT UNITED"></textarea></label>
+          <div class="row"><button class="ghost" id="t-suggest" type="button">Suggest words</button></div>
+          <div class="opts" id="t-opts"></div>
+          <label>Small label (optional)<input type="text" id="t-tag" placeholder="BREAKING" maxlength="30"></label>
+          <details><summary>Long-form: titles and description</summary>
+            <div style="display:grid;gap:10px;margin-top:8px">
+              <label>What is the video about?<textarea id="t-about" rows="4" placeholder="My reaction to Man Utd 0-3 Brentford, the Amorim debate and three players who have to go"></textarea></label>
+              <label>Chapters (optional: one per line, starting 0:00)<textarea id="t-ch" rows="4" placeholder="0:00 Intro&#10;1:12 The result&#10;4:30 Amorim: stay or go?"></textarea></label>
+              <button id="t-write" type="button">Write 5 titles + description</button>
+              <div class="msg" id="t-wmsg"></div>
+              <div class="opts" id="t-titles"></div>
+              <label>Description<textarea id="t-desc" rows="9"></textarea></label>
+              <label>Tags box<input type="text" id="t-tags"></label>
+              <div class="row"><button class="ghost" id="t-copyd" type="button">Copy description</button><button class="ghost" id="t-copyt" type="button">Copy tags</button><span class="msg" id="t-cmsg"></span></div>
+            </div></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="vpane card" id="vp-script" style="margin-top:14px" hidden>
+      <h3>Reel script + teleprompter</h3>
+      <p>A 30–60 second script: a hook, three quick beats and the question, with the words to put on screen for each part. Then read it off the teleprompter while you film.</p>
+      <label>From a post<select id="s-post"><option value="">Choose a post…</option></select></label>
+      <label>Or type the topic<textarea id="s-topic" rows="3" placeholder="Ronaldo scores his 979th goal and says 1,000 is coming"></textarea></label>
+      <div><div class="term" style="margin-bottom:6px">Length</div><div class="pills" id="s-len">
+        <button class="ghost" data-len="30" aria-pressed="true" type="button">30 sec</button><button class="ghost" data-len="45" aria-pressed="false" type="button">45 sec</button><button class="ghost" data-len="60" aria-pressed="false" type="button">60 sec</button></div></div>
+      <div><div class="term" style="margin-bottom:6px">Style</div><div class="pills" id="s-style">
+        <button class="ghost" data-st="Hot take" aria-pressed="true" type="button">Hot take</button><button class="ghost" data-st="News explainer" aria-pressed="false" type="button">News explainer</button><button class="ghost" data-st="Banter reaction" aria-pressed="false" type="button">Banter reaction</button></div></div>
+      <div class="row"><button id="s-write" type="button">Write my script</button><span class="msg" id="s-msg"></span></div>
+      <div id="s-out" class="opts"></div>
+      <div class="row" id="s-actions" hidden><button id="s-prompt" type="button">Open teleprompter</button><button class="ghost" id="s-copy" type="button">Copy script</button><button class="ghost" id="s-toreel" type="button">Use in Brand my reel</button><span class="msg" id="s-amsg"></span></div>
+    </section>
+
+    <div class="prompter" id="prompter" hidden>
+      <div class="pbar">
+        <button id="p-go" type="button">Start</button>
+        <button class="ghost" id="p-back" type="button">Restart</button>
+        <label>Speed<input type="range" id="p-speed" min="100" max="220" step="5" value="150" aria-label="Words per minute"></label>
+        <label>Size<input type="range" id="p-size" min="32" max="96" step="2" value="56" aria-label="Text size"></label>
+        <label class="pmir"><input type="checkbox" id="p-mirror"> Mirror</label>
+        <button class="ghost" id="p-close" type="button">Close</button>
+      </div>
+      <div class="pscroll" id="p-scroll"><div class="ptext" id="p-text"></div></div>
+      <div class="pline" aria-hidden="true"></div>
+      <div class="pcount" id="p-count" hidden></div>
+    </div>

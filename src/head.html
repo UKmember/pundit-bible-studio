@@ -1,0 +1,445 @@
+<title>Pundit Bible Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#f3f5fa; --panel:#ffffff; --panel2:#eef1f8; --line:#d6dcea;
+  --text:#0a1533; --muted:#5b6582; --gold:#031F60; --navy:#031F60; --navy2:#0b2f86; --red:#d7262c; --green:#1f8a4c;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--ink);color:var(--text);font:16px/1.5 "Barlow",system-ui,sans-serif;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:18px;padding-block:22px 80px}
+h1,h2,h3{font-family:"Anton",Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;margin:0;line-height:1.02;text-wrap:balance}
+h1{font-size:clamp(38px,6vw,64px)}
+h1 span{color:var(--gold)}
+h2{font-size:30px;margin-bottom:14px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
+.status{color:var(--muted);font-size:14px;margin-top:6px;max-width:62ch}
+.status b{color:var(--text);font-weight:600}
+button,.btn{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;border:0;padding:12px 16px;cursor:pointer;background:var(--gold);color:#fff;text-decoration:none;display:inline-block;text-align:center}
+.ghost{background:transparent!important;color:var(--text)!important;box-shadow:inset 0 0 0 2px var(--line)}
+.ghost[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--gold);color:var(--gold)!important}
+button:disabled{opacity:.5;cursor:default}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,.drop:focus-within,.paste:focus{outline:3px solid #fff;outline-offset:2px}
+.tabs{display:flex;gap:8px;margin:22px 0 6px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+.note{background:var(--panel);border-left:4px solid var(--gold);padding:12px 16px;color:var(--muted);font-size:15px;margin-top:14px}
+.note b{color:var(--text)}
+.batch{font:600 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:34px 0 0;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.post{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:26px;padding:26px 0;border-bottom:1px solid var(--line)}
+.post.done{opacity:.55}
+.prev{position:relative}
+.prev canvas{width:100%;height:auto;display:block;background:#0a1533;box-shadow:0 12px 36px rgba(3,31,96,.28)}
+.prev .busy{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font:700 22px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#fff}
+.prev .busy[hidden]{display:none}
+.when{font:600 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.post h3{font-size:28px;margin:8px 0 8px}
+.why{color:var(--muted);font-size:15px;margin:0 0 14px;max-width:62ch}
+.step{background:var(--panel);padding:14px 16px;margin-bottom:10px;display:grid;gap:10px}
+.step h4{margin:0;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--text);display:flex;gap:10px;align-items:center}
+.step h4 i{font-style:normal;background:var(--gold);color:#fff;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:15px}
+.term{font-size:15px;color:var(--muted)}
+.term b{color:var(--text);font-weight:600}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.drop{position:relative;display:flex;gap:14px;align-items:center;border:2px dashed #9aa6c4;padding:14px;cursor:pointer;background:var(--panel2)}
+.drop.over{border-color:var(--gold)}
+.drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:40px}
+.drop>*:not(input){pointer-events:none}
+.drop .thumb{width:64px;height:64px;object-fit:cover;background:#000;flex:none}
+.drop .thumb[hidden]{display:none}
+.drop b{display:block;font:700 17px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.drop span{font-size:14px;color:var(--muted)}
+.paste{border:1px solid var(--line);padding:10px 12px;font-size:14px;color:var(--muted);background:var(--panel2);min-height:42px;cursor:text}
+.gen{font-size:19px;padding:16px 22px;width:100%}
+.msg{font-size:14px;color:var(--muted)}
+.msg.warn{color:#b3261e}
+.after[hidden]{display:none}
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px 16px}
+.sliders label,.fields label{display:flex;flex-direction:column;gap:4px;font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--gold)}
+input[type=text],textarea{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:9px 10px;font:15px/1.4 "Barlow",sans-serif}
+textarea{resize:vertical}
+.fields{display:grid;gap:10px}
+.fields small{font:400 12px/1.3 "Barlow",sans-serif;letter-spacing:0;text-transform:none;color:var(--muted)}
+details summary{cursor:pointer;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+ "}
+details[open] summary::before{content:"– "}
+details[open] summary{margin-bottom:12px}
+.cap{min-height:170px}
+.sources{font-size:13px;color:var(--muted)}
+.sources a{color:var(--muted)}
+.empty{padding:40px 0;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal img{max-height:78vh;width:auto;max-width:100%}
+.modal p{color:#fff;text-align:center}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.slot{background:var(--panel);padding:16px}
+.slot .t{font:400 32px/1 "Anton",sans-serif;color:var(--gold)}
+.slot h3{font-size:19px;margin:8px 0 6px}
+.slot p,.rule p{margin:0;color:var(--muted);font-size:15px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.rule{background:var(--panel);padding:16px}
+.rule h3{font-size:20px;margin-bottom:6px}
+.rule.bad{border-left:4px solid var(--red)}.rule.good{border-left:4px solid var(--green)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+td:first-child{font:700 17px/1.1 "Barlow Condensed",sans-serif;text-transform:uppercase}
+section.pb{margin-top:34px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:18px}
+.card{background:var(--panel);padding:16px;display:grid;gap:10px;align-content:start}
+.card h3{font-size:24px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.card label{display:flex;flex-direction:column;gap:4px;font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card .three{display:grid;grid-template-columns:2fr 1fr 2fr;gap:10px;align-items:end}
+select{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:9px 10px;font:15px/1.4 "Barlow",sans-serif}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pills button{padding:8px 12px;font-size:14px}
+.slidenav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.slidenav button{padding:7px 11px;font-size:14px;min-width:38px}
+.opts{display:grid;gap:8px}
+.opt{background:var(--panel2);padding:10px 12px;display:grid;gap:6px}
+.opt b{font-weight:600}
+.opt .row{justify-content:flex-start}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.nums label{display:flex;flex-direction:column;gap:4px;font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+input[type=number]{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:9px 10px;font:15px/1.4 "Barlow",sans-serif;font-variant-numeric:tabular-nums}
+.review{white-space:pre-wrap;background:var(--panel2);padding:14px;font-size:15px;line-height:1.55}
+.review:empty{display:none}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+th.n{text-align:right}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:14px 0}
+.kpi{background:var(--panel);border-top:4px solid var(--gold);padding:14px}
+.kpi b{display:block;font:400 38px/1 "Anton",sans-serif}
+.kpi span{font:600 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+.brandhead{display:flex;gap:16px;align-items:center}
+.brandhead .logo{width:84px;height:84px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(3,31,96,.2);flex:none}
+h1{color:var(--navy)}
+h1 span{color:var(--navy2)}
+h2,h3,.post h3,.step h4,.batch{color:var(--navy)}
+.step,.card,.slot,.rule,.kpi,.note,.opt,.review{border:1px solid var(--line);box-shadow:0 1px 3px rgba(3,31,96,.06)}
+.ghost{color:var(--navy)!important}
+button:hover,.btn:hover{filter:brightness(1.25)}
+.ghost:hover{background:var(--panel2)!important;filter:none}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,.drop:focus-within,.paste:focus{outline:3px solid var(--navy2);outline-offset:2px}
+.ttwrap{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px}
+.ttc{width:100%;height:auto;display:block;background:#0a1533;border-radius:14px;box-shadow:0 8px 24px rgba(3,31,96,.25)}
+.lab{display:flex;flex-direction:column;gap:4px;font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kl textarea{font-size:14px}
+@media (max-width:560px){.ttwrap{grid-template-columns:1fr}.ttc{max-width:240px}}
+
+.breakbtn{background:var(--red)!important;color:#fff!important;display:inline-flex;align-items:center;gap:8px}
+.breakbtn[aria-pressed="true"]{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--red)}
+.dot{width:10px;height:10px;border-radius:50%;background:#fff;display:inline-block;animation:pulse 1.4s ease-in-out infinite}
+.dot.big{width:14px;height:14px;background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+.bcount{background:#fff;color:var(--red);border-radius:999px;padding:2px 8px;font-size:13px;letter-spacing:0}
+.bcount:empty{display:none}
+.blist{display:grid;gap:12px;margin-top:14px}
+.bitem{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--line);padding:16px 18px;display:grid;gap:10px;box-shadow:0 1px 3px rgba(3,31,96,.06)}
+.bitem.just-broke{border-left-color:var(--red)}
+.bitem.rising{border-left-color:#e07a00}
+.bitem.trending{border-left-color:#6b2fb3}
+.bmeta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.chip{padding:5px 8px;background:var(--panel2);color:var(--navy)}
+.tchip{padding:5px 8px;color:#fff}
+.tchip.just-broke{background:var(--red)}.tchip.rising{background:#e07a00}.tchip.trending{background:#6b2fb3}
+.heat{display:inline-flex;gap:3px;align-items:center}
+.heat i{width:9px;height:14px;background:var(--line);display:inline-block}
+.heat i.on{background:var(--red)}
+.ago{color:var(--muted)}
+.bitem h3{font-size:26px;color:var(--navy)}
+.bitem p{margin:0;max-width:70ch}
+.bitem ul{margin:0;padding-left:18px;color:var(--text);font-size:15px}
+.bitem blockquote{margin:0;padding:8px 12px;border-left:3px solid var(--navy);background:var(--panel2);font-size:15px}
+.bitem .angle{font-size:14px;color:var(--muted)}
+.bitem .angle b{color:var(--navy)}
+
+.fx{background:var(--panel);border:1px solid var(--line);padding:16px;display:grid;gap:12px}
+.fx.live{border-left:6px solid var(--red)}.fx.ft{opacity:.7}
+.fxhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.score{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;text-align:center}
+.score b{font:400 clamp(22px,5vw,34px)/1.05 "Anton",sans-serif;color:var(--navy);text-transform:uppercase}
+.score .sc{font:400 clamp(34px,8vw,54px)/1 "Anton",sans-serif;color:var(--navy);min-width:110px}
+.goalrow{display:grid;grid-template-columns:auto 1fr 90px auto;gap:8px;align-items:end}
+.side{display:flex;gap:4px}.side button{padding:10px 10px;font-size:14px}
+.goals{font-size:14px;color:var(--muted)}
+.gbtn{background:var(--red)!important;color:#fff!important}
+.mdate{font:600 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin:18px 0 4px}
+@media (max-width:560px){.goalrow{grid-template-columns:1fr 1fr}.goalrow .gbtn{grid-column:1/-1}}
+@media (max-width:780px){.post{grid-template-columns:1fr}.prev{max-width:440px}}
+
+/* publishing pack + video tools */
+.plats button .tick{color:var(--green)}
+.pkfiles button{padding:10px 12px;font-size:14px}
+.card select,.step select{font:500 16px Barlow,sans-serif;padding:10px;border:1px solid var(--line);background:#fff;color:var(--text)}
+.vgrid{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:16px}
+.vgrid.wide{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+.vprev canvas{width:100%;height:auto;display:block;background:#000;max-height:70vh;object-fit:contain}
+@media (max-width:760px){.vgrid,.vgrid.wide{grid-template-columns:1fr}.vprev canvas{max-width:320px;margin:0 auto}}
+.prompter{position:fixed;inset:0;background:#000;color:#fff;z-index:20;display:flex;flex-direction:column}
+.pbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:#111;position:relative;z-index:2}
+.pbar label{display:flex;gap:6px;align-items:center;font:600 13px "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#bbb}
+.pbar .ghost{color:#fff!important;box-shadow:inset 0 0 0 2px #444}
+.pscroll{flex:1;overflow:hidden;position:relative;cursor:pointer}
+.ptext{padding:38vh 6vw 60vh;line-height:1.3;font-family:Barlow,sans-serif;font-weight:600;will-change:transform;transform-origin:center top}
+.ptext p{margin:0 0 .9em}
+.ptext .plab{font:600 .38em "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#f5c518;margin-bottom:.2em}
+.pline{position:absolute;left:0;right:0;top:calc(38vh + 60px);border-top:2px solid rgba(230,40,45,.7);pointer-events:none}
+.pcount{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:400 30vh Anton,sans-serif;color:#fff;background:rgba(0,0,0,.6);z-index:3}
+
+/* ===== studio shell ===== */
+body{background:#eef1f7}
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.sidebar{background:var(--navy);color:#fff;position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 12px 24px;display:flex;flex-direction:column;gap:16px}
+.sbrand{display:flex;gap:10px;align-items:center;padding:4px 8px 10px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sbrand .logo{width:46px;height:46px;border-radius:50%;background:#fff;flex:none}
+.sbrand b{font:400 22px/1 Anton,sans-serif;letter-spacing:.02em;display:block}.sbrand b span{color:#8fb8ff}
+.sbrand small{font:600 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.sidebar nav{display:grid;gap:2px}
+.navh{font:600 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);padding:16px 12px 6px}
+.nav{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border-radius:6px;font:500 15px/1.2 Barlow,sans-serif;color:rgba(255,255,255,.82);position:relative}
+.nav svg,.bottombar svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav[aria-pressed="true"]{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
+.nav[aria-pressed="true"]::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:4px;background:var(--red);border-radius:0 3px 3px 0}
+.nav:focus-visible{outline:2px solid #8fb8ff}
+.nbadge{margin-left:auto;font:700 12px/1 Barlow,sans-serif;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.16);color:#fff}
+.nbadge:empty{display:none}.nbadge.red{background:var(--red)}.nbadge.live{background:#1f8a4c}
+.main{min-width:0}
+.topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 28px;flex-wrap:wrap}
+.topbar h1{font-size:30px;color:var(--navy)}
+.wrap{max-width:1240px;margin:0;padding:22px 28px 80px}
+button.sm,.btn.sm{padding:9px 12px;font-size:13px}
+.subh{font-size:22px;margin:26px 0 8px;color:var(--navy)}
+.hgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:grid;gap:12px;align-content:start;box-shadow:0 1px 3px rgba(3,31,96,.06)}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ph h2{font-size:22px;margin:0}
+.hlist{display:grid;gap:8px}
+.hitem{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 12px;background:var(--panel2);border-radius:6px;cursor:pointer;border:0;text-align:left;font:inherit;color:inherit;width:100%}
+.hitem:hover{filter:none;background:#e3e8f3}
+.hitem .t{font:400 20px/1 Anton,sans-serif;color:var(--navy);min-width:54px}
+.hitem b{display:block;font-weight:600;font-size:15px;line-height:1.25}
+.hitem small{color:var(--muted);font-size:13px}
+.hitem .tag{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:4px;background:#fff;color:var(--navy)}
+.hitem .tag.live{background:var(--red);color:#fff}
+.hempty{color:var(--muted);font-size:14px;padding:6px 2px}
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:8px}.qa button{padding:14px 10px;font-size:14px}
+.kpi small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.kpi.warn{border-top-color:var(--red)}
+/* calendar */
+.calnav{margin-bottom:6px}.calnav b{font:600 16px Barlow,sans-serif;color:var(--navy);min-width:220px;text-align:center}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:10px}
+.cday{background:var(--panel);border:1px solid var(--line);border-radius:8px;min-height:260px;display:flex;flex-direction:column}
+.cday.today{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy) inset}
+.cday h4{margin:0;padding:8px 10px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);border-bottom:1px solid var(--line)}
+.cslot{padding:6px;border-bottom:1px dashed var(--line);min-height:62px;flex:1 0 auto}
+.cslot>span{display:block;font:600 11px/1 Barlow,sans-serif;color:var(--muted);margin-bottom:4px}
+.cslot.over{background:#e5ecfb}
+.cpost{background:#fff;border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:4px;padding:6px 7px;font-size:13px;line-height:1.25;cursor:grab;margin-bottom:4px}
+.cpost.done{opacity:.5;border-left-color:var(--green)}.cpost.auto{border-left-color:#e07a00}
+.cpost .mv{all:unset;cursor:pointer;font:600 11px Barlow,sans-serif;color:var(--navy2);text-decoration:underline;margin-top:3px;display:inline-block}
+.calun{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.slotpick{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:60vh;overflow:auto}
+/* library */
+.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:14px}
+.libitem{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:grid}
+.libitem img{width:100%;aspect-ratio:1;object-fit:cover;background:#dde3ef;display:block}
+.libitem .li{padding:8px 10px;font-size:13px}.libitem b{display:block;font-size:14px}
+.libitem.pick{cursor:pointer}.libitem.pick:hover{outline:3px solid var(--navy)}
+/* tables */
+.tgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;margin-top:10px}
+table.lt{min-width:0;font-size:14px}table.lt td,table.lt th{padding:7px 8px}
+table.lt td:first-child{font:600 14px Barlow,sans-serif;text-transform:none}
+table.lt img{width:18px;height:18px;vertical-align:-4px;margin-right:6px}
+table.lt tr.hl td{background:#fff5d6}
+/* live match cards */
+.mcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:10px}
+.mcard.live{border-left:6px solid var(--red)}.mcard.done{opacity:.8}
+.mteams{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;text-align:center}
+.mteams .tm{display:flex;flex-direction:column;align-items:center;gap:6px;font:400 clamp(17px,3vw,24px)/1.1 Anton,sans-serif;color:var(--navy);text-transform:uppercase}
+.mteams img{width:40px;height:40px}
+.mteams .sc{font:400 clamp(30px,6vw,46px)/1 Anton,sans-serif;color:var(--navy);min-width:100px}
+.mstatus{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.mstatus .lv{color:var(--red)}
+.watch{all:unset;cursor:pointer;font-size:18px;line-height:1}
+/* settings */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.panel label.row{flex-wrap:nowrap;align-items:flex-start;font-size:15px}.panel label.row input{margin-top:3px;flex:none}
+.conn{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.conn .ok{color:var(--green);font-weight:600}.conn .no{color:var(--muted)}
+/* mobile */
+.bottombar,.moresheet{display:none}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .topbar{padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top))}
+  .topbar h1{font-size:24px}
+  .topbar #quick-goal,.topbar #refresh{display:none}
+  .wrap{padding:16px 16px 110px}
+  .hgrid,.tgrid{grid-template-columns:1fr}
+  .cal{grid-template-columns:1fr}.cday{min-height:0}.cslot{min-height:0}.cslot:empty{display:none}
+  .bottombar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--navy);padding-bottom:env(safe-area-inset-bottom)}
+  .bottombar button{all:unset;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;font:600 11px/1 Barlow,sans-serif;color:rgba(255,255,255,.7);cursor:pointer}
+  .bottombar button[aria-pressed="true"]{color:#fff}
+  .bottombar button[aria-pressed="true"] svg{stroke:#ff6b6f}
+  .moresheet:not([hidden]){display:flex;position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.45);align-items:flex-end}
+  .msheet{background:#fff;width:100%;padding:16px 16px calc(80px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;border-radius:14px 14px 0 0}
+  .msheet button{padding:16px 10px}
+}
+</style>
+
+<div class="shell">
+  <aside class="sidebar" aria-label="Main menu">
+    <div class="sbrand"><img class="logo" src="{{LOGO}}" alt="" width="46" height="46"><div><b>PUNDIT <span>BIBLE</span></b><small>Studio</small></div></div>
+    <nav>
+      <button class="nav" id="tab-home" data-ico="home" type="button">Home</button>
+      <div class="navh">Content</div>
+      <button class="nav" id="tab-posts" data-ico="posts" type="button">Posts <span class="nbadge" id="nb-posts"></span></button>
+      <button class="nav" id="tab-calendar" data-ico="cal" type="button">Calendar</button>
+      <button class="nav" id="tab-create" data-ico="plus" type="button">Create</button>
+      <button class="nav" id="tab-library" data-ico="photo" type="button">Photo library</button>
+      <div class="navh">Live</div>
+      <button class="nav" id="tab-match" data-ico="ball" type="button">Match Centre <span class="nbadge live" id="nb-live"></span></button>
+      <button class="nav" id="tab-breaking" data-ico="bolt" type="button">Breaking news <span class="nbadge red bcount" id="bcount"></span></button>
+      <button class="nav" id="tab-tables" data-ico="table" type="button">Tables &amp; fixtures</button>
+      <div class="navh">Studio</div>
+      <button class="nav" id="tab-video" data-ico="video" type="button">Video tools</button>
+      <button class="nav" id="tab-insights" data-ico="chart" type="button">Insights</button>
+      <button class="nav" id="tab-play" data-ico="book" type="button">Playbook</button>
+      <button class="nav" id="tab-settings" data-ico="cog" type="button">Settings</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1 id="pagetitle">Home</h1>
+      <div class="row">
+        <button class="ghost sm" id="quick-goal" type="button">⚽ Goal card</button>
+        <button class="sm" id="quick-new" type="button">+ New post</button>
+        <button id="refresh" class="ghost sm" type="button">Refresh</button>
+      </div>
+    </header>
+    <div class="wrap">
+
+  <div id="view-home">
+    <div class="kpis" id="h-kpis"></div>
+    <div class="hgrid">
+      <section class="panel"><div class="ph"><h2>Up next</h2><button class="ghost sm" data-go="calendar" type="button">Calendar</button></div><div id="h-next" class="hlist"></div></section>
+      <section class="panel"><div class="ph"><h2>Games</h2><button class="ghost sm" data-go="match" type="button">Match Centre</button></div><div id="h-games" class="hlist"></div></section>
+      <section class="panel"><div class="ph"><h2>Breaking</h2><button class="ghost sm" data-go="breaking" type="button">All stories</button></div><div id="h-break" class="hlist"></div></section>
+      <section class="panel"><div class="ph"><h2>Quick actions</h2></div>
+        <div class="qa">
+          <button type="button" data-go="create">Make a post from an article</button>
+          <button type="button" data-go="match">Live scores &amp; goal cards</button>
+          <button type="button" data-go="tables">Table &amp; top scorer cards</button>
+          <button type="button" data-go="video">Brand a reel / thumbnail</button>
+          <button type="button" class="ghost" id="h-push" hidden>Turn on goal alerts</button>
+        </div></section>
+    </div>
+  </div>
+
+  <div id="view-posts" hidden>
+    <div class="status" id="status">Loading posts…</div>
+    <div class="filters">
+      <button class="ghost" data-f="todo" aria-pressed="true" type="button">To post</button>
+      <button class="ghost" data-f="posted" aria-pressed="false" type="button">Posted</button>
+      <button class="ghost" data-f="all" aria-pressed="false" type="button">All</button>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <div id="view-calendar" hidden>
+    <div class="row calnav"><button class="ghost sm" id="cal-prev" type="button">‹ Previous</button><b id="cal-range"></b><button class="ghost sm" id="cal-next" type="button">Next ›</button><button class="ghost sm" id="cal-today" type="button">This week</button></div>
+    <p class="msg" id="cal-msg">Drag a post to another slot to move it (on a phone: tap Move). You get a reminder on your phone when each one is due.</p>
+    <div id="cal" class="cal"></div>
+    <h3 class="subh">Not scheduled yet</h3>
+    <div id="cal-unsched" class="calun"></div>
+  </div>
+
+  <div id="view-library" hidden>
+    <div class="row"><input type="text" id="lib-q" placeholder="Search by player or club, e.g. Saka" aria-label="Search photos" style="max-width:360px"><span class="msg" id="lib-msg"></span></div>
+    <div id="lib" class="libgrid"></div>
+  </div>
+
+  <div id="view-breaking" hidden>
+    <section class="pb" style="margin-top:0">
+      <h2 style="display:flex;gap:10px;align-items:center"><span class="dot big" aria-hidden="true"></span>Breaking now</h2>
+      <div class="status" id="bstatus">Loading…</div>
+      <div class="filters" id="bfilters">
+        <button class="ghost" data-bf="all" aria-pressed="true" type="button">All sport</button>
+        <button class="ghost" data-bf="Football" aria-pressed="false" type="button">Football</button>
+        <button class="ghost" data-bf="other" aria-pressed="false" type="button">Other sport</button>
+      </div>
+      <div id="blist" class="blist"></div>
+    </section>
+  </div>
+
+  <div id="view-match" hidden>
+    <section class="pb" style="margin-top:0">
+      <p class="note" style="margin-top:0" id="m-note">Scores update by themselves every minute while a game is on. When a goal goes in you get an alert on your phone; tap it and the GOAL card is ready. Half-time and full-time cards work the same way.</p>
+      <div class="filters" id="mfilters">
+        <button class="ghost" data-mf="today" aria-pressed="true" type="button">Today</button>
+        <button class="ghost" data-mf="week" aria-pressed="false" type="button">This week</button>
+        <button class="ghost" data-mf="next" aria-pressed="false" type="button">Next week</button>
+        <button class="ghost" data-mf="results" aria-pressed="false" type="button">Results</button>
+      </div>
+      <div id="mlive" class="blist"></div>
+      <h3 class="subh">Other games (added by hand)</h3>
+      <p class="msg">For games the live data doesn't cover (FA Cup, Nations League, friendlies): add them here and tap GOAL yourself.</p>
+      <details class="card" style="margin-top:12px"><summary>Add a match</summary>
+        <form id="m-add" style="display:grid;gap:10px">
+          <div class="two"><label>Home<input type="text" id="m-home" required></label><label>Away<input type="text" id="m-away" required></label>
+          <label>Date<input type="date" id="m-date" required></label><label>Kick-off<input type="time" id="m-ko" value="15:00"></label></div>
+          <label>Competition<input type="text" id="m-comp" placeholder="FA Cup"></label>
+          <button type="submit">Add match</button><div class="msg" id="m-msg"></div>
+        </form></details>
+      <div id="mlist" class="blist"></div>
+    </section>
+  </div>
+
+  <div id="view-tables" hidden>
+    <div class="filters" id="tfilters">
+      <button class="ghost" data-tc="PL" aria-pressed="true" type="button">Premier League</button>
+      <button class="ghost" data-tc="ELC" aria-pressed="false" type="button">Championship</button>
+      <button class="ghost" data-tc="CL" aria-pressed="false" type="button">Champions League</button>
+    </div>
+    <div class="tgrid">
+      <section class="panel"><div class="ph"><h2>Table</h2><div class="row"><button class="sm" id="t-card-top" type="button">Top 5 card</button><button class="ghost sm" id="t-card-bottom" type="button">Bottom 5 card</button></div></div><div class="tablewrap"><table id="t-table" class="lt"></table></div><p class="msg" id="t-upd"></p></section>
+      <section class="panel"><div class="ph"><h2>Top scorers</h2><button class="sm" id="t-card-scorers" type="button">Scorers card</button></div><div class="tablewrap"><table id="t-scorers" class="lt"></table></div></section>
+    </div>
+    <p class="msg" id="t-msg"></p>
+  </div>
+
+  <div id="view-create" hidden>{{CREATE}}</div>
+  <div id="view-video" hidden>{{VIDEO}}</div>
+  <div id="view-insights" hidden>{{INSIGHTS}}</div>
+{{PLAYBOOK}}
+  <div id="view-settings" hidden>{{SETTINGS}}</div>
+    </div>
+  </main>
+
+  <nav class="bottombar" aria-label="Main menu">
+    <button type="button" data-go="home" data-ico="home">Home</button>
+    <button type="button" data-go="posts" data-ico="posts">Posts</button>
+    <button type="button" data-go="match" data-ico="ball">Live</button>
+    <button type="button" data-go="create" data-ico="plus">Create</button>
+    <button type="button" id="more-btn" data-ico="more">More</button>
+  </nav>
+  <div class="moresheet" id="moresheet" hidden><div class="msheet">
+    <button type="button" data-go="calendar">Calendar</button><button type="button" data-go="library">Photo library</button>
+    <button type="button" data-go="breaking">Breaking news</button><button type="button" data-go="tables">Tables &amp; fixtures</button>
+    <button type="button" data-go="video">Video tools</button><button type="button" data-go="insights">Insights</button>
+    <button type="button" data-go="play">Playbook</button><button type="button" data-go="settings">Settings</button>
+  </div></div>
+</div>

@@ -1,0 +1,95 @@
+
+    <p class="note" style="margin-top:18px">Each of these makes a new post at the top of your <b>Posts</b> tab. Then add a photo and press Generate as usual.</p>
+    <div class="cards">
+      <form class="card" id="c-article">
+        <h3>Make a post from this</h3>
+        <p>Paste a headline, a quote or a whole article you've just seen. Claude turns it into a finished post, using only the facts you paste.</p>
+        <label>Paste it here<textarea id="a-text" rows="7" required placeholder="e.g. BBC Sport: Man Utd sack manager after defeat..."></textarea></label>
+        <label>Link to the article (optional)<input type="text" id="a-link" placeholder="https://..."></label>
+        <button type="submit">Make post</button>
+        <div class="msg" id="a-msg"></div>
+      </form>
+
+      <form class="card" id="c-ft">
+        <h3>Full-time result</h3>
+        <p>Be first with the score. Takes about 10 seconds.</p>
+        <div class="three">
+          <label>Home<input type="text" id="ft-home" required placeholder="England"></label>
+          <label>Score<input type="text" id="ft-score" required placeholder="2-1" inputmode="numeric"></label>
+          <label>Away<input type="text" id="ft-away" required placeholder="Spain"></label>
+        </div>
+        <div class="two">
+          <label>Home scorers (one per line)<textarea id="ft-hs" rows="3" placeholder="Kane 23'&#10;Saka 81'"></textarea></label>
+          <label>Away scorers (one per line)<textarea id="ft-as" rows="3" placeholder="Yamal 55'"></textarea></label>
+        </div>
+        <label>Competition<input type="text" id="ft-comp" placeholder="Nations League"></label>
+        <label>Question<input type="text" id="ft-q" value="Who was your man of the match?"></label>
+        <button type="submit">Make result card</button>
+        <div class="msg" id="ft-msg"></div>
+      </form>
+
+      <form class="card" id="c-split">
+        <h3>Who's better?</h3>
+        <p>Two people side by side with a big VS. Fans comment A or B.</p>
+        <div class="two">
+          <label>A: name<input type="text" id="s-an" required placeholder="Saka"></label>
+          <label>B: name<input type="text" id="s-bn" required placeholder="Palmer"></label>
+          <label>A: club / note<input type="text" id="s-as" placeholder="Arsenal"></label>
+          <label>B: club / note<input type="text" id="s-bs" placeholder="Chelsea"></label>
+          <label>A: colour<select id="s-ac"></select></label>
+          <label>B: colour<select id="s-bc"></select></label>
+        </div>
+        <label>Title<input type="text" id="s-title" value="Who's better?"></label>
+        <label>Question<input type="text" id="s-q" value="A or B? One letter."></label>
+        <button type="submit">Make who's better post</button>
+        <div class="msg" id="s-msg"></div>
+      </form>
+
+      <form class="card" id="c-rat">
+        <h3>Player ratings</h3>
+        <p>Rate the XI out of 10. Fans always argue with the marks.</p>
+        <label>Title<input type="text" id="r-title" required placeholder="England ratings"></label>
+        <label>Match line<input type="text" id="r-sub" placeholder="England 2-1 Spain"></label>
+        <label>Players (one per line: NAME | SCORE)<textarea id="r-rows" rows="8" required placeholder="Pickford | 7&#10;Kane | 8&#10;Rice | 6"></textarea></label>
+        <label>Question<input type="text" id="r-q" value="Who have we got wrong?"></label>
+        <button type="submit">Make ratings card</button>
+        <div class="msg" id="r-msg"></div>
+      </form>
+
+      <form class="card" id="c-car">
+        <h3>Carousel</h3>
+        <p>A cover plus one slide per item, e.g. "5 worst signings of the summer". People swipe through, and they stay on the post longer.</p>
+        <label>Title<input type="text" id="k-title" required placeholder="5 worst signings of the summer"></label>
+        <label>Items (one per line: NAME | ONE LINE)<textarea id="k-rows" rows="6" required placeholder="Player One | £60m, 0 goals&#10;Player Two | Hasn't started a game"></textarea></label>
+        <label>Question for the last slide<input type="text" id="k-q" value="Who did we miss?"></label>
+        <button type="submit">Make carousel</button>
+        <div class="msg" id="k-msg"></div>
+      </form>
+
+      <form class="card" id="c-guess">
+        <h3>Guess the player</h3>
+        <p>A hidden photo with three clues. Post the quiz today and the answer slide tomorrow.</p>
+        <label>Answer (the player)<input type="text" id="g-ans" required placeholder="Peter Crouch"></label>
+        <label>Clues (one per line, hardest first)<textarea id="g-clues" rows="4" required placeholder="Played for 7 Premier League clubs&#10;Scored a goal of the season with a bicycle kick&#10;Famous for the robot celebration"></textarea></label>
+        <label>Answer slide: small line (optional)<input type="text" id="g-line" placeholder="108 Premier League goals"></label>
+        <label>Question<input type="text" id="g-q" value="Name him in the comments"></label>
+        <button type="submit">Make quiz</button>
+        <div class="msg" id="g-msg"></div>
+      </form>
+
+      <form class="card" id="c-h2h">
+        <h3>Head to head</h3>
+        <p>Two players' numbers side by side as bars. The better number glows.</p>
+        <div class="two">
+          <label>A: name<input type="text" id="h-an" required placeholder="Haaland"></label>
+          <label>B: name<input type="text" id="h-bn" required placeholder="Isak"></label>
+          <label>A: colour<select id="h-ac"></select></label>
+          <label>B: colour<select id="h-bc"></select></label>
+        </div>
+        <label>Stats (one per line: LABEL | A | B, add "| low" if lower is better)<textarea id="h-rows" rows="6" required placeholder="Goals | 5 | 3&#10;Assists | 1 | 2&#10;Shots | 22 | 14&#10;Cost | £51m | £125m | low"></textarea></label>
+        <label>Label<input type="text" id="h-tag" value="HEAD TO HEAD"></label>
+        <label>Question<input type="text" id="h-q" value="Who would you rather have?"></label>
+        <button type="submit">Make head to head</button>
+        <div class="msg" id="h-msg"></div>
+      </form>
+    </div>

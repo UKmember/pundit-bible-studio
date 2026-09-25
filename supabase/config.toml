@@ -1,0 +1,13 @@
+project_id = "pundit-bible-studio"
+
+[functions.claude]
+verify_jwt = false
+
+[functions.scan-now]
+verify_jwt = false
+
+[functions.tick]
+verify_jwt = false
+
+[functions.higgsfield]
+verify_jwt = false
