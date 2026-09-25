@@ -297,6 +297,46 @@ table.lt tr.hl td{background:#fff5d6}
   .msheet{background:#fff;width:100%;padding:16px 16px calc(80px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;border-radius:14px 14px 0 0}
   .msheet button{padding:16px 10px}
 }
+/* clips (OpusClip) */
+.opf{display:grid;gap:10px}.opf label{display:grid;gap:4px;font:600 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.opf .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input[type=url],input[type=number],input[type=datetime-local]{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:9px 10px;font:15px/1.4 "Barlow",sans-serif;box-sizing:border-box}
+.pday{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin:8px 0 0}
+.clipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.clipc{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:grid;align-content:start}
+.clipc.off{opacity:.55}
+.clipc .vw{position:relative;background:#000;aspect-ratio:9/16;max-height:340px}
+.clipc video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.clipc .rk{position:absolute;left:8px;top:8px;font:400 18px/1 Anton,sans-serif;background:var(--navy);color:#fff;padding:5px 8px;border-radius:4px}
+.clipc .sc{position:absolute;right:8px;top:8px;font:700 14px/1 Barlow,sans-serif;padding:5px 8px;border-radius:4px;background:#fff;color:var(--navy)}
+.sc.hi{background:#1f8a4c!important;color:#fff!important}.sc.mid{background:#f5c518!important;color:#031F60!important}.sc.lo{background:#d6dcea!important}
+.clipc .ci{padding:10px 12px;display:grid;gap:6px;font-size:14px}
+.clipc .ci b{font-size:15px;line-height:1.25}
+.clipc .ci .why{font-size:13px;margin:0}
+.clipc .row{gap:6px}
+.cstate{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cstate.ok{color:var(--green)}.cstate.plan{color:var(--navy2)}
+.cmodal,.cmodal p{text-align:left}.cmodal p.msg,.cmodal p.why{color:var(--muted)}.cmodal .row{justify-content:flex-start}
+.cmodal label.opf{display:grid;gap:4px;font:600 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cmodal{background:#fff;border-radius:10px;max-width:900px;width:100%;max-height:92vh;overflow:auto;padding:16px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:16px}
+.cmodal video{width:100%;max-height:70vh;background:#000;border-radius:6px}
+.cmodal h3{margin:0;color:var(--navy)}
+.cmodal textarea{min-height:92px}
+.acct{display:flex;gap:8px;align-items:center;font-size:15px;padding:4px 0}
+.acct img{width:22px;height:22px;border-radius:50%}
+.cpost.clip{border-left-color:#7b3fe4}
+@media (max-width:760px){.cmodal{grid-template-columns:1fr}.cmodal video{max-height:48vh}.opf .two{grid-template-columns:1fr}.clipgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* earnings */
+:root{--yt:#d7262c;--fb:#2f6fdb}
+.elegend{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--muted)}.elegend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-left:8px}
+.echart{position:relative;height:280px}
+.echart svg{width:100%;height:100%;display:block;overflow:visible}
+.echart .tip{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(3,31,96,.14);border-radius:6px;padding:8px 10px;font-size:13px;line-height:1.45;min-width:150px;z-index:2}
+.echart .tip b{display:block;font-size:14px;color:var(--text)}.echart .tip i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+.kpi .split{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.econn{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.econn .dot{width:12px;height:12px;border-radius:50%}
+.econn small{display:block;color:var(--muted);font-size:13px}
 </style>
 
 <div class="shell">
@@ -306,6 +346,7 @@ table.lt tr.hl td{background:#fff5d6}
       <button class="nav" id="tab-home" data-ico="home" type="button">Home</button>
       <div class="navh">Content</div>
       <button class="nav" id="tab-posts" data-ico="posts" type="button">Posts <span class="nbadge" id="nb-posts"></span></button>
+      <button class="nav" id="tab-clips" data-ico="clip" type="button">Clips <span class="nbadge" id="nb-clips"></span></button>
       <button class="nav" id="tab-calendar" data-ico="cal" type="button">Calendar</button>
       <button class="nav" id="tab-create" data-ico="plus" type="button">Create</button>
       <button class="nav" id="tab-library" data-ico="photo" type="button">Photo library</button>
@@ -315,6 +356,7 @@ table.lt tr.hl td{background:#fff5d6}
       <button class="nav" id="tab-tables" data-ico="table" type="button">Tables &amp; fixtures</button>
       <div class="navh">Studio</div>
       <button class="nav" id="tab-video" data-ico="video" type="button">Video tools</button>
+      <button class="nav" id="tab-earnings" data-ico="money" type="button">Earnings</button>
       <button class="nav" id="tab-insights" data-ico="chart" type="button">Insights</button>
       <button class="nav" id="tab-play" data-ico="book" type="button">Playbook</button>
       <button class="nav" id="tab-settings" data-ico="cog" type="button">Settings</button>
@@ -357,6 +399,37 @@ table.lt tr.hl td{background:#fff5d6}
       <button class="ghost" data-f="all" aria-pressed="false" type="button">All</button>
     </div>
     <div id="list"></div>
+  </div>
+
+  <div id="view-clips" hidden>
+    <div class="hgrid">
+      <section class="panel"><div class="ph"><h2>New video</h2></div>
+        <form id="op-new" class="opf">
+          <label>YouTube link<input type="url" id="op-url" placeholder="https://www.youtube.com/watch?v=…" required></label>
+          <div class="two"><label>Clip length<select id="op-len"><option value="auto">Let OpusClip decide</option><option value="short">Under 30 seconds</option><option value="mid">30 to 60 seconds</option><option value="long">60 to 90 seconds</option><option value="mix">A mix</option></select></label>
+          <label>Title (optional)<input type="text" id="op-title" placeholder="Taken from YouTube"></label></div>
+          <details><summary>Tell it what to look for (optional)</summary><label style="margin-top:8px">What to look for<textarea id="op-prompt" rows="2" placeholder="e.g. hot takes on Man Utd, predictions, the funniest moments"></textarea></label></details>
+          <button type="submit" id="op-go">Make clips</button>
+          <p class="msg" id="op-msg">Uses your OpusClip credits, the same as the website (about 1 credit per minute of video). Clips take 10–30 minutes. You get an alert when they’re ranked and planned.</p>
+        </form>
+        <details><summary>Made them on the OpusClip website? Bring them in</summary>
+          <div class="row" style="margin-top:8px"><input type="url" id="op-imp" placeholder="Paste the OpusClip project link" style="flex:1"><button class="ghost sm" id="op-impgo" type="button">Bring in</button></div></details>
+      </section>
+      <section class="panel"><div class="ph"><h2>Posting plan</h2><div class="row"><button class="ghost sm" id="op-replan" type="button">Re-plan</button><button class="sm" id="op-schedall" type="button">Schedule the next 3 days</button></div></div>
+        <div id="op-plan" class="hlist"></div><p class="msg" id="op-planmsg"></p></section>
+    </div>
+    <section class="panel" style="margin-top:16px"><div class="ph"><h2>Your videos</h2></div><div id="op-projects" class="hlist"></div></section>
+    <section class="panel" style="margin-top:16px" id="op-clipsbox" hidden><div class="ph"><h2 id="op-ctitle">Clips</h2><div class="row"><button class="ghost sm" id="op-check" type="button">Check now</button><button class="ghost sm" id="op-rerank" type="button">Re-rank with Claude</button></div></div>
+      <p class="msg" id="op-cmsg"></p><div id="op-clips" class="clipgrid"></div></section>
+    <details class="panel" style="margin-top:16px" id="op-cfg"><summary>Plan settings and accounts</summary>
+      <div class="opf" style="margin-top:12px">
+        <div class="two"><label>Clip posting times (UK)<input type="text" id="op-times" placeholder="12:00, 17:30, 20:30"></label>
+        <label>Plan ahead (days)<input type="number" id="op-days" min="1" max="14" placeholder="7"></label></div>
+        <label>Brand template<select id="op-tpl"><option value="">Your OpusClip default</option></select></label>
+        <div><b style="font-size:15px">Post to</b><div id="op-accts" style="margin:6px 0"></div><button class="ghost sm" id="op-acctload" type="button">Load my OpusClip accounts</button></div>
+        <button id="op-savecfg" type="button">Save</button><p class="msg" id="op-cfgmsg">Connect Facebook, Instagram, TikTok and YouTube on the OpusClip website first (Social accounts). They then show up here.</p>
+      </div>
+    </details>
   </div>
 
   <div id="view-calendar" hidden>
@@ -418,11 +491,29 @@ table.lt tr.hl td{background:#fff5d6}
       <section class="panel"><div class="ph"><h2>Table</h2><div class="row"><button class="sm" id="t-card-top" type="button">Top 5 card</button><button class="ghost sm" id="t-card-bottom" type="button">Bottom 5 card</button></div></div><div class="tablewrap"><table id="t-table" class="lt"></table></div><p class="msg" id="t-upd"></p></section>
       <section class="panel"><div class="ph"><h2>Top scorers</h2><button class="sm" id="t-card-scorers" type="button">Scorers card</button></div><div class="tablewrap"><table id="t-scorers" class="lt"></table></div></section>
     </div>
+    <section class="panel" style="margin-top:16px"><div class="ph"><h2>Fixtures &amp; results</h2>
+      <div class="row"><span class="pills" id="tfx-f"><button class="ghost sm" data-tf="up" aria-pressed="true" type="button">Upcoming</button><button class="ghost sm" data-tf="res" aria-pressed="false" type="button">Results</button></span>
+      <button class="sm" id="t-card-fx" type="button">Fixtures card</button></div></div>
+      <div id="t-fx" class="hlist"></div></section>
     <p class="msg" id="t-msg"></p>
   </div>
 
   <div id="view-create" hidden>{{CREATE}}</div>
   <div id="view-video" hidden>{{VIDEO}}</div>
+  <div id="view-earnings" hidden>
+    <div class="ph" style="margin-bottom:4px"><div class="pills" id="er-range"><button class="ghost sm" data-er="30" aria-pressed="true" type="button">Last 30 days</button><button class="ghost sm" data-er="90" aria-pressed="false" type="button">Last 90 days</button></div>
+      <div class="row"><span class="msg" id="er-sync"></span><button class="ghost sm" id="er-refresh" type="button">Refresh now</button></div></div>
+    <p class="note" id="er-msg" hidden></p>
+    <div class="kpis" id="er-kpis"></div>
+    <section class="panel"><div class="ph"><h2>Daily earnings</h2><div class="row"><span class="elegend"><i style="background:var(--yt)"></i>YouTube <i style="background:var(--fb)"></i>Facebook</span><button class="ghost sm" id="er-tbl" type="button">Show as table</button></div></div>
+      <div id="er-chart" class="echart"></div><div id="er-table" class="tablewrap" hidden></div>
+      <p class="msg" id="er-note">YouTube figures run 2–3 days behind (the same as YouTube Studio). Facebook pays in US dollars; each day is converted to pounds at that day’s exchange rate.</p></section>
+    <div class="hgrid" style="margin-top:16px">
+      <section class="panel"><div class="ph"><h2>Top YouTube videos</h2><span class="msg">last 28 days</span></div><div id="er-topyt" class="hlist"></div></section>
+      <section class="panel"><div class="ph"><h2>Top Facebook posts</h2><span class="msg">recent posts, all time</span></div><div id="er-topfb" class="hlist"></div></section>
+    </div>
+    <section class="panel" style="margin-top:16px"><div class="ph"><h2>Connections</h2></div><div id="er-conn"></div></section>
+  </div>
   <div id="view-insights" hidden>{{INSIGHTS}}</div>
 {{PLAYBOOK}}
   <div id="view-settings" hidden>{{SETTINGS}}</div>
@@ -433,13 +524,13 @@ table.lt tr.hl td{background:#fff5d6}
     <button type="button" data-go="home" data-ico="home">Home</button>
     <button type="button" data-go="posts" data-ico="posts">Posts</button>
     <button type="button" data-go="match" data-ico="ball">Live</button>
-    <button type="button" data-go="create" data-ico="plus">Create</button>
+    <button type="button" data-go="clips" data-ico="clip">Clips</button>
     <button type="button" id="more-btn" data-ico="more">More</button>
   </nav>
   <div class="moresheet" id="moresheet" hidden><div class="msheet">
-    <button type="button" data-go="calendar">Calendar</button><button type="button" data-go="library">Photo library</button>
+    <button type="button" data-go="create">Create</button><button type="button" data-go="calendar">Calendar</button><button type="button" data-go="library">Photo library</button>
     <button type="button" data-go="breaking">Breaking news</button><button type="button" data-go="tables">Tables &amp; fixtures</button>
-    <button type="button" data-go="video">Video tools</button><button type="button" data-go="insights">Insights</button>
+    <button type="button" data-go="video">Video tools</button><button type="button" data-go="earnings">Earnings</button><button type="button" data-go="insights">Insights</button>
     <button type="button" data-go="play">Playbook</button><button type="button" data-go="settings">Settings</button>
   </div></div>
 </div>

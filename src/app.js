@@ -226,7 +226,7 @@ Reply with only JSON like {"face":{"x":0.41,"y":0.12,"w":0.2,"h":0.27},"who":"Ro
   // ---- AI background ----
   el.querySelector('.aibg').hidden=!(window.PB&&window.PB.higgsfield);
   el.querySelector('.bggo').addEventListener('click',async()=>{const m=el.querySelector('.bgmsg'),b=el.querySelector('.bggo');b.disabled=true;m.classList.remove('warn');
-    try{m.textContent='Making your background…';const job=await window.PB.higgsfield.image({prompt:el.querySelector('.bgp').value,aspect:'4:5'});
+    try{m.textContent='Making your background…';const job=await window.PB.higgsfield.image({prompt:el.querySelector('.bgp').value,aspect:'4:5',post:id});
       const s=await window.PB.higgsfield.wait(job.id,(st,sec)=>{m.textContent='Making your background… '+sec+'s'});
       if(s.status==='completed'){posts[id].bg={file:s.file};await save(id,{bg:posts[id].bg});await el._redraw();m.textContent='Done.'}else{m.textContent=s.message||'It didn’t work.';m.classList.add('warn')}}
     catch(e){m.textContent=e.message;m.classList.add('warn')}b.disabled=false});
@@ -311,7 +311,9 @@ Reply with only JSON: {"prompt":"...","negative":"..."}`,{images:blob,cache:fals
       else{hfm.textContent=s.message||('It didn’t work ('+s.status+').');hfm.classList.add('warn')}}
     catch(e){hfm.textContent=e.message||'Something went wrong.';hfm.classList.add('warn')}b.disabled=false});
   hfsave.addEventListener('click',async()=>{if(!hfBlob)return;if(downloads){try{await downloads.save({filename:'pundit-bible-'+id+'-kling.mp4',data:hfBlob});hfm.textContent='Saved.'}catch(e){if(e.code!=='declined')hfm.textContent='Could not save.'}}});
-  el._hf=()=>{const p=posts[id];if(!hfp.value||!el.contains(document.activeElement))hfp.value=p.hfPrompt||klingPromptFor(p);if(p.hfVideo&&p.hfVideo.file&&hfvid.hidden)hfShow(p.hfVideo.file).catch(()=>{})};
+  el._hf=()=>{const p=posts[id];if(!hfp.value||!el.contains(document.activeElement))hfp.value=p.hfPrompt||klingPromptFor(p);
+    if(p.hfPending&&!el.querySelector('.hfgo').disabled){hfm.textContent=(p.hfPending.kind==='video'?'Kling is still making your video':'Your AI background is still being made')+' (started '+ago(p.hfPending.at)+'). It will appear here by itself, and you’ll get a phone alert when it’s ready.';hfm.classList.remove('warn')}
+    else if(p.hfError&&!p.hfVideo){hfm.textContent=p.hfError;hfm.classList.add('warn')}if(p.hfVideo&&p.hfVideo.file&&hfvid.hidden)hfShow(p.hfVideo.file).catch(()=>{})};
   hfp.addEventListener('input',()=>{clearTimeout(hfp._t);hfp._t=setTimeout(()=>{posts[id].hfPrompt=hfp.value;save(id,{hfPrompt:hfp.value})},800)});
   el._fillTT=(force)=>{const p=posts[id];if(force||!p.ttCaption)ttcap.value=p.ttCaption||ttCaptionFor(p);else ttcap.value=p.ttCaption;
     const k=(!force&&p.vid&&p.vid.prompt)?p.vid:seedanceFor(p,(p.vid&&p.vid.take)||0);klp.value=k.prompt;kln.value=k.negative||SEED_NEG;
@@ -748,12 +750,12 @@ $('#m-add').addEventListener('submit',async e=>{e.preventDefault();const m=$('#m
   fixtures[id]=doc;renderMatch();if(db){try{await db.doc('fixtures/'+id).set(doc);m.textContent='Added.'}catch(err){m.textContent='Could not save ('+(err.code||'error')+').'}}
   e.target.reset();$('#m-date').value=todayISO();$('#m-ko').value='15:00'});
 // ---------- tabs ----------
-const TABS=['home','posts','calendar','create','library','match','breaking','tables','video','insights','play','settings'];
-const TAB_TITLES={home:'Home',posts:'Posts',calendar:'Calendar',create:'Create',library:'Photo library',match:'Match Centre',breaking:'Breaking news',tables:'Tables & fixtures',video:'Video tools',insights:'Insights',play:'Playbook',settings:'Settings'};
+const TABS=['home','posts','clips','calendar','create','library','match','breaking','tables','video','earnings','insights','play','settings'];
+const TAB_TITLES={home:'Home',posts:'Posts',clips:'Clips',calendar:'Calendar',create:'Create',library:'Photo library',match:'Match Centre',breaking:'Breaking news',tables:'Tables & fixtures',video:'Video tools',earnings:'Earnings',insights:'Insights',play:'Playbook',settings:'Settings'};
 let curTab='home';
 function showTab(t,keepHash){if(!TABS.includes(t))t='home';curTab=t;TABS.forEach(x=>{const v=$('#view-'+x);if(v)v.hidden=x!==t;const b=$('#tab-'+x);if(b)b.setAttribute('aria-pressed',String(x===t))});
-  document.querySelectorAll('.bottombar [data-go]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.go===t||(t!=='home'&&t!=='posts'&&t!=='match'&&t!=='create'&&false))));
-  const mb=$('#more-btn');if(mb)mb.setAttribute('aria-pressed',String(!['home','posts','match','create'].includes(t)));
+  document.querySelectorAll('.bottombar [data-go]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.go===t||(t!=='home'&&t!=='posts'&&t!=='match'&&t!=='clips'&&false))));
+  const mb=$('#more-btn');if(mb)mb.setAttribute('aria-pressed',String(!['home','posts','match','clips'].includes(t)));
   const ms=$('#moresheet');if(ms)ms.hidden=true;$('#pagetitle').textContent=TAB_TITLES[t]||'';document.title=(TAB_TITLES[t]||'Studio')+' · Pundit Bible Studio';
   if(t==='insights')renderInsights();if(t==='breaking')renderBreaking();if(t==='match')renderMatch();
   if(typeof studioShow==='function')studioShow(t);

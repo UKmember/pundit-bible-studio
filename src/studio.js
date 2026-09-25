@@ -1,9 +1,9 @@
 
 // ================= Studio: home, calendar, photo library, tables, live Match Centre, settings, alerts =================
-const ICONS={home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',posts:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z"/><path d="M12 3v4M20.5 9.5L16 10M17 19l-2.5-4.5M7 19l2.5-4.5M3.5 9.5L8 10"/>',bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16"/>',video:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',book:'<path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-6"/><path d="M20 4v14h-6"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
+const ICONS={home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',posts:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/>',ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z"/><path d="M12 3v4M20.5 9.5L16 10M17 19l-2.5-4.5M7 19l2.5-4.5M3.5 9.5L8 10"/>',bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16"/>',video:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',book:'<path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-6"/><path d="M20 4v14h-6"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',money:'<circle cx="12" cy="12" r="9"/><path d="M15 8.5c-.5-1-1.6-1.5-3-1.5-1.8 0-3 .9-3 2.2 0 3 6 1.6 6 4.6 0 1.4-1.3 2.2-3 2.2-1.5 0-2.6-.6-3.1-1.6M12 5.5V7m0 10v1.5"/>',clip:'<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 9l5 3-5 3z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
 document.querySelectorAll('[data-ico]').forEach(b=>{const p=ICONS[b.dataset.ico];if(p)b.insertAdjacentHTML('afterbegin','<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>')});
 
-let matches={},tablesData={},scorersData={},photoLib={},metaDocs={},tableComp='PL',mFilter='today',calOffset=0,goalOpen=null;
+let earnDays={},clipsData={},opusProjects={},matches={},tablesData={},scorersData={},photoLib={},metaDocs={},tableComp='PL',mFilter='today',calOffset=0,goalOpen=null;
 const DEF_SLOTS=['08:00','12:30','18:00','20:30'];
 const DEF_TEAMS=['Arsenal','Chelsea','Liverpool','Manchester City','Manchester United','Tottenham','Newcastle','Aston Villa','Nottingham Forest','England'];
 const COMP_NAMES={PL:'Premier League',ELC:'Championship',CL:'Champions League',WC:'World Cup',EC:'Euros'};
@@ -28,12 +28,13 @@ function monthUsage(doc){const d=metaDocs[doc];const mo=ymd(new Date()).slice(0,
 function studioBoot(){
   if(!db)return;
   const sub=(c,fn)=>db.collection(c).onSnapshot(s=>{const o={};s.docs.forEach(d=>{o[d.id]=JSON.parse(JSON.stringify(d.data()))});fn(o);studioRefresh()},()=>{});
-  sub('matches',o=>{matches=o;if(pendingHash)handleHash()});sub('tables',o=>{tablesData=o});sub('scorers',o=>{scorersData=o});sub('photos',o=>{photoLib=o});sub('meta',o=>{metaDocs=o});
+  sub('matches',o=>{matches=o;if(pendingHash)handleHash()});sub('tables',o=>{tablesData=o});sub('scorers',o=>{scorersData=o});sub('photos',o=>{photoLib=o});sub('meta',o=>{metaDocs=o});sub('earnings',o=>{earnDays=o});sub('clips',o=>{clipsData=o;if(pendingHash)handleHash()});sub('opus',o=>{opusProjects=o});
   if(navigator.serviceWorker)navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.type==='open'){try{location.hash=new URL(e.data.url).hash}catch(err){}}});
 }
 let pendingHash=/\//.test(location.hash);
 window.addEventListener('hashchange',()=>handleHash());
 function handleHash(){const h=(location.hash||'').slice(1);const [kind,id]=h.split('/');if(!id){if(TABS.includes(kind)&&kind!==curTab)showTab(kind,true);return}
+  if(kind==='clip'||kind==='clipset'){if(kind==='clip'&&!clipsData[id]){pendingHash=true;showTab('clips',true);return}pendingHash=false;showTab('clips',true);if(kind==='clip'){openClip(id)}else{opSel=id;renderClips()}try{history.replaceState(null,'','#clips')}catch(e){}return}
   if(kind==='post'){if(!posts[id]){pendingHash=true;return}pendingHash=false;openPost(id);try{history.replaceState(null,'','#posts')}catch(e){}return}
   const m=matches[id];if(!m){pendingHash=true;showTab('match',true);return}pendingHash=false;
   if(kind==='goal'){mFilter='today';showTab('match',true);goalOpen=id;renderLive();setTimeout(()=>{const c=document.getElementById('mc-'+id);if(c)c.scrollIntoView({behavior:'smooth',block:'center'})},200)}
@@ -42,9 +43,10 @@ function handleHash(){const h=(location.hash||'').slice(1);const [kind,id]=h.spl
 function openPost(id){if(!posts[id]){showTab('posts');return}if(posts[id].status==='posted'&&filter==='todo'){filter='all';document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f==='all')));renderList()}
   showTab('posts',true);setTimeout(()=>{const n=nodes[id];if(n)n.scrollIntoView({behavior:'smooth',block:'start'})},250)}
 function studioRefresh(){if(pendingHash)handleHash();const todo=order.filter(i=>posts[i].status!=='posted').length;const nb=$('#nb-posts');if(nb)nb.textContent=todo?String(todo):'';
+  const nc=$('#nb-clips');if(nc){const n=clipsUpcoming().filter(x=>x.c.status==='planned'&&ymd(x.t)===ymd(new Date())).length;nc.textContent=n?String(n):''}
   const lv=Object.values(matches).filter(liveNow).length;const nl=$('#nb-live');if(nl)nl.textContent=lv?String(lv):'';
   studioShow(curTab,true)}
-function studioShow(t,soft){if(t==='home')renderHome();else if(t==='calendar')renderCal();else if(t==='library'&&!soft)renderLib();else if(t==='tables')renderTables();else if(t==='match'){if(!(soft&&document.querySelector('#mlive .gform:not([hidden])')))renderLive()}else if(t==='settings'&&!soft)renderSettings()}
+function studioShow(t,soft){if(t==='home')renderHome();else if(t==='calendar')renderCal();else if(t==='library'&&!soft)renderLib();else if(t==='tables')renderTables();else if(t==='match'){if(!(soft&&document.querySelector('#mlive .gform:not([hidden])')))renderLive()}else if(t==='settings'&&!soft)renderSettings();else if(t==='clips')renderClips(soft);else if(t==='earnings')renderEarnings()}
 $('#quick-new').onclick=()=>showTab('create');$('#quick-goal').onclick=()=>{mFilter='today';showTab('match')};
 
 // ---------- Home ----------
@@ -55,9 +57,10 @@ function renderHome(){const k=$('#h-kpis');if(!k)return;const now=new Date(),tod
   const todayN=todo.filter(x=>!x.t||ymd(x.t)===today).length;const live=Object.values(matches).filter(liveNow);
   const br=Object.values(breaking).filter(b=>Date.now()-(Date.parse(b.publishedAt)||0)<3*3600e3).length;
   const cu=monthUsage('usage'),hu=monthUsage('hfusage');const cap=(window.PB&&PB.config&&PB.config.budgetGbp)||10,hcap=(window.PB&&PB.config&&PB.config.hfBudgetGbp)||5;
-  const kp=[['To post today',todayN,''],['Live now',live.length,live.length?live.map(m=>m.home.short+' '+m.hs+'-'+m.as+' '+m.away.short).slice(0,2).join(' · '):'No games on'],['Breaking (3h)',br,''],['Claude this month',gbp(cu.usd),'of £'+cap+' budget'],['Higgsfield this month',gbp(hu.usd),(hu.count||0)+' made · £'+hcap+' budget']];
+  const kp=[['To post today',todayN,''],['Live now',live.length,live.length?live.map(m=>m.home.short+' '+m.hs+'-'+m.as+' '+m.away.short).slice(0,2).join(' · '):'No games on'],['Breaking (3h)',br,''],['Clips planned',clipsUpcoming().length,'next 7 days'],['Earned this month',earnMonthTotal().txt,earnMonthTotal().sub],['Claude this month',gbp(cu.usd),'of £'+cap+' budget'],['Higgsfield this month',gbp(hu.usd),(hu.count||0)+' made · £'+hcap+' budget']];
   k.innerHTML=kp.map(([l,v,s])=>`<div class="kpi"><b>${esc(v)}</b><span>${esc(l)}</span>${s?`<small>${esc(s)}</small>`:''}</div>`).join('');
   const nx=$('#h-next');nx.innerHTML='';todo.sort((a,b)=>(a.t?a.t.getTime():0)-(b.t?b.t.getTime():0)).slice(0,6).forEach(x=>nx.appendChild(hItem(x.t?(ymd(x.t)===today?hm(x.t):x.t.toLocaleDateString('en-GB',{weekday:'short'})):'Now',x.p.title||'',x.p.format||'',x.p.auto?{t:'Auto',cls:''}:null,()=>openPost(x.id))));
+  clipsUpcoming().filter(x=>ymd(x.t)===today).forEach(x=>{const b=hItem(hm(x.t),'🎬 '+(x.c.hook||x.c.title||'Clip'),x.c.status==='scheduled'?'Clip · scheduled on OpusClip':'Clip · post it yourself',x.c.status==='scheduled'?{t:'Auto',cls:''}:null,()=>openClip(x.id));nx.insertBefore(b,[...nx.children].find(el=>{const t=(el.querySelector('.t')||{}).textContent||'';return t!=='Now'&&(!/^\d\d:\d\d$/.test(t)||t>hm(x.t))})||null)});
   if(!nx.children.length)nx.innerHTML='<p class="hempty">Nothing waiting. New posts arrive with the morning news check.</p>';
   const g=$('#h-games');g.innerHTML='';const up=Object.values(matches).filter(m=>liveNow(m)||(['TIMED','SCHEDULED'].includes(m.status)&&Date.parse(m.utcDate)<Date.now()+2*864e5&&Date.parse(m.utcDate)>Date.now()-3*3600e3)||(m.status==='FINISHED'&&Date.now()-Date.parse(m.utcDate)<5*3600e3))
     .sort((a,b)=>(liveNow(b)-liveNow(a))||(isWatched(b)-isWatched(a))||a.utcDate.localeCompare(b.utcDate)).slice(0,6);
@@ -79,16 +82,19 @@ function slotPicker(id){const m=document.createElement('div');m.className='modal
 function calCard(id,p,t){const c=document.createElement('div');c.className='cpost'+(p.status==='posted'?' done':'')+(p.auto?' auto':'');c.draggable=true;
   c.innerHTML='<div></div><button type="button" class="mv">Move</button>';c.firstChild.textContent=(t&&!slotsList().includes(hm(t))?hm(t)+' · ':'')+(p.title||'');
   c.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',id)});c.querySelector('.mv').onclick=e=>{e.stopPropagation();slotPicker(id)};c.addEventListener('dblclick',()=>openPost(id));c.title='Double-click to open';return c}
+function calClip(id,cl,t){const c=document.createElement('div');c.className='cpost clip'+(cl.status==='sent'?' done':'');c.draggable=cl.status!=='scheduled'&&cl.status!=='sent';
+  c.innerHTML='<div></div><button type="button" class="mv">Open</button>';c.firstChild.textContent='🎬 '+(t&&!slotsList().includes(hm(t))?hm(t)+' · ':'')+(cl.hook||cl.title||'Clip')+(cl.status==='scheduled'?' ✓':'');
+  c.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain','clip:'+id)});c.querySelector('.mv').onclick=e=>{e.stopPropagation();openClip(id)};c.addEventListener('dblclick',()=>openClip(id));c.title=cl.status==='scheduled'?'Scheduled on OpusClip':'Clip: drag to move';return c}
 function renderCal(){const cal=$('#cal');if(!cal)return;const ws=weekStart(calOffset);const we=new Date(ws);we.setDate(we.getDate()+6);
   $('#cal-range').textContent=ws.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' – '+we.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
   cal.innerHTML='';const items=order.map(i=>({id:i,p:posts[i],t:postTime(posts[i])}));const today=ymd(new Date());
   for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(d.getDate()+i);const key=ymd(d);const col=document.createElement('div');col.className='cday'+(key===today?' today':'');col.innerHTML='<h4></h4>';col.querySelector('h4').textContent=dlabel(d);
-    const dayItems=items.filter(x=>x.t&&ymd(x.t)===key);
-    const rows=[...slotsList()];dayItems.forEach(x=>{const k=hm(x.t);if(!rows.includes(k))rows.push(k)});rows.sort();
-    rows.forEach(t=>{const s=document.createElement('div');s.className='cslot';s.innerHTML='<span>'+t+'</span>';dayItems.filter(x=>hm(x.t)===t).forEach(x=>s.appendChild(calCard(x.id,x.p,x.t)));
+    const dayItems=items.filter(x=>x.t&&ymd(x.t)===key);const dayClips=clipsOnCal().filter(x=>ymd(x.t)===key);
+    const rows=[...slotsList()];[...dayItems,...dayClips].forEach(x=>{const k=hm(x.t);if(!rows.includes(k))rows.push(k)});rows.sort();
+    rows.forEach(t=>{const s=document.createElement('div');s.className='cslot';s.innerHTML='<span>'+t+'</span>';dayItems.filter(x=>hm(x.t)===t).forEach(x=>s.appendChild(calCard(x.id,x.p,x.t)));dayClips.filter(x=>hm(x.t)===t).forEach(x=>s.appendChild(calClip(x.id,x.c,x.t)));
       if(!s.querySelector('.cpost')&&!slotsList().includes(t))return;
       s.addEventListener('dragover',e=>{e.preventDefault();s.classList.add('over')});s.addEventListener('dragleave',()=>s.classList.remove('over'));
-      s.addEventListener('drop',e=>{e.preventDefault();s.classList.remove('over');const id=e.dataTransfer.getData('text/plain');if(id)movePost(id,d,t)});col.appendChild(s)});
+      s.addEventListener('drop',e=>{e.preventDefault();s.classList.remove('over');const id=e.dataTransfer.getData('text/plain');if(id&&id.startsWith('clip:'))moveClip(id.slice(5),d,t);else if(id)movePost(id,d,t)});col.appendChild(s)});
     cal.appendChild(col)}
   const un=$('#cal-unsched');un.innerHTML='';items.filter(x=>!x.t&&x.p.status!=='posted').forEach(x=>un.appendChild(calCard(x.id,x.p,null)));if(!un.children.length)un.innerHTML='<p class="hempty">Everything has a slot.</p>'}
 $('#cal-prev').onclick=()=>{calOffset--;renderCal()};$('#cal-next').onclick=()=>{calOffset++;renderCal()};$('#cal-today').onclick=()=>{calOffset=0;renderCal()};
@@ -117,9 +123,23 @@ function curTable(){const t=tablesData[tableComp];return t&&t.groups&&t.groups[0
 function renderTables(){const tb=$('#t-table');if(!tb)return;const rows=curTable();const t=tablesData[tableComp];
   tb.innerHTML='<thead><tr><th>#</th><th>Team</th><th class="n">P</th><th class="n">W</th><th class="n">D</th><th class="n">L</th><th class="n">GD</th><th class="n">Pts</th><th>Form</th></tr></thead><tbody>'+
     (rows.length?rows.map(r=>`<tr class="${teamsList().some(x=>(r.team.name+' '+r.team.short).toLowerCase().includes(x.toLowerCase()))?'hl':''}"><td>${r.position}</td><td>${r.team.crest?`<img src="${esc(r.team.crest)}" alt="">`:''}${esc(r.team.short)}</td><td class="n">${r.playedGames}</td><td class="n">${r.won}</td><td class="n">${r.draw}</td><td class="n">${r.lost}</td><td class="n">${r.goalDifference>0?'+':''}${r.goalDifference}</td><td class="n"><b>${r.points}</b></td><td>${esc(String(r.form||'').replace(/,/g,''))}</td></tr>`).join(''):'<tr><td colspan="9" class="msg">'+(metaDocs.system&&metaDocs.system.football?'Waiting for the first update (within a few minutes).':'Live football data isn’t connected yet (setup guide, step 8).')+'</td></tr>')+'</tbody>';
-  $('#t-upd').textContent=t&&t.updatedAt?'Updated '+ago(t.updatedAt)+'.':'';
+  $('#t-upd').textContent=t&&t.updatedAt?'Updated '+ago(t.updatedAt)+'.':'';renderTableFx();
   const sc=(scorersData[tableComp]&&scorersData[tableComp].scorers)||[];
   $('#t-scorers').innerHTML='<thead><tr><th>Player</th><th>Team</th><th class="n">Goals</th><th class="n">Assists</th></tr></thead><tbody>'+(sc.length?sc.map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.team.short)}</td><td class="n"><b>${s.goals}</b></td><td class="n">${s.assists??'–'}</td></tr>`).join(''):'<tr><td colspan="4" class="msg">No data yet.</td></tr>')+'</tbody>'}
+let tfxMode='up';
+document.querySelectorAll('[data-tf]').forEach(b=>b.onclick=()=>{tfxMode=b.dataset.tf;document.querySelectorAll('[data-tf]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));$('#t-card-fx').textContent=tfxMode==='up'?'Fixtures card':'Results card';renderTableFx()});
+function tfxList(){const all=Object.values(matches).filter(m=>m.comp===tableComp);
+  return tfxMode==='up'?all.filter(m=>['TIMED','SCHEDULED','IN_PLAY','PAUSED'].includes(m.status)).sort((a,b)=>a.utcDate.localeCompare(b.utcDate)).slice(0,20)
+    :all.filter(m=>m.status==='FINISHED').sort((a,b)=>b.utcDate.localeCompare(a.utcDate)).slice(0,20)}
+function renderTableFx(){const box=$('#t-fx');if(!box)return;box.innerHTML='';const list=tfxList();const today=ymd(new Date());
+  list.forEach(m=>{const d=new Date(m.utcDate);const lv=liveNow(m);
+    box.appendChild(hItem(m.status==='FINISHED'||lv?`${m.hs}-${m.as}`:hm(d),m.home.short+' v '+m.away.short,(ymd(d)===today?'Today':dlabel(d))+(m.matchday?' · Matchday '+m.matchday:''),lv?{t:m.status==='PAUSED'?'HT':'LIVE',cls:'live'}:m.status==='FINISHED'?{t:'FT'}:(isWatched(m)?{t:'★'}:null),()=>{mFilter=m.status==='FINISHED'?'results':(ymd(d)===today?'today':'week');showTab('match')}))});
+  if(!list.length)box.innerHTML='<p class="hempty">'+(Object.keys(matches).length?'No '+(tfxMode==='up'?'upcoming games':'recent results')+' for this competition in the next/last two weeks.':'Fixtures load within a few minutes of connecting live data.')+'</p>'}
+$('#t-card-fx').onclick=async()=>{const m=$('#t-msg');const list=tfxList().slice(0,6);if(!list.length){m.textContent='Nothing to put on a card yet.';return}const cn=COMP_NAMES[tableComp]||tableComp;const up=tfxMode==='up';
+  await createPost({title:`${cn} ${up?'fixtures':'results'}`,format:up?'Predictor':'Results round-up',why:up?'Fans predict every game and argue about the big ones.':'Everyone checks the scores and has a view on the shock result.',template:'list',theme:'brand',
+    fields:{tag:U(cn)+(list[0].matchday?' · MATCHDAY '+list[0].matchday:''),title:up?'Fixtures':'Results',items:list.map(x=>up?`${x.home.tla||x.home.short} v ${x.away.tla||x.away.short}`:`${x.home.tla||x.home.short} ${x.hs}-${x.as} ${x.away.tla||x.away.short}`),body:up?'Predict them all in the comments':'Full-time scores',question:up?'Predict the scores 👇':'Result of the weekend?'},
+    caption:`${cn} ${up?'fixtures':'results'} ${up?'📅':'⚽'}\n\n${list.map(x=>up?`${x.home.short} v ${x.away.short} (${dlabel(new Date(x.utcDate))} ${hm(new Date(x.utcDate))})`:`${x.home.short} ${x.hs}-${x.as} ${x.away.short}`).join('\n')}\n\n${up?'Predict the scores 👇':'Result of the weekend? 👇'}`,
+    photoSearch:{term:list[0].home.short+' '+list[0].away.short,tip:'A player from the biggest game.'}},m)};
 async function tableCard(which){const rows=curTable();const m=$('#t-msg');if(!rows.length){m.textContent='No table yet.';return}const cn=COMP_NAMES[tableComp]||tableComp;const md=tablesData[tableComp]&&tablesData[tableComp].matchday;
   const pick=which==='top'?rows.slice(0,5):rows.slice(-5);const n=rows.length;
   await createPost({title:`${cn} ${which==='top'?'top 5':'bottom 5'}`,format:'Table card',why:which==='top'?'Title-race talk: every fan base has an opinion on who finishes top.':'Relegation fear gets every fan of those clubs commenting.',template:'ranking',theme:'brand',
@@ -183,7 +203,7 @@ function renderSettings(){const v=$('#view-settings');if(!v)return;
   $('#st-a-goals').checked=a.goals;$('#st-a-ht').checked=a.ht;$('#st-a-ft').checked=a.ft;$('#st-a-rem').checked=a.reminders;$('#st-auto-pred').checked=au.pred;$('#st-auto-res').checked=au.res;$('#st-auto-rat').checked=au.rat;
   const sy=metaDocs.system||{};const cu=monthUsage('usage'),hu=monthUsage('hfusage');const cap=(window.PB&&PB.config&&PB.config.budgetGbp)||10,hcap=(window.PB&&PB.config&&PB.config.hfBudgetGbp)||5;
   const row=(n,ok,extra)=>`<div class="conn"><span>${n}</span><span class="${ok?'ok':'no'}">${ok?'Connected':'Not connected'}${extra?' · '+extra:''}</span></div>`;
-  $('#st-conn').innerHTML=row('Claude (writing)',sy.claude!==false,gbp(cu.usd)+' of £'+cap)+row('Live football data',!!sy.football)+row('Higgsfield (Kling video)',!!sy.higgsfield,gbp(hu.usd)+' of £'+hcap)+row('Phone alerts',!!sy.push)+row('Scan now button',!!sy.scan)+
+  $('#st-conn').innerHTML=row('Claude (writing)',sy.claude!==false,gbp(cu.usd)+' of £'+cap)+row('Live football data',!!sy.football)+row('Higgsfield (Kling video)',!!sy.higgsfield,gbp(hu.usd)+' of £'+hcap)+row('OpusClip (clips)',!!sy.opus)+row('Phone alerts',!!sy.push)+row('Scan now button',!!sy.scan)+
     `<p class="msg">${sy.lastTick?'Background checks last ran '+ago(sy.lastTick)+'.':'Background checks haven’t run yet.'}</p>`;
   pushStatus()}
 async function pushStatus(){const m=$('#st-pushmsg'),b=$('#st-push');if(!(window.PB&&PB.push)){m.textContent='Phone alerts work in the installed app.';b.disabled=true;return}
@@ -191,7 +211,7 @@ async function pushStatus(){const m=$('#st-pushmsg'),b=$('#st-push');if(!(window
   if(!PB.push.supported()){m.textContent='This browser can’t show alerts.';b.disabled=true;return}
   const s=await PB.push.state().catch(()=>'off');b.textContent=s==='on'?'Alerts are on for this device ✓':'Turn on alerts on this device';if(s==='denied')m.textContent='Alerts are blocked for this site. Allow notifications in your browser or phone settings.'}
 $('#st-push').onclick=async()=>{const m=$('#st-pushmsg');try{await PB.push.subscribe();m.textContent='Done. You’ll get goal alerts and posting reminders on this device.';pushStatus()}catch(e){m.textContent=e.message}};
-$('#st-test').onclick=async()=>{const m=$('#st-pushmsg');try{const r=await PB.push.test();m.textContent=r&&r.sent?'Test sent to '+r.sent+' device'+(r.sent>1?'s':'')+'.':'No devices have alerts turned on yet.'}catch(e){m.textContent=e.message}};
+$('#st-test').onclick=async()=>{const m=$('#st-pushmsg');m.textContent='Sending in 15 seconds: lock your phone now (iPhone doesn’t show alerts while the app is open).';try{const r=await PB.push.test(15000);m.textContent=r&&r.sent?'Test sent to '+r.sent+' device'+(r.sent>1?'s':'')+'.':'No devices have alerts turned on yet.'}catch(e){m.textContent=e.message}};
 $('#st-save').onclick=async()=>{const m=$('#st-msg');const patch={watchTeams:$('#st-teams').value.split('\n').map(s=>s.trim()).filter(Boolean),alertComps:[...document.querySelectorAll('[data-comp]')].filter(x=>x.checked).map(x=>x.dataset.comp),
     alerts:{goals:$('#st-a-goals').checked,ht:$('#st-a-ht').checked,ft:$('#st-a-ft').checked,reminders:$('#st-a-rem').checked},auto:{pred:$('#st-auto-pred').checked,res:$('#st-auto-res').checked,rat:$('#st-auto-rat').checked},
     slots:$('#st-slots').value.split(/[,\s]+/).map(s=>s.trim()).filter(s=>/^\d{1,2}:\d{2}$/.test(s)).map(s=>s.padStart(5,'0')).sort()};
@@ -200,4 +220,3 @@ $('#st-save').onclick=async()=>{const m=$('#st-msg');const patch={watchTeams:$('
 $('#st-signout').onclick=()=>{if(window.PB&&PB.signOut)PB.signOut()};
 setInterval(()=>{if(curTab==='home'||curTab==='match')studioShow(curTab,true)},60000);
 
-showTab((location.hash||'#home').slice(1).split('/')[0],true);
