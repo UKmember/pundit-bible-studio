@@ -2,6 +2,10 @@
 import fs from "node:fs";
 import crypto from "node:crypto";
 import { need, mgmt, db, SB_URL, keys } from "./lib.mjs";
+// every GitHub secret and variable, so new keys work without editing the workflow file
+for (const src of [process.env.ALL_SECRETS, process.env.ALL_VARS]) {
+  try { for (const [k, v] of Object.entries(JSON.parse(src || "{}"))) if (!process.env[k] && typeof v === "string" && v) process.env[k] = v; } catch { /* ignore */ }
+}
 need("SUPABASE_PROJECT_REF", "SUPABASE_ACCESS_TOKEN");
 const REF = process.env.SUPABASE_PROJECT_REF;
 
@@ -30,6 +34,8 @@ if (process.env.MONTHLY_BUDGET_GBP) secrets.push({ name: "MONTHLY_BUDGET_GBP", v
 if (process.env.CLAUDE_MODEL) secrets.push({ name: "CLAUDE_MODEL", value: process.env.CLAUDE_MODEL });
 if (process.env.FOOTBALL_DATA_KEY) secrets.push({ name: "FOOTBALL_DATA_KEY", value: process.env.FOOTBALL_DATA_KEY });
 if (process.env.HIGGSFIELD_KEY) secrets.push({ name: "HIGGSFIELD_KEY", value: process.env.HIGGSFIELD_KEY.trim() });
+if (process.env.OPUSCLIP_KEY) secrets.push({ name: "OPUS_KEY", value: process.env.OPUSCLIP_KEY.trim() });
+for (const k of ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "META_APP_ID", "META_APP_SECRET"]) if (process.env[k]) secrets.push({ name: k, value: process.env[k].trim() });
 if (process.env.HF_BUDGET_GBP) secrets.push({ name: "HF_BUDGET_GBP", value: process.env.HF_BUDGET_GBP });
 if (process.env.OWNER_EMAIL) secrets.push({ name: "VAPID_SUBJECT", value: "mailto:" + process.env.OWNER_EMAIL });
 // phone alert keys: made once, the public half is stored for the app

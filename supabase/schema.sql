@@ -71,3 +71,7 @@ grant execute on function public.add_usage(numeric, text) to service_role;
 -- Scheduled every minute by set-up: live scores, goal alerts, posting reminders, automatic match posts.
 create extension if not exists pg_cron;
 create extension if not exists pg_net;
+
+-- Private sign-in keys (YouTube / Facebook). No policies: only the server functions can read it.
+create table if not exists public.private_kv (k text primary key, v jsonb, updated_at timestamptz default now());
+alter table public.private_kv enable row level security;

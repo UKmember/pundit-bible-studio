@@ -11,3 +11,9 @@ verify_jwt = false
 
 [functions.higgsfield]
 verify_jwt = false
+
+[functions.opus]
+verify_jwt = false
+
+[functions.earnings]
+verify_jwt = false

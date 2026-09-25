@@ -125,10 +125,37 @@
     if(data&&data.code)throw new Error(data.message||data.code);return data}
   window.PB.higgsfield={
     async video({image,prompt,negative,duration,post}){return hf({action:'video',image:await b64(image),prompt,negative,duration,post})},
-    async image({prompt,aspect}){return hf({action:'image',prompt,aspect})},
+    async image({prompt,aspect,post}){return hf({action:'image',prompt,aspect,post})},
     async status(id){return hf({action:'status',id})},
     async wait(id,onTick){const t0=Date.now();for(;;){await new Promise(r=>setTimeout(r,6000));const s=await hf({action:'status',id});onTick&&onTick(s,Math.round((Date.now()-t0)/1000));
       if(s.status==='completed'||s.status==='blocked'||s.status==='failed'||s.status==='canceled')return s;if(Date.now()-t0>12*60000)return {status:'failed',message:'Still not finished after 12 minutes. Check again later.'}}}};
+
+  // ---------- OpusClip (clips from your long videos, ranking, scheduling) ----------
+  async function op(body){await ready;const {data,error}=await sb.functions.invoke('opus',{body});
+    if(error){let m=error.message;try{const j=await error.context.json();m=j.message||m}catch(e){}throw new Error(m)}
+    if(data&&data.code)throw new Error(data.message||data.code);return data}
+  window.PB.opus={
+    create:(o)=>op({action:'create',...o}),
+    import:(link,title)=>op({action:'import',link,title}),
+    check:(id,rerank)=>op({action:'check',id,rerank:!!rerank}),
+    plan:()=>op({action:'plan'}),
+    accounts:()=>op({action:'accounts'}),
+    templates:()=>op({action:'templates'}),
+    schedule:(clip,at,targets)=>op({action:'schedule',clip,at:at||null,targets}),
+    cancel:(clip)=>op({action:'cancel',clip}),
+    async file(clip){await ready;const {data,error}=await sb.functions.invoke('opus',{body:{action:'file',clip}});
+      if(error){let m=error.message;try{const j=await error.context.json();m=j.message||m}catch(e){}throw new Error(m)}
+      if(!(data instanceof Blob))throw new Error((data&&data.message)||'Couldn’t fetch the video.');return data}};
+
+  // ---------- earnings (YouTube + Facebook) ----------
+  async function earn(body){await ready;const {data,error}=await sb.functions.invoke('earnings',{body});
+    if(error){let m=error.message;try{const j=await error.context.json();m=j.message||m}catch(e){}throw new Error(m)}
+    if(data&&data.code)throw new Error(data.message||data.code);return data}
+  window.PB.earnings={
+    async connect(provider){const r=await earn({action:'start',provider,back:location.origin+location.pathname});location.href=r.url},
+    sync:(days)=>earn({action:'sync',days}),
+    page:(id)=>earn({action:'page',id}),
+    disconnect:(provider)=>earn({action:'disconnect',provider})};
 
   // ---------- phone alerts (web push) ----------
   const u8=b=>{const p='='.repeat((4-b.length%4)%4);const s=atob((b+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from([...s].map(c=>c.charCodeAt(0)))};
@@ -142,7 +169,7 @@
       const perm=await Notification.requestPermission();if(perm!=='granted')throw new Error('Notifications were not allowed. You can allow them in your phone’s settings.');
       const reg=await navigator.serviceWorker.ready;let s=await reg.pushManager.getSubscription();if(!s)s=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:u8(key)});
       const j=s.toJSON();await sb.from('docs').upsert({collection:'push',id:await subId(s),data:{sub:j,ua:navigator.userAgent.slice(0,120),at:new Date().toISOString()}},{onConflict:'collection,id'});return true},
-    async test(){await ready;const {data,error}=await sb.functions.invoke('tick',{body:{action:'test'}});if(error)throw new Error('Test failed');return data}};
+    async test(delay){await ready;const {data,error}=await sb.functions.invoke('tick',{body:{action:'test',delay:delay||0}});if(error)throw new Error('Test failed');return data}};
   window.PB.config=C;
   const caps={db,assets,downloads,sample};
   window.claude={use:async name=>{await ready;return caps[name]||null}};

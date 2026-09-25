@@ -107,6 +107,58 @@ After that, each post gets a **Make video with Higgsfield** button (in step 5) a
 - **Monthly cap:** £5 by default. To change it, add a Variable `HF_BUDGET_GBP` (e.g. `10`), then re-run **1. Set up** and **2. Deploy app**.
 - **AI label:** when you post a Higgsfield video, switch on the platform's "AI-generated" label (TikTok, Instagram and YouTube all ask for it).
 
+## Step 9: OpusClip (your clips, ranked and planned)
+
+You need an OpusClip plan with the API (Pro, Max or Business). Do the one-off `setup.yml` change at the start of step 10 first.
+
+1. On **clip.opus.pro**, open your dashboard. In the bottom-left corner, open the **API key** option, create a key and copy it.
+2. Still on OpusClip, open **Social accounts** and connect Facebook, Instagram, TikTok and YouTube. The Studio posts through these connections.
+3. GitHub → Settings → Secrets → **New repository secret**: name `OPUSCLIP_KEY`, value = the key.
+4. Actions → **1. Set up** → Run workflow, then **2. Deploy app** → Run workflow.
+
+In the app, open **Clips**:
+- **Paste a YouTube link** and tap **Make clips**. OpusClip cuts it, as it does on the website, using the same credits (about 1 per minute of video; the API needs at least 10 per video).
+- When the clips are done (usually 10–30 minutes) you get an alert. By then Claude has read what’s said in each one and scored every clip out of 100 for likely views. Each clip also gets a title and captions for Facebook, Instagram, TikTok and YouTube (with the right hashtags for each).
+- The best clips go into the **posting plan**: 3 a day by default (12:00, 17:30, 20:30), with the strongest one each day in the evening slot. Clips tied to a big game go the day before it. The rest wait in reserve.
+- **Schedule the next 3 days** sends them to OpusClip, which posts each one at its time. Or open any clip to edit its captions, move it, post it now, or save the video to your phone.
+- Made clips on the OpusClip website? Paste the project link under **Bring them in**.
+- The plan settings (times, days ahead, which accounts, brand template) are at the bottom of the Clips page.
+
+**Costs:** ranking a video's clips costs about 3–5p of Claude. OpusClip may charge 1 credit per post it publishes for you.
+
+## Step 10: Earnings (YouTube and Facebook, in pounds)
+
+First, a one-off change on GitHub so new keys never need the workflow file edited again. Open `.github/workflows/setup.yml`, click the pencil, replace everything with the contents of `setup.yml.txt` (in the zip), then **Commit changes**.
+
+You'll need your Supabase project ref (step 1) for this web address, used twice below:
+`https://YOURREF.supabase.co/functions/v1/earnings`
+
+### YouTube (Google Cloud, free)
+1. Go to **console.cloud.google.com**, sign in with the Google account that owns the channel, and create a project called `Pundit Bible Studio`.
+2. **APIs & Services → Library**: search for and **Enable** both **YouTube Analytics API** and **YouTube Data API v3**.
+3. **Google Auth Platform → Get started**. App name `Pundit Bible Studio`, your email as support email, Audience **External**, your email as contact → **Create**.
+4. **Audience → Publish app → Confirm** (status "In production"). Don't skip this: in "Testing", Google disconnects you every 7 days.
+5. **Clients → Create client** → type **Web application** → under *Authorised redirect URIs* click **Add URI** and paste the web address above → **Create**. Copy the **Client ID** and **Client secret**.
+6. GitHub → Settings → Secrets → add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+
+### Facebook (Meta for Developers, free)
+1. Go to **developers.facebook.com** → **My Apps → Create app**. Name it `Pundit Bible Studio`. For the use case choose **Manage everything on your Page**, then finish creating it.
+2. In the app: **Use cases → Manage everything on your Page → Customise**. Make sure **pages_show_list**, **pages_read_engagement** and **read_insights** are added.
+3. **Facebook Login → Settings** (under Use cases or Products): paste the web address above into **Valid OAuth Redirect URIs** → **Save changes**.
+4. **App settings → Basic**: copy the **App ID** and **App secret** (click Show).
+5. GitHub → Settings → Secrets → add `META_APP_ID` and `META_APP_SECRET`.
+
+Leave the app in **Development** mode. You're its admin, so it can read your own page without Meta's review.
+
+### Switch it on
+1. Actions → **1. Set up** → Run workflow, then **2. Deploy app** → Run workflow.
+2. In the Studio, open **Earnings** → **Connect YouTube**. Choose the account that owns the channel; if it's a Brand Account, pick the channel. Google shows "Google hasn't verified this app": tap **Advanced → Go to Pundit Bible Studio**, then allow access. (It's your own app, so this is expected.)
+3. **Connect Facebook**. When asked, tick the **Pundit Bible** page and allow access.
+
+The last 90 days load straight away. After that the figures refresh by themselves at about 7am, 1pm and 7pm.
+- **YouTube** is YouTube's estimated revenue, already in pounds. It runs 2–3 days behind, like YouTube Studio.
+- **Facebook** is your Content Monetization earnings in US dollars, converted to pounds at each day's exchange rate (European Central Bank rates; weekends use Friday's). Meta sometimes adjusts recent days, and the Studio picks up those changes.
+
 ## When things run
 
 | What | When (UK) |

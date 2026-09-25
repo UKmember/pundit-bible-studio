@@ -152,9 +152,11 @@ Deno.serve(async (req) => {
     const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
     const { data: u } = await sb.auth.getUser(token);
     if (!u || !u.user) return json({ message: "Not allowed" }, 401);
-    if (body.action === "test") { const n = await push("Pundit Bible Studio", "Alerts are working ✅", "./#home", "test"); return json({ sent: n, ready: initPush() }); }
+    if (body.action === "test") { await new Promise((r) => setTimeout(r, Math.min(Number(body.delay) || 0, 30000))); const n = await push("Pundit Bible Studio", "Alerts are working ✅", "./#home", "test"); return json({ sent: n, ready: initPush() }); }
     return json({ message: "Unknown action" }, 400);
   }
+  // other functions (OpusClip) send phone alerts through here, so the alert keys live in one place
+  if (body.action === "push") return json({ sent: await push(String(body.title || "Pundit Bible Studio"), String(body.body || ""), String(body.url || "./#home"), body.tag ? String(body.tag) : undefined) });
 
   fdCalls = 0;
   const now = new Date(); const log: string[] = [];
@@ -294,8 +296,61 @@ Deno.serve(async (req) => {
     } catch (e) { log.push("football: " + e); }
   }
 
+  // Higgsfield jobs you left running: bring the result into the post and let you know
+  if (env("HIGGSFIELD_KEY")) {
+    try {
+      const jobs = await list("hfjobs");
+      for (const [id, job] of Object.entries(jobs)) {
+        if (job.file || ["blocked", "failed", "canceled", "completed"].includes(job.status)) continue;
+        const age = now.getTime() - Date.parse(job.at || 0);
+        if (age > 24 * 3600e3) { await merge("hfjobs", id, { status: "failed", error: "timed out" }); continue; }
+        if (now.getTime() - Date.parse(job.lastPoll || job.at || 0) < 45000) continue; // the app is watching it
+        const H = { Authorization: `Key ${env("HIGGSFIELD_KEY")}` };
+        const s = await (await fetch(job.statusUrl || `https://api.higgsfield.ai/requests/${id}/status`, { headers: H })).json();
+        const postPatch = (p: Any) => job.post ? merge("posts", String(job.post), p) : Promise.resolve();
+        if (s.status === "completed") {
+          const url = job.kind === "video" ? s.video && s.video.url : s.images && s.images[0] && s.images[0].url;
+          if (!url) continue;
+          const f = await fetch(url); const bytes = new Uint8Array(await f.arrayBuffer());
+          const ext = job.kind === "video" ? "mp4" : (/png/.test(f.headers.get("content-type") || "") ? "png" : "jpg");
+          const file = `ai/${id}.${ext}`;
+          const up = await sb.storage.from("photos").upload(file, bytes, { contentType: job.kind === "video" ? "video/mp4" : (ext === "png" ? "image/png" : "image/jpeg"), upsert: true });
+          if (up.error) continue;
+          const fresh = await get("hfjobs", id); if (fresh && fresh.file) continue; // the app got there first
+          await sb.rpc("add_usage", { p_usd: Number(job.usd || 0), p_doc: "hfusage" });
+          await merge("hfjobs", id, { status: "completed", file });
+          await postPatch(job.kind === "video" ? { hfVideo: { file, at: now.toISOString() }, hfPending: null } : { bg: { file }, hfPending: null });
+          await push(job.kind === "video" ? "🎬 Your Kling video is ready" : "🖼️ Your AI background is ready", "Tap to open the post.", job.post ? `./#post/${job.post}` : "./#posts", "hf-" + id);
+          log.push("higgsfield done " + id);
+        } else if (["nsfw", "failed", "canceled"].includes(s.status)) {
+          await merge("hfjobs", id, { status: s.status === "nsfw" ? "blocked" : s.status, error: s.error || "" });
+          await postPatch({ hfPending: null, hfError: s.status === "nsfw" ? "Higgsfield's safety filter blocked this one. You weren't charged." : "It didn't work this time. You weren't charged." });
+          await push("Higgsfield couldn't make that one", s.status === "nsfw" ? "Blocked by the safety filter (you weren't charged)." : "It failed (you weren't charged).", job.post ? `./#post/${job.post}` : "./#posts", "hf-" + id);
+        }
+      }
+    } catch (e) { log.push("higgsfield: " + e); }
+  }
+
+  // earnings: refresh YouTube + Facebook figures at about 7am, 1pm and 7pm
+  if ((env("GOOGLE_CLIENT_ID") || env("META_APP_ID")) && [7, 13, 19].includes(ukHour(now)) && now.getTime() - (state.lastEarnings || 0) > 3 * 3600e3) {
+    state.lastEarnings = now.getTime();
+    const p = fetch(`${env("SUPABASE_URL")}/functions/v1/earnings`, { method: "POST", headers: { "Content-Type": "application/json", "x-cron-secret": env("CRON_SECRET") }, body: JSON.stringify({ action: "sync" }) }).then((r) => r.text()).catch((e) => console.log("earnings", String(e)));
+    // deno-lint-ignore no-explicit-any
+    const ER = (globalThis as any).EdgeRuntime; if (ER && ER.waitUntil) ER.waitUntil(p); else await p;
+    log.push("earnings sync");
+  }
+
+  // OpusClip: finish new clip sets, send clip reminders (runs in its own function so it can take its time)
+  if (env("OPUS_KEY")) {
+    const p = fetch(`${env("SUPABASE_URL")}/functions/v1/opus`, { method: "POST", headers: { "Content-Type": "application/json", "x-cron-secret": env("CRON_SECRET") }, body: JSON.stringify({ action: "poll" }) })
+      .then((r) => r.text()).catch((e) => console.log("opus poll", String(e)));
+    // deno-lint-ignore no-explicit-any
+    const ER = (globalThis as any).EdgeRuntime;
+    if (ER && ER.waitUntil) ER.waitUntil(p); else await p;
+  }
+
   if (now.getTime() - (state.lastSystem || 0) > 10 * 60000) {
-    await set("meta", "system", { lastTick: now.toISOString(), claude: !!env("ANTHROPIC_API_KEY"), football: !!env("FOOTBALL_DATA_KEY"), higgsfield: !!env("HIGGSFIELD_KEY"), push: !!(env("VAPID_PUBLIC") && env("VAPID_PRIVATE")), scan: !!env("GH_TOKEN") });
+    await set("meta", "system", { lastTick: now.toISOString(), claude: !!env("ANTHROPIC_API_KEY"), football: !!env("FOOTBALL_DATA_KEY"), higgsfield: !!env("HIGGSFIELD_KEY"), opus: !!env("OPUS_KEY"), push: !!(env("VAPID_PUBLIC") && env("VAPID_PRIVATE")), scan: !!env("GH_TOKEN") });
     state.lastSystem = now.getTime();
   }
   await set("meta", "football", state);

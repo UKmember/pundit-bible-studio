@@ -60,6 +60,7 @@ Deno.serve(async (req) => {
       if (r.status === 403) return json({ code: "no_credit", message: "Your Higgsfield API balance is empty. Top it up at open.higgsfield.ai." });
       if (!r.ok || !sub.request_id) return json({ code: "error", message: `Higgsfield said no (${r.status}): ${JSON.stringify(sub).slice(0, 200)}` }, 502);
       await sb.from("docs").upsert({ collection: "hfjobs", id: sub.request_id, data: { kind: body.action, model, usd, post: body.post || null, status: "queued", at: new Date().toISOString(), statusUrl: sub.status_url } }, { onConflict: "collection,id" });
+      if (body.post) await sb.rpc("doc_merge", { p_collection: "posts", p_id: String(body.post), p_patch: { hfPending: { id: sub.request_id, kind: body.action, at: new Date().toISOString() } } });
       return json({ id: sub.request_id, usd });
     }
 
@@ -69,6 +70,7 @@ Deno.serve(async (req) => {
       const job = row.data;
       if (job.file) return json({ status: "completed", file: job.file });
       if (["blocked", "failed", "canceled"].includes(job.status)) return json({ status: job.status, message: job.error || "" });
+      await sb.rpc("doc_merge", { p_collection: "hfjobs", p_id: String(body.id), p_patch: { lastPoll: new Date().toISOString() } });
       const s = await (await fetch(job.statusUrl || `${API}/requests/${body.id}/status`, { headers: H() })).json();
       if (s.status === "completed") {
         const url = job.kind === "video" ? s.video && s.video.url : s.images && s.images[0] && s.images[0].url;
@@ -80,14 +82,17 @@ Deno.serve(async (req) => {
         if (upl.error) return json({ status: "failed", message: "Couldn't save the result: " + upl.error.message });
         await sb.rpc("add_usage", { p_usd: Number(job.usd || 0), p_doc: "hfusage" });
         await sb.rpc("doc_merge", { p_collection: "hfjobs", p_id: String(body.id), p_patch: { status: "completed", file } });
+        if (job.post) await sb.rpc("doc_merge", { p_collection: "posts", p_id: String(job.post), p_patch: job.kind === "video" ? { hfVideo: { file, at: new Date().toISOString() }, hfPending: null } : { bg: { file }, hfPending: null } });
         return json({ status: "completed", file });
       }
       if (s.status === "nsfw") {
         await sb.rpc("doc_merge", { p_collection: "hfjobs", p_id: String(body.id), p_patch: { status: "blocked" } });
+        if (job.post) await sb.rpc("doc_merge", { p_collection: "posts", p_id: String(job.post), p_patch: { hfPending: null } });
         return json({ status: "blocked", message: "Higgsfield's safety filter blocked this one (often because of a real person's face). You weren't charged." });
       }
       if (s.status === "failed" || s.status === "canceled") {
         await sb.rpc("doc_merge", { p_collection: "hfjobs", p_id: String(body.id), p_patch: { status: s.status, error: s.error || "" } });
+        if (job.post) await sb.rpc("doc_merge", { p_collection: "posts", p_id: String(job.post), p_patch: { hfPending: null } });
         return json({ status: s.status, message: s.error || "It didn't work this time. You weren't charged." });
       }
       return json({ status: s.status || "queued" });
