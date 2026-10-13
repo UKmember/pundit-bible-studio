@@ -2,6 +2,10 @@
 // ---------- state ----------
 let db=null,assets=null,downloads=null,sample=null,canSeeImages=false;
 let posts={},order=[],filter='todo',meta=null,settings={affiliateLink:'https://tolt.link/punditbible'};
+// Crash guard: if the last visit died within 20 seconds (iPhone Safari "A problem repeatedly occurred"), open on Home instead of Posts.
+(function(){try{const k='pb_boot',prev=+localStorage.getItem(k)||0;localStorage.setItem(k,String(Date.now()));
+  if(prev&&Date.now()-prev<120000&&/^#posts/.test(location.hash)){history.replaceState(null,'','#home')}
+  const clear=()=>{try{localStorage.removeItem(k)}catch(e){}};setTimeout(clear,20000);addEventListener('pagehide',clear)}catch(e){}})();
 const imgCache={},localImg={},localBlob={},nodes={},view={};
 const $=s=>document.querySelector(s);
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -10,11 +14,35 @@ const SLOTS=p=>(p.template==='split'||p.template==='h2h'||IG_CIRCLE[p.template])
 const searchFor=(p,k)=>k==='photo2'?(p.photoSearch2||{term:(p.fields&&p.fields.bName)||''}):(p.photoSearch||{term:p.title||''});
 const slotLabel=(p,k)=>IG_CIRCLE[p.template]?(k==='photo'?'Main photo':'Circle photo (optional: a second player, the manager or the crowd)'):(p.template==='split'||p.template==='h2h')?(k==='photo'?'A: '+((p.fields&&p.fields.aName)||'left'):'B: '+((p.fields&&p.fields.bName)||'right')):'';
 
-async function decode(blob){
+// Photos are shrunk to MAXPX on the long edge as soon as they're opened. A 12MP iPhone photo is ~48MB once decoded;
+// keeping dozens of those (plus a big canvas per post) is what made iPhone Safari crash on the Posts page.
+const MAXPX=1600;
+async function decodeRaw(blob){
   try{return await createImageBitmap(blob)}catch(e){}
-  return await new Promise((res,rej)=>{const u=URL.createObjectURL(blob);const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(new Error('decode'));im.src=u});
+  return await new Promise((res,rej)=>{const u=URL.createObjectURL(blob);const im=new Image();im.onload=()=>res(im);im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('decode'))};im.src=u});
 }
-function loadImgById(id){if(!imgCache[id])imgCache[id]=fetch('/_blob/'+id).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(decode).catch(()=>null);return imgCache[id]}
+async function decode(blob){
+  const im=await decodeRaw(blob);const w=im.width,h=im.height,s=MAXPX/Math.max(w,h);
+  if(!(s<1))return im;
+  const c=document.createElement('canvas');c.width=Math.round(w*s);c.height=Math.round(h*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+  try{if(im.close)im.close();else if(im.src&&im.src.startsWith('blob:'))URL.revokeObjectURL(im.src)}catch(e){}
+  try{const alpha=!/jpe?g|heic|heif/i.test(blob.type||'');const b=await toBlob(c,alpha?'image/png':'image/jpeg',.92);
+    if(b&&window.createImageBitmap){const bm=await createImageBitmap(b);c.width=c.height=1;return bm}}catch(e){}
+  return c}
+const imgOrder=[];
+function loadImgById(id){if(!imgCache[id]){imgCache[id]=fetch('/_blob/'+id).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(decode).catch(()=>null);imgOrder.push(id);
+    while(imgOrder.length>14){const old=imgOrder.shift();delete imgCache[old]}}
+  return imgCache[id]}
+// Posts are only drawn while on (or near) the screen; their big canvases and photo previews are released when scrolled away.
+const LAZY=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{const el=e.target;el._vis=e.isIntersecting&&el.isConnected;
+    if(el._vis){showThumbs(el);if(el._dirty){el._dirty=false;el._redraw&&el._redraw()}el._autoPhoto&&el._autoPhoto()}else freeNode(el)}),{rootMargin:'900px 0px'}):null;
+function freeNode(el){if(!LAZY)return;el.querySelectorAll('canvas').forEach(c=>{if(c.width>1){c.style.aspectRatio=c.width+' / '+c.height;c.width=1;c.height=1;el._dirty=true}});
+  el.querySelectorAll('img.thumb').forEach(th=>{if(th._url){URL.revokeObjectURL(th._url);th._url=null;th.removeAttribute('src')}})}
+function setThumb(th,src){th._src=src;th.hidden=false;if(th._url){URL.revokeObjectURL(th._url);th._url=null;th.removeAttribute('src')}const el=th.closest('.post');if(!LAZY||!el||el._vis)loadThumb(th)}
+async function loadThumb(th){const src=th._src;if(!src||th._url)return;let b=src;
+  if(typeof src==='string'){try{const r=await fetch('/_blob/'+src);b=r.ok?await r.blob():null}catch(e){b=null}}
+  if(!b||th._src!==src||th._url)return;th._url=URL.createObjectURL(b);th.src=th._url;th.hidden=false}
+function showThumbs(el){el.querySelectorAll('img.thumb').forEach(th=>{if(th._src&&!th._url)loadThumb(th)})}
 async function photosFor(id){const p=posts[id];const out={};if(!p)return out;
   for(const k of SLOTS(p)){const ph=p[k];if(!ph||!ph.ready)continue;const key=id+':'+k;if(localImg[key])out[k]=localImg[key];else if(ph.id)out[k]=await loadImgById(ph.id)}
   if(p.bg&&p.bg.file){const b=await loadImgById(p.bg.file);if(b)out.bg=b}
@@ -148,7 +176,9 @@ function buildNode(id){
   const canvas=el.querySelector('canvas'),busy=el.querySelector('.busy'),nav=el.querySelector('.slidenav');
   view[id]=view[id]||{slide:0,size:'feed'};
   const ttc=el.querySelector('.ttc');
-  el._redraw=async()=>{const p=posts[id];const imgs=await photosFor(id);const sl=slideCount(p)>1?view[id].slide:0;render(canvas,p,imgs,sl);if(!el.querySelector('.tt').hidden)renderTikTok(ttc,p,imgs,sl)};
+  el._redraw=async(force)=>{if(LAZY&&!el._vis&&!force){el._dirty=true;return}const p=posts[id];if(!p)return;const imgs=await photosFor(id);if(LAZY&&!el._vis&&!force){el._dirty=true;return}const sl=slideCount(p)>1?view[id].slide:0;render(canvas,p,imgs,sl);canvas.style.aspectRatio='';
+    if(!el.querySelector('.tt').hidden){renderTikTok(ttc,p,imgs,sl);ttc.style.aspectRatio=''}};
+  if(LAZY)LAZY.observe(el);
 
   // slide nav for carousels
   el._nav=()=>{const p=posts[id];if(slideCount(p)<2){nav.hidden=true;el.querySelector('.saveall').hidden=true;return}
@@ -163,7 +193,7 @@ function buildNode(id){
     pm.classList.remove('warn');pm.textContent='Loading photo…';
     let img;try{img=await decode(file)}catch(e){pm.textContent='That photo couldn’t be opened. Try a JPG or PNG (screenshots work too).';pm.classList.add('warn');return}
     const key=id+':'+k;localImg[key]=img;localBlob[key]=file;
-    const th=el.querySelector('.slot-'+k+' .thumb');th.src=URL.createObjectURL(file);th.hidden=false;
+    setThumb(el.querySelector('.slot-'+k+' .thumb'),file);
     const p=posts[id];p[k]={ready:false,focus:null,cut:null,zoom:1,dx:0,dy:0,id:null};
     const missing=SLOTS(p).filter(s=>!localImg[id+':'+s]&&!(p[s]&&p[s].id));
     pm.textContent=missing.length?'Photo added. Now add the other one.':'Photo added. Now press Generate.';
@@ -185,15 +215,15 @@ function buildNode(id){
     const p=posts[id];const k=SLOTS(p).find(s=>!localImg[id+':'+s])||SLOTS(p)[0];addFile(k,file);paste.textContent='';paste.blur()});
   paste.addEventListener('input',()=>{paste.textContent=''});
   async function useLib(k,item,msg){pm.textContent='Loading photo…';const img=await loadImgById(item.file);if(!img){pm.textContent='That photo couldn’t be loaded.';return false}
-      const key=id+':'+k;localImg[key]=img;delete localBlob[key];const th=el.querySelector('.slot-'+k+' .thumb');fetch('/_blob/'+item.file).then(r=>r.blob()).then(b=>{th.src=URL.createObjectURL(b);th.hidden=false}).catch(()=>{});
+      const key=id+':'+k;localImg[key]=img;delete localBlob[key];setThumb(el.querySelector('.slot-'+k+' .thumb'),item.file);
       posts[id][k]={ready:false,focus:null,cut:null,zoom:1,dx:0,dy:0,id:item.file};pm.textContent=msg||'Photo added from your library. Now press Generate.';return true}
   el.querySelector('.libpick').addEventListener('click',()=>{const p=posts[id];const k=SLOTS(p).find(s=>!localImg[id+':'+s]&&!(p[s]&&p[s].ready))||SLOTS(p)[0];
     if(typeof openLibraryPicker!=='function')return;openLibraryPicker(searchFor(p,k).term||p.title||'',item=>useLib(k,item))});
   // photo you've used before for this player? put it in straight away
-  el._autoPhoto=async()=>{const p=posts[id];if(!p||p.status==='posted'||el._autoTried)return;if(typeof libMatch!=='function'||!Object.keys(photoLib||{}).length)return;el._autoTried=true;
+  el._autoPhoto=async()=>{const p=posts[id];if(!p||p.status==='posted'||el._autoTried||(LAZY&&!el._vis))return;if(typeof libMatch!=='function'||!Object.keys(photoLib||{}).length)return;el._autoTried=true;
     for(const k of SLOTS(p)){if(localImg[id+':'+k]||(p[k]&&p[k].id))continue;if(k==='photo2'&&!(p.template==='split'||p.template==='h2h'))continue;
       const it=libMatch(searchFor(p,k).term||'');if(it)await useLib(k,it,'Using your saved photo of '+(it.who||it.name)+'. Press Generate, or pick a different photo.')}};
-  setTimeout(()=>el._autoPhoto&&el._autoPhoto(),400);
+  if(!LAZY)setTimeout(()=>el._autoPhoto&&el._autoPhoto(),400);
 
   // ---- generate ----
   const gm=el.querySelector('.gmsg');
@@ -222,8 +252,8 @@ Reply with only JSON like {"face":{"x":0.41,"y":0.12,"w":0.2,"h":0.27},"who":"Ro
     gm.classList.remove('warn');gm.textContent='';busy.hidden=false;busy.textContent=sample&&canSeeImages?'Finding the face and framing the shot…':'Designing your image…';
     const notes=[];
     await Promise.all(Object.keys(imgs).map(async k=>{const r=await frame(k,imgs[k]);p[k]=r.photo;localImg[id+':'+k]=imgs[k];if(r.note)notes.push(r.note)}));
-    el._sliders();view[id].slide=0;el._nav();await el._redraw();busy.hidden=true;
-    el.querySelector('.after').hidden=false;el.querySelector('.tt').hidden=false;el.querySelector('.kl').hidden=false;el.querySelector('.pk').hidden=false;el._pkShow();if(!posts[id].vid)el._fillTT(true);await el._redraw();gm.textContent=notes.join(' ')||'Done. Save it, or try another colour.';gm.classList.toggle('warn',notes.length>0);
+    el._sliders();view[id].slide=0;el._nav();await el._redraw(true);busy.hidden=true;
+    el.querySelector('.after').hidden=false;el.querySelector('.tt').hidden=false;el.querySelector('.kl').hidden=false;el.querySelector('.pk').hidden=false;el._pkShow();if(!posts[id].vid)el._fillTT(true);await el._redraw(true);gm.textContent=notes.join(' ')||'Done. Save it, or try another colour.';gm.classList.toggle('warn',notes.length>0);
     const patch={};
     for(const k of Object.keys(imgs)){const ph=p[k];const key=id+':'+k;
       if(!ph.id&&assets&&localBlob[key]){try{const up=await shrinkBlob(imgs[k],1800,ph.cut?'image/png':'image/jpeg');const r=await assets.upload(up);ph.id=r.id;imgCache[r.id]=Promise.resolve(imgs[k]);try{db.doc('photos/'+String(r.id).replace(/[^A-Za-z0-9_.-]/g,'_')).set({file:r.id,name:searchFor(p,k).term||p.title||'',who:ph.who||'',post:id,cut:!!ph.cut,at:new Date().toISOString()})}catch(e){}}catch(e){pm.textContent='The image works, but the photo wasn’t saved to the app ('+(e.code||'error')+'), so add it again next time.'}}
@@ -236,7 +266,7 @@ Reply with only JSON like {"face":{"x":0.41,"y":0.12,"w":0.2,"h":0.27},"who":"Ro
   el.querySelector('.bggo').addEventListener('click',async()=>{const m=el.querySelector('.bgmsg'),b=el.querySelector('.bggo');b.disabled=true;m.classList.remove('warn');
     try{m.textContent='Making your background…';const job=await window.PB.higgsfield.image({prompt:el.querySelector('.bgp').value,aspect:'4:5',post:id});
       const s=await window.PB.higgsfield.wait(job.id,(st,sec)=>{m.textContent='Making your background… '+sec+'s'});
-      if(s.status==='completed'){posts[id].bg={file:s.file};await save(id,{bg:posts[id].bg});await el._redraw();m.textContent='Done.'}else{m.textContent=s.message||'It didn’t work.';m.classList.add('warn')}}
+      if(s.status==='completed'){posts[id].bg={file:s.file};await save(id,{bg:posts[id].bg});await el._redraw(true);m.textContent='Done.'}else{m.textContent=s.message||'It didn’t work.';m.classList.add('warn')}}
     catch(e){m.textContent=e.message;m.classList.add('warn')}b.disabled=false});
   el.querySelector('.bgoff').addEventListener('click',async()=>{posts[id].bg=null;await save(id,{bg:null});el._redraw()});
 
@@ -250,10 +280,10 @@ Reply with only JSON like {"face":{"x":0.41,"y":0.12,"w":0.2,"h":0.27},"who":"Ro
       w.appendChild(box)})};
   el.querySelectorAll('.sizes button').forEach(b=>b.addEventListener('click',()=>{view[id].size=b.dataset.size;el.querySelectorAll('.sizes button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}));
   el.querySelector('.look').addEventListener('click',()=>{const p=posts[id];const i=THEME_ORDER.indexOf(p.theme);p.theme=THEME_ORDER[(i+1)%THEME_ORDER.length];el._redraw();save(id,{theme:p.theme})});
-  el.querySelector('.save').addEventListener('click',async()=>{await el._redraw();const p=posts[id];const s=view[id].size;
+  el.querySelector('.save').addEventListener('click',async()=>{await el._redraw(true);const p=posts[id];const s=view[id].size;
     const name='pundit-bible-'+id+(slideCount(p)>1?'-'+(view[id].slide+1):'')+(s==='feed'?'':'-'+s)+'.jpg';
     await saveCanvas(exportCanvas(canvas,s),name,gm)});
-  el.querySelector('.qpost').addEventListener('click',async()=>{await el._redraw();const b=await toBlob(exportCanvas(canvas,'feed'),'image/jpeg',.92);openQuickPost({blob:b,post:id})});
+  el.querySelector('.qpost').addEventListener('click',async()=>{await el._redraw(true);const b=await toBlob(exportCanvas(canvas,'feed'),'image/jpeg',.92);openQuickPost({blob:b,post:id})});
   el.querySelector('.saveall').addEventListener('click',async()=>{const p=posts[id];const n=slideCount(p);const imgs=await photosFor(id);const s=view[id].size;
     for(let i=0;i<n;i++){const c=document.createElement('canvas');render(c,p,imgs,i);gm.textContent='Saving slide '+(i+1)+' of '+n+'…';const ok=await saveCanvas(exportCanvas(c,s),'pundit-bible-'+id+'-'+(i+1)+(s==='feed'?'':'-'+s)+'.jpg',null);if(!ok)break}
     gm.textContent=p.template==='guess'?'Done. Post the quiz now and the answer slide tomorrow.':'Done. Upload them to Facebook in order as one post.';render(canvas,p,imgs,view[id].slide)});
@@ -480,7 +510,7 @@ function fillNode(el,id){
     f.querySelector('.q').textContent=term;f.querySelector('.g').href='https://www.google.com/search?tbm=isch&tbs=isz:l&q='+encodeURIComponent(term);
     f.querySelector('.w').href='https://commons.wikimedia.org/w/index.php?search='+encodeURIComponent(term)+'&title=Special:MediaSearch&type=image';
     f.querySelector('.hint2').textContent=s.tip||'';
-    const th=el.querySelector('.slot-'+k+' .thumb');if(p[k]&&p[k].id&&!localImg[id+':'+k]){fetch('/_blob/'+p[k].id).then(r=>r.ok?r.blob():null).then(b=>{if(b){th.src=URL.createObjectURL(b);th.hidden=false}}).catch(()=>{})}});
+    const th=el.querySelector('.slot-'+k+' .thumb');if(p[k]&&p[k].id&&!localImg[id+':'+k]&&th._src!==p[k].id)setThumb(th,p[k].id)});
   const ready=SLOTS(p).some(k=>p[k]&&p[k].ready&&(p[k].id||localImg[id+':'+k]))||['carousel','goal','result','h2h'].includes(p.template);
   el.querySelector('.after').hidden=!ready;el.querySelector('.tt').hidden=!ready;el.querySelector('.kl').hidden=!ready;el.querySelector('.pk').hidden=!ready;
   el.querySelector('.mark').textContent=p.status==='posted'?'Move back to To post':'Mark as posted';
@@ -497,13 +527,23 @@ function fillNode(el,id){
 function renderList(){
   const list=$('#list');
   const ids=order.filter(id=>filter==='all'||(filter==='posted'?posts[id].status==='posted':posts[id].status!=='posted'));
+  // Only the newest PAGE posts are built; older ones wait behind "Show more". Each post card is heavy, and
+  // drawing hundreds of them at once is what crashed iPhone Safari.
+  for(const w of wantShown){const i=ids.indexOf(w);if(i>=shownN)shownN=Math.ceil((i+1)/PAGE)*PAGE}
+  const shown=ids.slice(0,shownN);
+  const keep=new Set(shown);for(const id in nodes){if(!keep.has(id)){freeNode(nodes[id]);if(LAZY)LAZY.unobserve(nodes[id]);delete nodes[id]}}
   list.innerHTML='';
   if(!ids.length){list.innerHTML='<p class="empty">'+(order.length?(filter==='posted'?'Nothing marked as posted yet.':'All caught up. New posts arrive with the next news check, or make one in the Create tab.'):'No posts yet.')+'</p>';return}
   let last=null;
-  for(const id of ids){const p=posts[id];
+  for(const id of shown){const p=posts[id];
     if(p.batchLabel!==last){const h=document.createElement('div');h.className='batch';h.textContent=p.batchLabel||'Posts';list.appendChild(h);last=p.batchLabel}
-    if(!nodes[id]||nodes[id]._tpl!==p.template){nodes[id]=buildNode(id);nodes[id]._tpl=p.template}list.appendChild(nodes[id]);fillNode(nodes[id],id)}
+    if(!nodes[id]||nodes[id]._tpl!==p.template){if(nodes[id]&&LAZY)LAZY.unobserve(nodes[id]);nodes[id]=buildNode(id);nodes[id]._tpl=p.template}list.appendChild(nodes[id]);fillNode(nodes[id],id)}
+  if(ids.length>shown.length){const b=document.createElement('button');b.type='button';b.className='ghost';b.style.cssText='width:100%;margin:8px 0 24px';
+    const more=Math.min(PAGE,ids.length-shown.length);b.textContent='Show '+more+' older post'+(more===1?'':'s')+' ('+(ids.length-shown.length)+' left)';
+    b.onclick=()=>{shownN+=PAGE;renderList()};list.appendChild(b)}
 }
+const PAGE=10;let shownN=PAGE;const wantShown=new Set();
+function showPostNode(id){wantShown.add(id);renderList();wantShown.delete(id);return nodes[id]}
 function showModal(url){const m=document.createElement('div');m.className='modal';m.innerHTML='<div><img alt="Finished post image"><p>Press and hold (phone) or right-click (computer) to save the image. Tap anywhere to close.</p></div>';m.querySelector('img').src=url;m.addEventListener('click',()=>m.remove());document.body.appendChild(m)}
 function fmtTime(iso){try{return new Date(iso).toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return iso}}
 function setStatus(extra){
@@ -531,7 +571,7 @@ async function createPost(doc,msgEl){
   if(full.caption){try{full.caption=stripTags(full.caption)+'\n\n'+tagsFor(full,'facebook').join(' ')}catch(e){}}
   try{await db.doc('posts/'+id).set(full);msgEl.textContent='Done. It’s at the top of your Posts tab.';if(['goal','result'].includes(full.template)&&settings.quickAuto!==false&&typeof autoQuick==='function')autoQuick(id);
     showTab('posts');filter='todo';document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f==='todo')));
-    setTimeout(()=>{const n=nodes[id];if(n)n.scrollIntoView({behavior:'smooth',block:'start'})},700);return id}
+    setTimeout(()=>{const n=nodes[id]||showPostNode(id);if(n)n.scrollIntoView({behavior:'smooth',block:'start'})},700);return id}
   catch(e){msgEl.textContent=e.code==='quota_exceeded'?'The app is full. Delete some old posts first.':'Could not save ('+(e.code||'error')+').';return null}
 }
 const lines=t=>String(t||'').split('\n').map(s=>s.trim()).filter(Boolean);
@@ -776,7 +816,7 @@ function showTab(t,keepHash){if(!TABS.includes(t))t='home';curTab=t;TABS.forEach
 TABS.forEach(t=>{const b=$('#tab-'+t);if(b)b.onclick=()=>showTab(t)});
 document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('[data-go]');if(g){e.preventDefault();showTab(g.dataset.go)}});
 $('#more-btn').onclick=()=>{$('#moresheet').hidden=!$('#moresheet').hidden};$('#moresheet').addEventListener('click',e=>{if(e.target.id==='moresheet')$('#moresheet').hidden=true});
-document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderList()});
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{filter=b.dataset.f;shownN=PAGE;document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderList()});
 $('#refresh').onclick=async()=>{
   const b=$('#refresh');if(!db){$('#status').textContent='Posts only load inside Claude.';return}
   b.disabled=true;b.textContent='Checking…';

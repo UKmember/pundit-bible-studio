@@ -383,6 +383,15 @@ Deno.serve(async (req) => {
     if (ER && ER.waitUntil) ER.waitUntil(p); else await p;
   }
 
+  // nightly tidy-up so the app doesn't load months of old news every time it opens (posts are never deleted)
+  if (ukHour(now) === 3 && now.getTime() - (state.lastTidy || 0) > 20 * 3600e3) {
+    state.lastTidy = now.getTime();
+    for (const [c, days] of [["breaking", 7], ["hashtags", 7], ["watch", 14], ["social", 30]] as [string, number][]) {
+      const { error } = await sb.from("docs").delete().eq("collection", c).lt("updated_at", new Date(now.getTime() - days * 864e5).toISOString());
+      log.push(`tidy ${c}${error ? " failed: " + error.message : ""}`);
+    }
+  }
+
   if (now.getTime() - (state.lastSystem || 0) > 10 * 60000) {
     await set("meta", "system", { lastTick: now.toISOString(), claude: !!env("ANTHROPIC_API_KEY"), football: !!env("FOOTBALL_DATA_KEY"), higgsfield: !!env("HIGGSFIELD_KEY"), opus: !!env("OPUS_KEY"), push: !!(env("VAPID_PUBLIC") && env("VAPID_PRIVATE")), scan: !!env("GH_TOKEN") });
     state.lastSystem = now.getTime();

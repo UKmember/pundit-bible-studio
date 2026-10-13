@@ -87,7 +87,7 @@ function openQuickPost({blob,post,title}){const p=post?posts[post]:null;const ol
   qpLoadStatus().then(()=>draw())}
 
 // after making a GOAL / half-time / full-time card: generate it and open the post screen
-function autoQuick(id){const t0=Date.now();const tick=()=>{const n=nodes[id];if(!n){if(Date.now()-t0<8000)return setTimeout(tick,300);return}
+function autoQuick(id){const t0=Date.now();const tick=()=>{const n=nodes[id]||(posts[id]&&showPostNode(id));if(!n){if(Date.now()-t0<8000)return setTimeout(tick,300);return}
     const after=n.querySelector('.after');if(!n._qpStarted){n._qpStarted=true;n.scrollIntoView({behavior:'smooth',block:'start'});n.querySelector('.gen').click()}
     if(after&&!after.hidden){setTimeout(()=>n.querySelector('.qpost').click(),400);return}
     if(Date.now()-t0<15000)setTimeout(tick,300)};setTimeout(tick,800)}

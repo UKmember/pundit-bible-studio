@@ -28,7 +28,7 @@ function monthUsage(doc){const d=metaDocs[doc];const mo=ymd(new Date()).slice(0,
 function studioBoot(){
   if(!db)return;
   const sub=(c,fn)=>db.collection(c).onSnapshot(s=>{const o={};s.docs.forEach(d=>{o[d.id]=JSON.parse(JSON.stringify(d.data()))});fn(o);studioRefresh()},()=>{});
-  sub('matches',o=>{matches=o;if(pendingHash)handleHash()});sub('tables',o=>{tablesData=o});sub('scorers',o=>{scorersData=o});sub('photos',o=>{photoLib=o;try{Object.values(nodes).forEach(n=>n._autoPhoto&&n._autoPhoto())}catch(e){}});sub('meta',o=>{metaDocs=o});sub('earnings',o=>{earnDays=o});sub('watch',o=>{watchItems=o});sub('hashtags',o=>{matchTags=o;if(typeof qpTagsChanged==='function')qpTagsChanged()});sub('clips',o=>{clipsData=o;if(pendingHash)handleHash()});sub('opus',o=>{opusProjects=o});
+  sub('matches',o=>{matches=o;if(pendingHash)handleHash()});sub('tables',o=>{tablesData=o});sub('scorers',o=>{scorersData=o});sub('photos',o=>{photoLib=o;try{Object.values(nodes).forEach(n=>n._autoPhoto&&n.isConnected&&n._autoPhoto())}catch(e){}});sub('meta',o=>{metaDocs=o});sub('earnings',o=>{earnDays=o});sub('watch',o=>{watchItems=o});sub('hashtags',o=>{matchTags=o;if(typeof qpTagsChanged==='function')qpTagsChanged()});sub('clips',o=>{clipsData=o;if(pendingHash)handleHash()});sub('opus',o=>{opusProjects=o});
   if(navigator.serviceWorker)navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.type==='open'){try{location.hash=new URL(e.data.url).hash}catch(err){}}});
 }
 let pendingHash=/\//.test(location.hash);
@@ -41,7 +41,7 @@ function handleHash(){const h=(location.hash||'').slice(1);const [kind,id]=h.spl
   else if(kind==='ht'||kind==='ft'){showTab('match',true);makeResultCard(m,kind==='ht'?'HALF-TIME':'FULL TIME')}
   try{history.replaceState(null,'','#'+curTab)}catch(e){}}
 function openPost(id){if(!posts[id]){showTab('posts');return}if(posts[id].status==='posted'&&filter==='todo'){filter='all';document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f==='all')));renderList()}
-  showTab('posts',true);setTimeout(()=>{const n=nodes[id];if(n)n.scrollIntoView({behavior:'smooth',block:'start'})},250)}
+  showTab('posts',true);setTimeout(()=>{const n=nodes[id]||showPostNode(id);if(n)n.scrollIntoView({behavior:'smooth',block:'start'})},250)}
 function studioRefresh(){if(pendingHash)handleHash();const todo=order.filter(i=>posts[i].status!=='posted').length;const nb=$('#nb-posts');if(nb)nb.textContent=todo?String(todo):'';
   const nc=$('#nb-clips');if(nc){const n=clipsUpcoming().filter(x=>x.c.status==='planned'&&ymd(x.t)===ymd(new Date())).length;nc.textContent=n?String(n):''}
   const lv=Object.values(matches).filter(liveNow).length;const nl=$('#nb-live');if(nl)nl.textContent=lv?String(lv):'';
