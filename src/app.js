@@ -49,7 +49,7 @@ async function photosFor(id){const p=posts[id];const out={};if(!p)return out;
   return out}
 function toBlob(c,type,q){return new Promise(r=>c.toBlob(r,type,q))}
 async function shrinkBlob(img,max,type){const s=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);const x=c.getContext('2d');if(type==='image/jpeg'){x.fillStyle='#777';x.fillRect(0,0,c.width,c.height)}x.drawImage(img,0,0,c.width,c.height);return await toBlob(c,type,.9)}
-function fieldToText(v,kind,keys){if(kind==='lines')return (v||[]).join('\n');if(kind==='rows')return (v||[]).map(o=>keys.map(k=>o[k]==null?'':o[k]).join(' | ').replace(/( \| )+$/,'')).join('\n');return v==null?'':String(v)}
+function fieldToText(v,kind,keys){if(kind!=='lines'&&kind!=='rows'&&v&&typeof v==='object')return igStr(v);if(kind==='lines')return (v||[]).join('\n');if(kind==='rows')return (v||[]).map(o=>keys.map(k=>o[k]==null?'':o[k]).join(' | ').replace(/( \| )+$/,'')).join('\n');return v==null?'':String(v)}
 function textToField(t,kind,keys){if(kind==='lines')return t.split('\n').map(s=>s.trim()).filter(Boolean);if(kind==='rows')return t.split('\n').map(s=>s.trim()).filter(Boolean).map(line=>{const parts=line.split('|').map(x=>x.trim());const o={};keys.forEach((k,i)=>{if(parts[i]!==undefined&&parts[i]!=='')o[k]=parts[i]});return o});return t}
 async function save(id,patch){if(!db)return;try{await db.doc('posts/'+id).update(patch)}catch(e){const m=nodes[id]&&nodes[id].querySelector('.amsg');if(m)m.textContent='Could not save that change ('+(e.code||'error')+').'}}
 function sampleErr(e){const c=e&&e.code;if(c==='budget')return e.message||'This month’s Claude budget is used up.';if(c==='not_granted')return 'Claude wasn’t allowed to help on this page. Reload and choose Allow when asked.';if(c==='rate_limited')return 'Too many requests just now. Try again in a minute.';if(c==='refused')return 'Claude couldn’t help with that one. Try different wording.';if(c==='invalid_json')return 'The answer came back garbled. Press the button again.';return 'Something went wrong ('+(c||'error')+'). Try again.'}
@@ -564,6 +564,7 @@ function applySnapshot(snap){
 
 // ---------- create tab ----------
 async function createPost(doc,msgEl){
+  if(doc&&doc.fields&&IG_TPL[doc.template])doc={...doc,fields:Object.fromEntries(Object.entries(doc.fields).map(([k,v])=>[k,igStr(v)]))};
   if(!db){msgEl.textContent='Posts can only be saved inside Claude.';return null}
   const id=todayISO()+'-'+slug(doc.title)+'-'+Math.random().toString(36).slice(2,6);
   const full={order:-Math.round(Date.now()/1000),batch:todayISO(),batchLabel:'Made in Studio · '+dayLabel(),when:'Post now',status:'todo',sources:[],photo:{ready:false,id:null,zoom:1,dx:0,dy:0},...doc};

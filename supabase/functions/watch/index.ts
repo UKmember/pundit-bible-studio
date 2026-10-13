@@ -133,6 +133,9 @@ ${FIELD_RULES}` });
 }
 async function makePost(it: Any, p: Any) {
   if (!p || !TEMPLATES.includes(p.template) || !p.fields || !p.caption) throw new Error("Claude's draft was incomplete.");
+  // Claude sometimes nests text as {text:"..."}: flatten IG card fields to plain text
+  const str = (v: Any): string => v == null ? "" : typeof v === "string" ? v : typeof v !== "object" ? String(v) : Array.isArray(v) ? v.map(str).filter(Boolean).join(" ") : typeof v.t === "string" ? (/gold|accent|yellow/i.test(v.c || "") ? `*${v.t}*` : v.t) : (["text", "value", "headline", "quote", "title"].map((k) => v[k]).find((x) => typeof x === "string") ?? Object.values(v).map(str).filter(Boolean).join(" "));
+  if (["story", "bigquote", "number", "post"].includes(p.template)) p.fields = Object.fromEntries(Object.entries(p.fields).map(([k, v]) => [k, str(v)]));
   const id = `watch-${it.platform}-${slug(it.username)}-${String(it.id).slice(-10)}`;
   const now = new Date();
   await set("posts", id, { order: -Math.round(now.getTime() / 1000), batch: ukDate(), batchLabel: `Watched · ${it.name}`, status: "todo", auto: true, when: "Post now", slot: now.toISOString(),

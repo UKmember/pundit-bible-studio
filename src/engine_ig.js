@@ -40,7 +40,13 @@ function igBrand(ctx,th){const s=SHADOW;SHADOW=false;const d=72,x=40,y=40,pad=10
 function igSource(ctx,src){if(!src)return;const s=SHADOW;SHADOW=false;ctx.font=XM(26);const a='Source | ';text(ctx,a,60,H-64,XM(26),'rgba(255,255,255,.8)');text(ctx,src,60+ctx.measureText(a).width,H-64,F('italic 700',26,'Barlow'),WHITE);SHADOW=s}
 const igAccent=th=>th.accent===GOLD||!th.accent?GOLD:(th===THEMES.brand?GOLD:th.accent);
 
-function renderIG(ctx,post,imgs,th,f){
+// Claude sometimes sends a field as {text:"..."} or a list instead of plain text: turn it back into words
+function igStr(v){if(v==null)return '';if(typeof v==='string')return v;if(typeof v==='number'||typeof v==='boolean')return String(v);
+  if(Array.isArray(v))return v.map(igStr).filter(Boolean).join(' ');
+  if(typeof v.t==='string')return /gold|accent|yellow/i.test(v.c||'')?'*'+v.t+'*':v.t;
+  for(const k of ['text','value','headline','quote','title','label','name'])if(typeof v[k]==='string')return v[k];
+  return Object.values(v).map(igStr).filter(Boolean).join(' ')}
+function renderIG(ctx,post,imgs,th,f){f=Object.fromEntries(Object.entries(f||{}).map(([k,v])=>[k,igStr(v)]));
   const acc=igAccent(th);const img=imgs.photo,img2=imgs.photo2;const ph=post.photo||{},ph2=post.photo2||{};const tpl=post.template;
   if(tpl==='story'){
     const cut=img?(ph.cut!=null?ph.cut:isCutout(img)):false;
