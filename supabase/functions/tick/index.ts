@@ -331,6 +331,40 @@ Deno.serve(async (req) => {
     } catch (e) { log.push("higgsfield: " + e); }
   }
 
+  // match hashtags: research the tags for watched games (and games you added by hand) about 3 hours before kick-off
+  if (env("ANTHROPIC_API_KEY") && now.getTime() - (state.lastTags || 0) > 5 * 60000) {
+    try {
+      const have = await list("hashtags");
+      const slugify = (x: string) => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const soon: Any[] = [];
+      for (const m of Object.values(await list("matches")) as Any[]) {
+        const t = Date.parse(m.utcDate); if (!(t > now.getTime() - 2 * 3600e3 && t < now.getTime() + 3 * 3600e3)) continue;
+        if (!watched(m, S)) continue;
+        soon.push({ home: m.home.short, away: m.away.short, comp: m.compName || m.comp, date: ukDate(new Date(m.utcDate)) });
+      }
+      for (const f of Object.values(await list("fixtures")) as Any[]) {
+        if (!f.date || !f.home || !f.away) continue; const t = Date.parse(`${f.date}T${f.ko || "15:00"}:00Z`);
+        if (t > now.getTime() - 2 * 3600e3 && t < now.getTime() + 4 * 3600e3) soon.push({ home: f.home, away: f.away, comp: f.comp || "", date: f.date });
+      }
+      const next = soon.find((m) => !have[`${m.date}-${slugify(m.home)}-v-${slugify(m.away)}`]);
+      if (next) {
+        state.lastTags = now.getTime();
+        const p = fetch(`${env("SUPABASE_URL")}/functions/v1/social`, { method: "POST", headers: { "Content-Type": "application/json", "x-cron-secret": env("CRON_SECRET") }, body: JSON.stringify({ action: "tags", ...next }) }).then((r) => r.text()).catch((e) => console.log("tags", String(e)));
+        // deno-lint-ignore no-explicit-any
+        const ER = (globalThis as any).EdgeRuntime; if (ER && ER.waitUntil) ER.waitUntil(p); else await p;
+        log.push("hashtags " + next.home + " v " + next.away);
+      }
+    } catch (e) { log.push("hashtags: " + e); }
+  }
+
+  // accounts you watch (Instagram / X): the watch function decides which are due
+  if (now.getTime() - (state.lastWatch || 0) > 2 * 60000) {
+    state.lastWatch = now.getTime();
+    const p = fetch(`${env("SUPABASE_URL")}/functions/v1/watch`, { method: "POST", headers: { "Content-Type": "application/json", "x-cron-secret": env("CRON_SECRET") }, body: JSON.stringify({ action: "poll" }) }).then((r) => r.text()).catch((e) => console.log("watch", String(e)));
+    // deno-lint-ignore no-explicit-any
+    const ER = (globalThis as any).EdgeRuntime; if (ER && ER.waitUntil) ER.waitUntil(p); else await p;
+  }
+
   // earnings: refresh YouTube + Facebook figures at about 7am, 1pm and 7pm
   if ((env("GOOGLE_CLIENT_ID") || env("META_APP_ID")) && [7, 13, 19].includes(ukHour(now)) && now.getTime() - (state.lastEarnings || 0) > 3 * 3600e3) {
     state.lastEarnings = now.getTime();

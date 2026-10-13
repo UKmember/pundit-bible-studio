@@ -5,9 +5,10 @@ let posts={},order=[],filter='todo',meta=null,settings={affiliateLink:'https://t
 const imgCache={},localImg={},localBlob={},nodes={},view={};
 const $=s=>document.querySelector(s);
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-const SLOTS=p=>(p.template==='split'||p.template==='h2h')?['photo','photo2']:['photo'];
+const IG_CIRCLE={story:1,bigquote:1,number:1,post:1};
+const SLOTS=p=>(p.template==='split'||p.template==='h2h'||IG_CIRCLE[p.template])?['photo','photo2']:['photo'];
 const searchFor=(p,k)=>k==='photo2'?(p.photoSearch2||{term:(p.fields&&p.fields.bName)||''}):(p.photoSearch||{term:p.title||''});
-const slotLabel=(p,k)=>(p.template==='split'||p.template==='h2h')?(k==='photo'?'A: '+((p.fields&&p.fields.aName)||'left'):'B: '+((p.fields&&p.fields.bName)||'right')):'';
+const slotLabel=(p,k)=>IG_CIRCLE[p.template]?(k==='photo'?'Main photo':'Circle photo (optional: a second player, the manager or the crowd)'):(p.template==='split'||p.template==='h2h')?(k==='photo'?'A: '+((p.fields&&p.fields.aName)||'left'):'B: '+((p.fields&&p.fields.bName)||'right')):'';
 
 async function decode(blob){
   try{return await createImageBitmap(blob)}catch(e){}
@@ -67,7 +68,7 @@ function buildNode(id){
             <button class="ghost" data-size="feed" aria-pressed="true" type="button">Feed 4:5</button>
             <button class="ghost" data-size="story" aria-pressed="false" type="button">Story / Reel 9:16</button>
             <button class="ghost" data-size="square" aria-pressed="false" type="button">Square 1:1</button></div></div>
-          <div class="row"><button class="save" type="button">Save image</button><button class="saveall" type="button" hidden>Save all slides</button><button class="ghost copy" type="button">Copy caption</button><button class="ghost look" type="button">Try another colour</button></div>
+          <div class="row"><button class="save" type="button">Save image</button><button class="qpost" type="button">📲 Post to socials</button><button class="saveall" type="button" hidden>Save all slides</button><button class="ghost copy" type="button">Copy caption</button><button class="ghost look" type="button">Try another colour</button></div>
           <details><summary>Fine-tune the photo</summary><div class="sliders-wrap" style="display:grid;gap:12px"></div></details>
           <details class="aibg" hidden><summary>AI background (Higgsfield)</summary><div style="display:grid;gap:8px">
             <label class="lab">Describe the background<input type="text" class="bgp" id="bgp-${id}" value="floodlit football stadium at night, dramatic haze, cinematic, empty stands, no people, no text"></label>
@@ -82,6 +83,7 @@ function buildNode(id){
             <div class="msg ttmsg"></div>
             <label class="lab">TikTok caption<textarea class="ttcap" id="ttcap-${id}" rows="5"></textarea></label>
             <div class="row"><button class="ghost ttcopy" type="button">Copy TikTok caption</button><button class="ghost ttai" type="button">Rewrite with Claude</button></div>
+            <button class="tt60" type="button">🎬 Make a 1-minute TikTok that earns</button>
             <div class="msg ttcmsg"></div>
           </div></div>
       </div>
@@ -182,10 +184,16 @@ function buildNode(id){
     if(!file){pm.textContent='No image on the clipboard. In Google Images, press and hold the photo, choose Copy, then paste here.';pm.classList.add('warn');return}
     const p=posts[id];const k=SLOTS(p).find(s=>!localImg[id+':'+s])||SLOTS(p)[0];addFile(k,file);paste.textContent='';paste.blur()});
   paste.addEventListener('input',()=>{paste.textContent=''});
-  el.querySelector('.libpick').addEventListener('click',()=>{const p=posts[id];const k=SLOTS(p).find(s=>!localImg[id+':'+s]&&!(p[s]&&p[s].ready))||SLOTS(p)[0];
-    if(typeof openLibraryPicker!=='function')return;openLibraryPicker(searchFor(p,k).term||p.title||'',async(item)=>{pm.textContent='Loading photo…';const img=await loadImgById(item.file);if(!img){pm.textContent='That photo couldn’t be loaded.';return}
+  async function useLib(k,item,msg){pm.textContent='Loading photo…';const img=await loadImgById(item.file);if(!img){pm.textContent='That photo couldn’t be loaded.';return false}
       const key=id+':'+k;localImg[key]=img;delete localBlob[key];const th=el.querySelector('.slot-'+k+' .thumb');fetch('/_blob/'+item.file).then(r=>r.blob()).then(b=>{th.src=URL.createObjectURL(b);th.hidden=false}).catch(()=>{});
-      posts[id][k]={ready:false,focus:null,cut:null,zoom:1,dx:0,dy:0,id:item.file};pm.textContent='Photo added from your library. Now press Generate.'})});
+      posts[id][k]={ready:false,focus:null,cut:null,zoom:1,dx:0,dy:0,id:item.file};pm.textContent=msg||'Photo added from your library. Now press Generate.';return true}
+  el.querySelector('.libpick').addEventListener('click',()=>{const p=posts[id];const k=SLOTS(p).find(s=>!localImg[id+':'+s]&&!(p[s]&&p[s].ready))||SLOTS(p)[0];
+    if(typeof openLibraryPicker!=='function')return;openLibraryPicker(searchFor(p,k).term||p.title||'',item=>useLib(k,item))});
+  // photo you've used before for this player? put it in straight away
+  el._autoPhoto=async()=>{const p=posts[id];if(!p||p.status==='posted'||el._autoTried)return;if(typeof libMatch!=='function'||!Object.keys(photoLib||{}).length)return;el._autoTried=true;
+    for(const k of SLOTS(p)){if(localImg[id+':'+k]||(p[k]&&p[k].id))continue;if(k==='photo2'&&!(p.template==='split'||p.template==='h2h'))continue;
+      const it=libMatch(searchFor(p,k).term||'');if(it)await useLib(k,it,'Using your saved photo of '+(it.who||it.name)+'. Press Generate, or pick a different photo.')}};
+  setTimeout(()=>el._autoPhoto&&el._autoPhoto(),400);
 
   // ---- generate ----
   const gm=el.querySelector('.gmsg');
@@ -245,6 +253,7 @@ Reply with only JSON like {"face":{"x":0.41,"y":0.12,"w":0.2,"h":0.27},"who":"Ro
   el.querySelector('.save').addEventListener('click',async()=>{await el._redraw();const p=posts[id];const s=view[id].size;
     const name='pundit-bible-'+id+(slideCount(p)>1?'-'+(view[id].slide+1):'')+(s==='feed'?'':'-'+s)+'.jpg';
     await saveCanvas(exportCanvas(canvas,s),name,gm)});
+  el.querySelector('.qpost').addEventListener('click',async()=>{await el._redraw();const b=await toBlob(exportCanvas(canvas,'feed'),'image/jpeg',.92);openQuickPost({blob:b,post:id})});
   el.querySelector('.saveall').addEventListener('click',async()=>{const p=posts[id];const n=slideCount(p);const imgs=await photosFor(id);const s=view[id].size;
     for(let i=0;i<n;i++){const c=document.createElement('canvas');render(c,p,imgs,i);gm.textContent='Saving slide '+(i+1)+' of '+n+'…';const ok=await saveCanvas(exportCanvas(c,s),'pundit-bible-'+id+'-'+(i+1)+(s==='feed'?'':'-'+s)+'.jpg',null);if(!ok)break}
     gm.textContent=p.template==='guess'?'Done. Post the quiz now and the answer slide tomorrow.':'Done. Upload them to Facebook in order as one post.';render(canvas,p,imgs,view[id].slide)});
@@ -265,10 +274,11 @@ Reply with only JSON like {"face":{"x":0.41,"y":0.12,"w":0.2,"h":0.27},"who":"Ro
   const ttcap=el.querySelector('.ttcap');let tct=null;
   ttcap.addEventListener('input',()=>{posts[id].ttCaption=ttcap.value;if(plat==='tiktok')pkcap.value=ttcap.value;clearTimeout(tct);tct=setTimeout(()=>save(id,{ttCaption:ttcap.value}),800)});
   el.querySelector('.ttcopy').addEventListener('click',()=>copyText(ttcap.value,el.querySelector('.ttcmsg'),ttcap));
+  el.querySelector('.tt60').addEventListener('click',()=>{if(typeof openLongTikTok==='function')openLongTikTok(id)});
   el.querySelector('.ttai').addEventListener('click',async()=>{const m=el.querySelector('.ttcmsg'),b=el.querySelector('.ttai');const p=posts[id];
     if(!sample){m.textContent='This needs Claude, which isn\u2019t available in this view.';return}
     b.disabled=true;m.textContent='Writing\u2026';
-    try{const r=await askJSON(`Rewrite this Facebook football post caption as a TikTok caption for Pundit Bible (UK football page). Rules: max 150 characters before the hashtags; first line is a scroll-stopping hook; end with one easy question; then 4-5 hashtags (TikTok works best with 3-5 focused tags): #Football #FootballTikTok plus the most-used tags for the club/player/competition in the caption. No unrelated trending tags. Use ONLY facts in the caption below; no new facts, numbers or quotes. No "like if", "share if", "tag a mate", "type YES". Max 2 emojis.
+    try{const r=await askJSON(`Rewrite this football post caption as a TikTok caption for Pundit Bible (UK football page), written like a short news story: a headline first line with the key names in it (TikTok search reads it), 2-4 short paragraphs with the facts, then one easy question. Keep EXACTLY the same 4 hashtags as the caption below, on the last line. Use ONLY facts in the caption below; no new facts, numbers or quotes. No "like if", "share if", "tag a mate", "type YES". Max 2 emojis.
 Caption:
 ${String(p.caption||'').slice(0,2000)}
 Reply with only JSON: {"caption":"..."}`,{cache:false});
@@ -519,7 +529,7 @@ async function createPost(doc,msgEl){
   const full={order:-Math.round(Date.now()/1000),batch:todayISO(),batchLabel:'Made in Studio · '+dayLabel(),when:'Post now',status:'todo',sources:[],photo:{ready:false,id:null,zoom:1,dx:0,dy:0},...doc};
   if(!full.slot&&full.when==='Post now')full.slot=new Date().toISOString();
   if(full.caption){try{full.caption=stripTags(full.caption)+'\n\n'+tagsFor(full,'facebook').join(' ')}catch(e){}}
-  try{await db.doc('posts/'+id).set(full);msgEl.textContent='Done. It’s at the top of your Posts tab.';
+  try{await db.doc('posts/'+id).set(full);msgEl.textContent='Done. It’s at the top of your Posts tab.';if(['goal','result'].includes(full.template)&&settings.quickAuto!==false&&typeof autoQuick==='function')autoQuick(id);
     showTab('posts');filter='todo';document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f==='todo')));
     setTimeout(()=>{const n=nodes[id];if(n)n.scrollIntoView({behavior:'smooth',block:'start'})},700);return id}
   catch(e){msgEl.textContent=e.code==='quota_exceeded'?'The app is full. Delete some old posts first.':'Could not save ('+(e.code||'error')+').';return null}
@@ -577,7 +587,10 @@ $('#c-article').addEventListener('submit',async e=>{e.preventDefault();const m=$
 
 STRICT: use only facts, numbers and quotes that appear in the pasted text. Quotes must be copied word for word. Do not add anything from memory.
 
-Pick the template that will get the most comments:
+Pick the template that will get the most comments. For Instagram, story / bigquote / number usually win:
+- story: fields {headline: one sentence, 10-22 words, sentence case (NOT capitals), *stars* round the 2-5 key words (shown in gold), source: the outlet name}
+- bigquote: fields {quote: a real quote from the text, word for word, max 30 words, *stars* round the punchiest words, by: short upper-case line e.g. "ROY KEANE ON HIS BIGGEST PET PEEVE"}
+- number: fields {big: one striking figure from the text e.g. "£677.6M" or "1,327 DAYS", text: one sentence explaining it with *stars* round key words, source}
 - quote: fields {tag, quote:[2-4 short lines of a real quote from the text, ~12 chars each], speaker, context (one line), question}
 - headline: fields {tag, lines:[{t, c}] 2-3 short punchy lines, c is white|gold|red|accent, body (one sentence), question}
 - stat: fields {tag, label, big (e.g. "£677.6M"), rows:[{label, value, c}] up to 3, c is red|gold|grey|white, question}
@@ -586,13 +599,13 @@ Pick the template that will get the most comments:
 tag is a short upper-case label like "SPURS · BOTTOM OF THE LEAGUE". question is the yellow bar on the image: max 40 characters, easy to answer.
 
 Reply with only JSON:
-{"title":"short title","format":"Hot quote|Stat shock|News card|A/B/C/D poll|Headline","why":"1 sentence on why it will get comments","template":"...","theme":"red|maroon|charcoal|navy|sky|green|england|purple (suit the club colours)","fields":{...},"caption":"hook line, 2-4 short lines of context, one clear question, then EXACTLY 3 hashtags on the last line: one broad (#Football, or #Boxing for boxing), one for the club or player (their most-used tag, e.g. #LFC, #ManUtd, #Haaland), one for the post type or competition (e.g. #PremierLeague, #ChampionsLeague, #FootballDebate); max 2 emojis; never 'like if', 'share if', 'tag a mate' or 'type YES'","photoSearch":{"term":"2-5 word Google Images search for the main person, e.g. 'Roberto De Zerbi Tottenham touchline'","tip":"one short sentence on the shot to pick"}}
+{"title":"short title","format":"Story card|Big quote|Big number|Hot quote|Stat shock|News card|A/B/C/D poll|Headline","why":"1 sentence on why it will get comments","template":"...","theme":"red|maroon|charcoal|navy|sky|green|england|purple (suit the club colours)","fields":{...},"caption":"written like a short news story, 80-150 words in 3-5 short paragraphs: a headline first line under 125 characters with the key names in it, what happened (facts, numbers, who reported it), the key quote word for word if there is one, why it matters, then ONE easy question; max 2 emojis; never 'like if', 'share if', 'tag a mate' or 'type YES'; then EXACTLY 4 hashtags on the last line, the most-searched ones for this story and the same on every platform: the club or team tag (e.g. #ManUtd, #LFC, #ThreeLions), the competition (e.g. #PremierLeague), the main player only if fans search their tag (else #FootballNews), and #Football","photoSearch":{"term":"2-5 word Google Images search for the main person, e.g. 'Roberto De Zerbi Tottenham touchline'","tip":"one short sentence on the shot to pick"}}
 
 Pasted text:
 """
 ${txt.slice(0,20000)}
 """`,{cache:false});
-    const ok=r&&typeof r==='object'&&['quote','headline','stat','list','poll'].includes(r.template)&&r.fields&&typeof r.caption==='string';
+    const ok=r&&typeof r==='object'&&['story','bigquote','number','quote','headline','stat','list','poll'].includes(r.template)&&r.fields&&typeof r.caption==='string';
     if(!ok){m.textContent='The answer didn’t come back in the right shape. Press Make post again.';b.disabled=false;return}
     const doc={title:String(r.title||'New post'),format:String(r.format||TPL_NAME[r.template]),why:String(r.why||''),template:r.template,theme:THEMES[r.theme]?r.theme:'charcoal',fields:r.fields,caption:r.caption,
       photoSearch:{term:String((r.photoSearch&&r.photoSearch.term)||r.title||''),tip:String((r.photoSearch&&r.photoSearch.tip)||'')},sources:link?[{t:'Source',u:link}]:[]};
@@ -747,11 +760,11 @@ function renderMatch(){
 $('#m-add').addEventListener('submit',async e=>{e.preventDefault();const m=$('#m-msg');
   const home=$('#m-home').value.trim(),away=$('#m-away').value.trim(),date=$('#m-date').value,ko=$('#m-ko').value,comp=$('#m-comp').value.trim();
   const id=date+'-'+slug(home)+'-v-'+slug(away);const doc={date,ko,home,away,comp,hs:0,as:0,goals:[],status:'upcoming'};
-  fixtures[id]=doc;renderMatch();if(db){try{await db.doc('fixtures/'+id).set(doc);m.textContent='Added.'}catch(err){m.textContent='Could not save ('+(err.code||'error')+').'}}
+  fixtures[id]=doc;renderMatch();if(db){try{await db.doc('fixtures/'+id).set(doc);m.textContent='Added. Looking up the match hashtags in the background.';if(window.PB&&PB.social)PB.social.tags({home,away,comp,date}).catch(()=>{})}catch(err){m.textContent='Could not save ('+(err.code||'error')+').'}}
   e.target.reset();$('#m-date').value=todayISO();$('#m-ko').value='15:00'});
 // ---------- tabs ----------
-const TABS=['home','posts','clips','calendar','create','library','match','breaking','tables','video','earnings','insights','play','settings'];
-const TAB_TITLES={home:'Home',posts:'Posts',clips:'Clips',calendar:'Calendar',create:'Create',library:'Photo library',match:'Match Centre',breaking:'Breaking news',tables:'Tables & fixtures',video:'Video tools',earnings:'Earnings',insights:'Insights',play:'Playbook',settings:'Settings'};
+const TABS=['home','posts','quick','clips','calendar','create','library','match','breaking','tables','video','earnings','insights','play','settings'];
+const TAB_TITLES={home:'Home',posts:'Posts',quick:'Quick post',clips:'Clips',calendar:'Calendar',create:'Create',library:'Photo library',match:'Match Centre',breaking:'Breaking news',tables:'Tables & fixtures',video:'Video tools',earnings:'Earnings',insights:'Insights',play:'Playbook',settings:'Settings'};
 let curTab='home';
 function showTab(t,keepHash){if(!TABS.includes(t))t='home';curTab=t;TABS.forEach(x=>{const v=$('#view-'+x);if(v)v.hidden=x!==t;const b=$('#tab-'+x);if(b)b.setAttribute('aria-pressed',String(x===t))});
   document.querySelectorAll('.bottombar [data-go]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.go===t||(t!=='home'&&t!=='posts'&&t!=='match'&&t!=='clips'&&false))));
@@ -778,7 +791,7 @@ window.__onLogo=()=>Object.values(nodes).forEach(n=>n._redraw&&n._redraw());
 if(LOGO_OK)window.__onLogo();
 (async()=>{
   fillColours();try{$('#m-date').value=todayISO()}catch(e){}$('#set-link').value=settings.affiliateLink;
-  try{await Promise.all([document.fonts.load(ANTON(100)),document.fonts.load(BB(50)),document.fonts.load(BM(38))])}catch(e){}
+  try{await Promise.all([document.fonts.load(ANTON(100)),document.fonts.load(BB(50)),document.fonts.load(BM(38)),document.fonts.load('800 50px Barlow'),document.fonts.load('500 34px Barlow'),document.fonts.load('italic 700 26px Barlow')])}catch(e){}
   if(window.__TEST_FIX){fixtures=window.__TEST_FIX;renderMatch()}
   if(window.__TEST_BREAKING){breaking=window.__TEST_BREAKING;bmeta={scannedAt:new Date(Date.now()-12*60000).toISOString()};renderBreaking()}
   if(window.__TEST_POSTS){applySnapshot({docs:Object.entries(window.__TEST_POSTS).map(([id,d])=>({id,data:()=>d}))})}

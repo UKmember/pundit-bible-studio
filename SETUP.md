@@ -159,6 +159,83 @@ The last 90 days load straight away. After that the figures refresh by themselve
 - **YouTube** is YouTube's estimated revenue, already in pounds. It runs 2–3 days behind, like YouTube Studio.
 - **Facebook** is your Content Monetization earnings in US dollars, converted to pounds at each day's exchange rate (European Central Bank rates; weekends use Friday's). Meta sometimes adjusts recent days, and the Studio picks up those changes.
 
+## Step 11: Quick post (Facebook, Instagram and X in one tap)
+
+Do the one-off `setup.yml` change from step 10 first, or the X keys won't reach the Studio.
+
+### Facebook and Instagram (the same Meta app as step 10)
+1. In Instagram: **Settings → Account type and tools**. Make sure it's a **Professional** account (Business or Creator), and link it to the **Pundit Bible** Facebook page (Settings → Accounts Centre, or from the Facebook page's settings → Linked accounts).
+2. In your Meta app: **Use cases → Manage everything on your Page → Customise**. Make sure **pages_manage_posts** is added, along with the three from step 10.
+3. **Use cases → Add use case → Manage messaging & content on Instagram**, choose **API setup with Facebook login**, and add **instagram_basic** and **instagram_content_publish**. If it asks, also add **business_management**.
+4. Leave the app in Development mode. You're its admin, so no review is needed to post to your own page and Instagram.
+
+### X
+1. Go to **developer.x.com** and sign in **as the Pundit Bible X account**. Sign up for the developer portal (pay-per-use).
+2. Open your app (one is made for you), then **User authentication settings → Set up**:
+   - App permissions: **Read and write**
+   - Type of app: **Web App, Automated App or Bot**
+   - Callback URI and Website URL: `https://ukmember.github.io/pundit-bible-studio/`
+   - **Save**.
+3. **Keys and tokens**:
+   - **API Key and Secret**: click Regenerate and copy both.
+   - **Access Token and Secret**: click Generate and copy both. It must say "Read and Write". If it says "Read", generate it again now that the permissions are set.
+4. **Billing**: add some credit ($5 is plenty; each image post costs about 2–3p).
+5. GitHub → Settings → Secrets → add `X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_SECRET`.
+
+### Switch it on
+1. Actions → **1. Set up** → Run workflow, then **2. Deploy app** → Run workflow.
+2. In the Studio, open **Quick post** → **Connect Facebook & Instagram**. When Facebook asks, tick the **Pundit Bible** page and its **Instagram** account, and allow everything.
+3. On the same page, add the hashtags you always use for each platform, then **Save**.
+
+### Using it
+- **Any card:** Generate → **📲 Post to socials**. Tick Facebook, Instagram and X, check each caption, then tap **Post now**.
+- **Goals:** tap the goal alert (or GOAL in Match Centre), type the scorer, then tap **Make GOAL card**. The card is made and the post screen opens by itself; just tap **Post now**. Half-time and full-time cards work the same way.
+- **Your own image:** Quick post → **Post your own image**.
+- Every post is listed under **Recently posted**, with links.
+- **Hashtags:** about 3 hours before kick-off (for watched teams and any game you add by hand in Match Centre), the Studio looks up the tags the teams, the competition and broadcasters are using for that game, e.g. `#ENGESP #ThreeLions #NationsLeague`. They go first on every post about that match, then the scorer, then your own tags, within each platform's limit. You can see or refresh them on the Quick post page, and look up any game there too. Any other post (breaking news, quotes, stats, transfers) gets its own look-up when you open the post screen: the tags being used for that story and the clubs and players in it. Posts about the same club or player share a look-up for 12 hours to keep costs down. Each look-up costs about 2–3p of Claude.
+
+## Step 12: Accounts we watch (Romano, talkSPORT, SportsJOE, Ornstein)
+
+On the **Breaking news** page, under **Accounts we watch**. It's already set up with:
+- Instagram: Fabrizio Romano (@fabriziorom), talkSPORT (@talksport), SportsJOE (@sportsjoedotie)
+- X: David Ornstein (@David_Ornstein)
+
+**How it works:** every 10 minutes the Studio checks these accounts. When one posts a story worth covering (a transfer, a sacking, a big quote), Claude writes **your own post** about it, with your card and your caption. Your phone gets an alert: "⚡ Fabrizio Romano: Isak to Chelsea, here we go". Tap it, add a photo, generate, then **📲 Post to socials**.
+- It never copies their wording or graphic. Reports are credited in the caption ("Fabrizio Romano reports…") and never presented as confirmed.
+- The first check only notes what each account has already posted, so you don't get a flood of old stories.
+- **Draft big stories** is the default. Change it to *only the biggest* or *most stories* at the top of the section. Anything not drafted still shows, with a **Make our version** button.
+- Add or remove accounts under **Manage accounts**.
+
+**What it needs:** Facebook & Instagram connected on the Quick post page (step 11). The connection now includes the permission to look up other public accounts. If you connected before this update, tap **Reconnect**. X watching uses your X keys from step 11.
+
+**Costs:** Instagram watching is free. X charges about half a penny per post read. Ornstein only posts a few times a day, so that's pennies a month, capped at $3 a month (it pauses if reached). Claude costs about 1p per story drafted.
+
+## Instagram cards
+
+Four card styles built for Instagram, the style the big news pages use:
+- **Story card:** full photo fading to black, a big sentence-case headline with the key words in gold (put *stars* round words to highlight them), plus "Source | …".
+- **Big quote:** gold quote marks, the quote in big text, and a gold capitals line underneath.
+- **Big number:** one huge gold figure with a line explaining it.
+- **Post reaction:** a real post (e.g. from Ornstein) shown in a white box. Only ever use real posts, word for word.
+
+Each takes a main photo, plus an optional **circle photo** (a second player, the manager or the crowd). Cut-out photos stand in front of the circle, like the big pages do. The news checks, the watched accounts and *Make a post from an article* now pick these for Instagram-style posts.
+
+## 1-minute TikTok videos (Creator Rewards)
+
+TikTok's Creator Rewards only pays for videos **over one minute** that are **original**. Slideshows and robot voices don't qualify.
+
+**Video tools → 1-minute TikTok** (or **🎬 Make a 1-minute TikTok that earns** on any post):
+1. Pick a post that has a photo added.
+2. **Write the 1-minute script.** Claude writes 65–80 seconds from the post's facts. Edit any line.
+3. **Preview**, then **Record the video**. After a 3-2-1, read the words that scroll along the bottom. The line you're on is highlighted. Tap **Next line** if you finish a line early.
+4. It saves the video. Upload it to TikTok, keep the original sound (your voice), and paste the caption.
+
+The video is always at least 1:01 long. If the script runs short, the Studio warns you and holds the last card.
+
+## Captions and hashtags
+
+Every caption is written like a short news story: a headline first line with the key names in it, then the facts, the quote and why it matters, then one question. Every post uses the **same 4 hashtags on every platform**, the most-searched ones looked up for that match or story. On Quick post you can add one tag of your own to always include. A brand tag nobody searches uses up a spot, so it's best left empty.
+
 ## When things run
 
 | What | When (UK) |

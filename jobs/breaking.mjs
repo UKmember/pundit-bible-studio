@@ -25,7 +25,7 @@ if (!fresh.length) { await finish(listed.length); console.log("Nothing new."); p
 if (!(await budgetLeft())) { await finish(listed.length); console.log("Monthly budget nearly used: skipping."); process.exit(0); }
 
 // how many outlets carry each story helps judge "rising" vs "just broke"
-const TPL = ["quote", "headline", "stat", "list", "poll", "split", "versus", "result"];
+const TPL = ["story", "bigquote", "number", "quote", "headline", "stat", "list", "poll", "split", "versus", "result"];
 const triage = parseJSON(await claude({
   model: MODEL_CHEAP, maxTokens: 1500,
   system: "You are the breaking-news editor of Pundit Bible, a UK football social page. Be strict: only genuinely big stories.",

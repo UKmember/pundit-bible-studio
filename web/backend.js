@@ -157,6 +157,18 @@
     page:(id)=>earn({action:'page',id}),
     disconnect:(provider)=>earn({action:'disconnect',provider})};
 
+  // ---------- quick post (Facebook, Instagram, X) ----------
+  async function soc(body){await ready;const {data,error}=await sb.functions.invoke('social',{body});
+    if(error){let m=error.message;try{const j=await error.context.json();m=j.message||m}catch(e){}throw new Error(m)}
+    if(data&&data.code)throw new Error(data.message||data.code);return data}
+  window.PB.social={status:()=>soc({action:'status'}),tags:(m)=>soc({action:'tags',...m}),post:async({blob,post,title,targets})=>soc({action:'post',image:await b64(blob),post,title,targets})};
+
+  // ---------- watched accounts ----------
+  async function wt(body){await ready;const {data,error}=await sb.functions.invoke('watch',{body});
+    if(error){let m=error.message;try{const j=await error.context.json();m=j.message||m}catch(e){}throw new Error(m)}
+    if(data&&data.code)throw new Error(data.message||data.code);return data}
+  window.PB.watch={poll:()=>wt({action:'poll',force:true}),draft:(id)=>wt({action:'draft',id}),defaults:()=>wt({action:'defaults'})};
+
   // ---------- phone alerts (web push) ----------
   const u8=b=>{const p='='.repeat((4-b.length%4)%4);const s=atob((b+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from([...s].map(c=>c.charCodeAt(0)))};
   async function subId(sub){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(sub.endpoint));return [...new Uint8Array(buf)].slice(0,12).map(x=>x.toString(16).padStart(2,'0')).join('')}

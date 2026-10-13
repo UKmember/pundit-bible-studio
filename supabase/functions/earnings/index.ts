@@ -33,7 +33,7 @@ async function startAuth(provider: string, back: string) {
     return "https://accounts.google.com/o/oauth2/v2/auth?" + q;
   }
   if (!env("META_APP_ID")) throw new Error("Facebook isn't set up yet: add META_APP_ID and META_APP_SECRET (setup guide, step 10).");
-  const q = new URLSearchParams({ client_id: env("META_APP_ID"), redirect_uri: REDIRECT, state, response_type: "code", scope: "pages_show_list,pages_read_engagement,read_insights" });
+  const q = new URLSearchParams({ client_id: env("META_APP_ID"), redirect_uri: REDIRECT, state, response_type: "code", scope: "pages_show_list,pages_read_engagement,read_insights,pages_manage_posts,instagram_basic,instagram_content_publish,instagram_manage_insights,business_management" });
   return "https://www.facebook.com/v23.0/dialog/oauth?" + q;
 }
 async function finishAuth(u: URL) {
@@ -59,12 +59,12 @@ async function finishAuth(u: URL) {
   // swap for a long-lived token: page tokens made from it don't expire
   const t2 = await (await fetch(`${GRAPH}/oauth/access_token?${new URLSearchParams({ grant_type: "fb_exchange_token", client_id: env("META_APP_ID"), client_secret: env("META_APP_SECRET"), fb_exchange_token: t1.access_token })}`)).json();
   const userToken = t2.access_token || t1.access_token;
-  const pj = await (await fetch(`${GRAPH}/me/accounts?fields=id,name,access_token&limit=50&access_token=${encodeURIComponent(userToken)}`)).json();
-  const pages = (pj.data || []).map((p: Any) => ({ id: p.id, name: p.name, token: p.access_token }));
+  const pj = await (await fetch(`${GRAPH}/me/accounts?fields=id,name,access_token,instagram_business_account{id,username}&limit=50&access_token=${encodeURIComponent(userToken)}`)).json();
+  const pages = (pj.data || []).map((p: Any) => ({ id: p.id, name: p.name, token: p.access_token, ig: p.instagram_business_account ? { id: p.instagram_business_account.id, username: p.instagram_business_account.username || "" } : null }));
   if (!pages.length) return { back: st.back, result: "fb-nopage" };
   const pick = pages.find((p: Any) => /pundit/i.test(p.name)) || pages[0];
   await privSet("meta", { pages, page: pick.id, at: new Date().toISOString() });
-  await merge("meta", "earn_fb", { connected: true, page: pick.name, pageId: pick.id, pages: pages.map((p: Any) => ({ id: p.id, name: p.name })), error: null, since: new Date().toISOString() });
+  await merge("meta", "earn_fb", { connected: true, page: pick.name, pageId: pick.id, ig: pick.ig ? pick.ig.username || "connected" : null, pages: pages.map((p: Any) => ({ id: p.id, name: p.name })), error: null, since: new Date().toISOString() });
   return { back: st.back, result: "fb-ok" };
 }
 
@@ -207,7 +207,7 @@ Deno.serve(async (req) => {
       // clear the old page's figures so the chart shows only this page
       const { data } = await sb.from("docs").select("id,data").eq("collection", "earnings");
       for (const r of data || []) if (r.data && r.data.fb) { const d = { ...r.data }; delete d.fb; await sb.from("docs").upsert({ collection: "earnings", id: r.id, data: d }, { onConflict: "collection,id" }); }
-      await merge("meta", "earn_fb", { page: p.name, pageId: p.id, top: [] });
+      await merge("meta", "earn_fb", { page: p.name, pageId: p.id, ig: p.ig ? p.ig.username || "connected" : null, top: [] });
       return json(await syncAll(90));
     }
     if (body.action === "disconnect") {

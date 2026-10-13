@@ -4,7 +4,29 @@
       <button class="ghost" data-v="reel" aria-pressed="true" type="button">Brand my reel</button>
       <button class="ghost" data-v="thumb" aria-pressed="false" type="button">YouTube thumbnail</button>
       <button class="ghost" data-v="script" aria-pressed="false" type="button">Reel script + teleprompter</button>
+      <button class="ghost" data-v="long" aria-pressed="false" type="button">1-minute TikTok (earns)</button>
     </div>
+
+    <section class="vpane card" id="vp-long" hidden style="margin-top:14px">
+      <h3>1-minute TikTok news video</h3>
+      <p>TikTok only pays for videos <b>over one minute</b> that are <b>original</b>. Slideshows and robot voices don't count. This turns any post into one: Claude writes a 65–80 second news script, the Studio animates it with your card, moving photos and big captions, and you <b>read it out loud while it records</b>. Your words and your voice are what make it count as original. The words you need to say scroll along the bottom as you go.</p>
+      <div class="vgrid">
+        <div class="vprev"><canvas id="l-canvas" width="1080" height="1920" aria-label="1-minute video preview"></canvas></div>
+        <div style="display:grid;gap:10px;align-content:start">
+          <label class="lab">Post<select id="l-post"></select></label>
+          <div class="row"><button id="l-write" type="button">Write the 1-minute script</button></div>
+          <p class="msg" id="l-wmsg">Pick a post that has a photo added, so the video has something to move.</p>
+          <div id="l-script" style="display:grid;gap:8px"></div>
+          <label class="lab">Reading pace<input type="range" id="l-pace" min="2" max="3.2" step="0.1" value="2.5"></label>
+          <p class="msg" id="l-len"></p>
+          <label class="row" style="align-items:flex-start;gap:8px"><input type="checkbox" id="l-mic" checked style="margin-top:4px"> Record my voice through the microphone (strongly recommended: it's what makes the video count as original)</label>
+          <div class="row"><button class="ghost" id="l-play" type="button">Preview</button><button id="l-rec" type="button">Record the video</button><button class="ghost" id="l-next" type="button" hidden>Next line ›</button></div>
+          <p class="msg" id="l-msg"></p>
+          <label class="lab">TikTok caption<textarea id="l-cap" rows="8"></textarea></label>
+          <div class="row"><button class="ghost sm" id="l-copy" type="button">Copy caption</button><span class="msg" id="l-cmsg"></span></div>
+        </div>
+      </div>
+    </section>
 
     <section class="vpane card" id="vp-reel" style="margin-top:14px">
       <h3>Brand my reel</h3>

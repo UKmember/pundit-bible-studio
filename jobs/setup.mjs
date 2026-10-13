@@ -35,7 +35,7 @@ if (process.env.CLAUDE_MODEL) secrets.push({ name: "CLAUDE_MODEL", value: proces
 if (process.env.FOOTBALL_DATA_KEY) secrets.push({ name: "FOOTBALL_DATA_KEY", value: process.env.FOOTBALL_DATA_KEY });
 if (process.env.HIGGSFIELD_KEY) secrets.push({ name: "HIGGSFIELD_KEY", value: process.env.HIGGSFIELD_KEY.trim() });
 if (process.env.OPUSCLIP_KEY) secrets.push({ name: "OPUS_KEY", value: process.env.OPUSCLIP_KEY.trim() });
-for (const k of ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "META_APP_ID", "META_APP_SECRET"]) if (process.env[k]) secrets.push({ name: k, value: process.env[k].trim() });
+for (const k of ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "META_APP_ID", "META_APP_SECRET", "X_API_KEY", "X_API_SECRET", "X_ACCESS_TOKEN", "X_ACCESS_SECRET"]) if (process.env[k]) secrets.push({ name: k, value: process.env[k].trim() });
 if (process.env.HF_BUDGET_GBP) secrets.push({ name: "HF_BUDGET_GBP", value: process.env.HF_BUDGET_GBP });
 if (process.env.OWNER_EMAIL) secrets.push({ name: "VAPID_SUBJECT", value: "mailto:" + process.env.OWNER_EMAIL });
 // phone alert keys: made once, the public half is stored for the app

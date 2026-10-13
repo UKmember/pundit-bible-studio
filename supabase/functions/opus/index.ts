@@ -72,7 +72,7 @@ const bare = (id: string) => String(id).includes(".") ? String(id).split(".").po
 
 // ---------- Claude ranking ----------
 const PRICES: Record<string, [number, number]> = { "claude-sonnet-5": [2, 10], "claude-haiku-4-5": [1, 5], "claude-haiku-4-5-20251001": [1, 5], "claude-opus-5-5": [4, 20] };
-const CAPTION_RULES = `caption: the Facebook caption for this clip. Hook line under 125 characters, 1-2 short lines of context, ONE clear easy-to-answer question, then EXACTLY 3 hashtags on the last line (one club/player tag like #LFC #ManUtd #Arsenal, one broad or competition tag like #PremierLeague or #Football, one type tag like #FootballDebate or #FootballNews). Max 2 emojis. NEVER engagement bait ("like if", "share if", "tag a mate", "type YES"). Only attribute to a pundit or player words they actually say in the transcript.`;
+const CAPTION_RULES = `caption: the caption for this clip, written like a short news story (same caption on every platform). 60-120 words in 3-4 short paragraphs: a headline first line under 125 characters with the key names in it (what people search for), what is said and by whom, why it matters, then ONE easy question. Max 2 emojis. NEVER engagement bait ("like if", "share if", "tag a mate", "type YES"). Only attribute to a pundit or player words they actually say in the transcript. Then EXACTLY 4 hashtags on the last line, the most-searched ones: the club or team tag (e.g. #ManUtd #LFC), the competition (#PremierLeague), the pundit or player only if fans search their tag, and #Football.`;
 async function claudeSpentOk() {
   const u = await get("meta", "usage"); const month = ukDate().slice(0, 7);
   const gbp = u && u.month === month ? Number(u.usd || 0) * Number(env("USD_TO_GBP") || 0.78) : 0;

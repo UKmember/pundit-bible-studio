@@ -171,6 +171,7 @@ function render(canvas,post,imgs,slide){
   const th=THEMES[post.theme]||THEMES.charcoal;const f=post.fields||{};
   const tpl=(T[post.template]||['split','carousel','guess','h2h'].includes(post.template))?post.template:'headline';
   background(ctx,th,imgs.bg);SHADOW=false;
+  if(typeof IG_TPL!=='undefined'&&IG_TPL[post.template]){renderIG(ctx,post,imgs,th,f);SHADOW=false;return}
   if(tpl==='carousel'){renderCarousel(ctx,post,imgs,th,f,slide);SHADOW=false;brand(ctx);return}
   if(tpl==='guess'&&slide===1){const f2={...f,question:f.revealQuestion||'Did you get it?'};const qt2=qTop(ctx,f2.question);renderGuess(ctx,post,imgs,th,f2,qt2,1);qbar(ctx,f2.question);brand(ctx);return}
   const qt=qTop(ctx,f.question);

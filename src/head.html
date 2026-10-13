@@ -1,7 +1,7 @@
 <title>Pundit Bible Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&display=swap">
 <style>
 :root{
   color-scheme: light;
@@ -326,6 +326,26 @@ input[type=url],input[type=number],input[type=datetime-local]{width:100%;backgro
 .acct img{width:22px;height:22px;border-radius:50%}
 .cpost.clip{border-left-color:#7b3fe4}
 @media (max-width:760px){.cmodal{grid-template-columns:1fr}.cmodal video{max-height:48vh}.opf .two{grid-template-columns:1fr}.clipgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* quick post */
+.qpm{background:#fff;border-radius:10px;max-width:880px;width:100%;max-height:92vh;overflow:auto;padding:16px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:16px;text-align:left}
+.qpm p{color:var(--muted);text-align:left}.qpm .row{justify-content:flex-start}
+.qpm img{width:100%;border-radius:6px;display:block;background:#000}
+.qpm h3{margin:0;color:var(--navy)}
+.qpm textarea{min-height:130px}
+.qplat{display:flex;gap:8px;flex-wrap:wrap}
+.qplat label{display:flex;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:6px;font:600 15px Barlow,sans-serif;cursor:pointer}
+.qplat label.off{opacity:.55}
+.qres div{padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}.qres .ok{color:var(--green);font-weight:600}.qres .bad{color:var(--red);font-weight:600}
+.qpbig{font-size:18px;padding:14px 22px}
+@media (max-width:760px){.qpm{grid-template-columns:1fr}.qpm img{max-height:40vh;object-fit:contain}}
+/* watched accounts */
+.witem{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 12px;background:var(--panel2);border-radius:6px}
+.witem .t{font:400 17px/1 Anton,sans-serif;color:var(--navy);min-width:48px}
+.witem b{display:block;font-size:15px;line-height:1.25}.witem small{color:var(--muted);font-size:13px;display:block;margin-top:2px}
+.witem .row{gap:6px;justify-content:flex-end}
+.witem.dim{opacity:.6}
+@media (max-width:760px){.witem{grid-template-columns:auto 1fr}.witem .row{grid-column:1/-1;justify-content:flex-start}}
+.wacct{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}.wacct span{flex:1}.wacct small{color:var(--muted)}
 /* earnings */
 :root{--yt:#d7262c;--fb:#2f6fdb}
 .elegend{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--muted)}.elegend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-left:8px}
@@ -346,6 +366,7 @@ input[type=url],input[type=number],input[type=datetime-local]{width:100%;backgro
       <button class="nav" id="tab-home" data-ico="home" type="button">Home</button>
       <div class="navh">Content</div>
       <button class="nav" id="tab-posts" data-ico="posts" type="button">Posts <span class="nbadge" id="nb-posts"></span></button>
+      <button class="nav" id="tab-quick" data-ico="send" type="button">Quick post</button>
       <button class="nav" id="tab-clips" data-ico="clip" type="button">Clips <span class="nbadge" id="nb-clips"></span></button>
       <button class="nav" id="tab-calendar" data-ico="cal" type="button">Calendar</button>
       <button class="nav" id="tab-create" data-ico="plus" type="button">Create</button>
@@ -384,6 +405,7 @@ input[type=url],input[type=number],input[type=datetime-local]{width:100%;backgro
         <div class="qa">
           <button type="button" data-go="create">Make a post from an article</button>
           <button type="button" data-go="match">Live scores &amp; goal cards</button>
+          <button type="button" data-go="quick">Quick post to FB, IG &amp; X</button>
           <button type="button" data-go="tables">Table &amp; top scorer cards</button>
           <button type="button" data-go="video">Brand a reel / thumbnail</button>
           <button type="button" class="ghost" id="h-push" hidden>Turn on goal alerts</button>
@@ -399,6 +421,25 @@ input[type=url],input[type=number],input[type=datetime-local]{width:100%;backgro
       <button class="ghost" data-f="all" aria-pressed="false" type="button">All</button>
     </div>
     <div id="list"></div>
+  </div>
+
+  <div id="view-quick" hidden>
+    <div class="hgrid">
+      <section class="panel"><div class="ph"><h2>Accounts</h2><button class="ghost sm" id="qp-check" type="button">Check</button></div><div id="qp-conn"></div></section>
+      <section class="panel"><div class="ph"><h2>Hashtags</h2></div>
+        <div class="opf">
+          <label>Always include (optional: takes one of the 4 spots)<input type="text" id="qp-t-all" placeholder="Leave empty for 4 searched tags, or e.g. #PunditBible"></label>
+          <label style="display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:500 15px/1.35 Barlow,sans-serif;color:var(--text)"><input type="checkbox" id="qp-auto" style="margin-top:3px;flex:none"> Open the post screen straight after making a GOAL, half-time or full-time card</label>
+          <button type="button" id="qp-save">Save</button><p class="msg" id="qp-smsg">Every post gets the same 4 hashtags on every platform: the most-searched tags looked up for that match or story, plus yours if you add one here. A brand tag nobody searches costs you a search spot, so it’s best left empty.</p>
+        </div></section>
+    </div>
+    <section class="panel" style="margin-top:16px"><div class="ph"><h2>Match hashtags</h2></div>
+      <p class="msg" style="margin:0">The Studio looks up the tags the teams, the competition and broadcasters are using for each game, about 3 hours before kick-off (watched teams and games you add by hand). Or look one up now:</p>
+      <form id="qp-tform" class="row"><input type="text" id="qp-th" placeholder="Home, e.g. England" style="flex:1;min-width:120px"><input type="text" id="qp-ta" placeholder="Away, e.g. Spain" style="flex:1;min-width:120px"><input type="text" id="qp-tc" placeholder="Competition" style="flex:1;min-width:120px"><button type="submit" class="sm">Find hashtags</button></form>
+      <p class="msg" id="qp-tmsg"></p><div id="qp-tags" class="hlist"></div></section>
+    <section class="panel" style="margin-top:16px"><div class="ph"><h2>Post your own image</h2></div>
+      <div class="row"><input type="file" id="qp-file" accept="image/*"><span class="msg">Any image. It’s turned into a JPEG for Instagram.</span></div></section>
+    <section class="panel" style="margin-top:16px"><div class="ph"><h2>Recently posted</h2></div><div id="qp-log" class="hlist"></div></section>
   </div>
 
   <div id="view-clips" hidden>
@@ -456,6 +497,15 @@ input[type=url],input[type=number],input[type=datetime-local]{width:100%;backgro
       </div>
       <div id="blist" class="blist"></div>
     </section>
+    <section class="panel" style="margin-top:16px" id="wt-box"><div class="ph"><h2>Accounts we watch</h2>
+      <div class="row"><select id="wt-min" aria-label="Which stories to draft" style="width:auto"><option value="8">Draft only the biggest stories</option><option value="7">Draft big stories</option><option value="5">Draft most stories</option></select><button class="ghost sm" id="wt-now" type="button">Check now</button></div></div>
+      <p class="msg" style="margin:0">When one of these accounts posts a story worth covering, the Studio writes your own post about it (never a copy) and alerts your phone. Tap a drafted story to finish it.</p>
+      <div id="wt-feed" class="hlist"></div>
+      <details><summary>Manage accounts</summary>
+        <div id="wt-accts" style="margin-top:10px"></div>
+        <form id="wt-add" class="row" style="margin-top:8px"><select id="wt-plat" style="width:auto" aria-label="Platform"><option value="instagram">Instagram</option><option value="x">X</option></select><input type="text" id="wt-user" placeholder="Username, e.g. fabriziorom" style="flex:1;min-width:140px"><input type="text" id="wt-name" placeholder="Name to show" style="flex:1;min-width:120px"><button class="sm" type="submit">Add</button></form>
+        <p class="msg" id="wt-msg">Instagram accounts must be public business or creator accounts (almost every big page is). Watching is free on Instagram; on X each post read costs about half a penny, capped each month.</p>
+      </details></section>
   </div>
 
   <div id="view-match" hidden>
@@ -528,7 +578,7 @@ input[type=url],input[type=number],input[type=datetime-local]{width:100%;backgro
     <button type="button" id="more-btn" data-ico="more">More</button>
   </nav>
   <div class="moresheet" id="moresheet" hidden><div class="msheet">
-    <button type="button" data-go="create">Create</button><button type="button" data-go="calendar">Calendar</button><button type="button" data-go="library">Photo library</button>
+    <button type="button" data-go="quick">Quick post</button><button type="button" data-go="create">Create</button><button type="button" data-go="calendar">Calendar</button><button type="button" data-go="library">Photo library</button>
     <button type="button" data-go="breaking">Breaking news</button><button type="button" data-go="tables">Tables &amp; fixtures</button>
     <button type="button" data-go="video">Video tools</button><button type="button" data-go="earnings">Earnings</button><button type="button" data-go="insights">Insights</button>
     <button type="button" data-go="play">Playbook</button><button type="button" data-go="settings">Settings</button>

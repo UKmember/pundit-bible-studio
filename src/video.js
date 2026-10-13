@@ -1,9 +1,9 @@
 
 // ---------- Video tab: brand my reel, YouTube thumbnail, reel script + teleprompter ----------
-const VP=['reel','thumb','script'];
-document.querySelectorAll('#v-pills button').forEach(b=>b.onclick=()=>{VP.forEach(k=>{$('#vp-'+k).hidden=k!==b.dataset.v});document.querySelectorAll('#v-pills button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(b.dataset.v==='thumb')drawThumb()});
+const VP=['reel','thumb','script','long'];
+document.querySelectorAll('#v-pills button').forEach(b=>b.onclick=()=>{VP.forEach(k=>{$('#vp-'+k).hidden=k!==b.dataset.v});document.querySelectorAll('#v-pills button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));if(b.dataset.v==='thumb')drawThumb();if(b.dataset.v==='long'&&typeof lDraw==='function')lDraw(0)});
 function fillPostSelects(){const opts='<option value="">Choose a post…</option>'+order.slice(0,60).map(id=>`<option value="${esc(id)}">${esc((posts[id].title||id).slice(0,70))}</option>`).join('');
-  ['#r-post','#t-post','#s-post'].forEach(s=>{const el=$(s);if(!el)return;const v=el.value;el.innerHTML=opts;if(v&&posts[v])el.value=v})}
+  ['#r-post','#t-post','#s-post','#l-post'].forEach(s=>{const el=$(s);if(!el)return;const v=el.value;el.innerHTML=opts;if(v&&posts[v])el.value=v})}
 function pickerFor(inputSel,btnSel){const fi=$(inputSel);$(btnSel).addEventListener('click',()=>{try{if(fi.showPicker)fi.showPicker();else fi.click()}catch(e){fi.click()}})}
 function onFile(fi,fn){let last=0;const h=()=>{const f=fi.files&&fi.files[0];if(!f)return;const n=Date.now();if(n-last<500)return;last=n;fn(f);setTimeout(()=>{fi.value=''},0)};fi.addEventListener('change',h);fi.addEventListener('input',h)}
 async function faceBox(img,hint){

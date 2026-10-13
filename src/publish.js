@@ -6,9 +6,9 @@
 //  TikTok: no hard limit, 3-5 focused tags perform best.
 //  YouTube: 1-3 in title/description show above the title; more than 60 and YouTube ignores them all; keep it to a handful.
 const HT_RULES={
-  facebook:{n:3,max:5,label:'Facebook',note:'3 is the sweet spot (one broad, one niche, one about the post). Never more than 5.'},
-  instagram:{n:5,max:5,label:'Instagram',note:'Instagram allows 5 hashtags at most. More than 5 and the post can fail.'},
-  tiktok:{n:5,max:5,label:'TikTok',note:'3 to 5 focused tags work best. Stuffing more in doesn’t help.'},
+  facebook:{n:4,max:5,label:'Facebook',note:'3 is the sweet spot (one broad, one niche, one about the post). Never more than 5.'},
+  instagram:{n:4,max:5,label:'Instagram',note:'Instagram allows 5 hashtags at most. More than 5 and the post can fail.'},
+  tiktok:{n:4,max:5,label:'TikTok',note:'3 to 5 focused tags work best. Stuffing more in doesn’t help.'},
   youtube:{n:4,max:5,label:'YouTube Shorts',note:'The first 3 hashtags show above your title. Keep it to a handful: over 60 and YouTube ignores them all.'}
 };
 const CLUB_TAGS=[
@@ -59,7 +59,7 @@ const COMP_TAGS=[
   [/premier league|\bepl\b|\bprem\b/i,'#PremierLeague','Premier League']
 ];
 const PL_CLUBS=/#(ManUtd|ManCity|LFC|Arsenal|Chelsea|Spurs|NUFC|AVFC|WHUFC|EFC|BHAFC|NFFC|LUFC|SAFC|Wolves|CPFC|Fulham|Brentford|AFCB|Burnley)$/;
-const TYPE_TAGS={guess:'#GuessThePlayer',h2h:'#FootballDebate',split:'#FootballDebate',poll:'#FootballDebate',ratings:'#PlayerRatings',result:'#MatchDay',goal:'#Goal',versus:'#MatchDay',ranking:'#FootballDebate',carousel:'#FootballDebate',quote:'#FootballNews',headline:'#FootballNews',stat:'#FootballNews',list:'#FootballNews'};
+const TYPE_TAGS={story:'#FootballNews',bigquote:'#FootballNews',number:'#FootballNews',post:'#FootballNews',guess:'#GuessThePlayer',h2h:'#FootballDebate',split:'#FootballDebate',poll:'#FootballDebate',ratings:'#PlayerRatings',result:'#MatchDay',goal:'#Goal',versus:'#MatchDay',ranking:'#FootballDebate',carousel:'#FootballDebate',quote:'#FootballNews',headline:'#FootballNews',stat:'#FootballNews',list:'#FootballNews'};
 function camelTag(name){const w=String(name||'').replace(/[^A-Za-zÀ-ÿ' -]/g,'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/'/g,'').split(/[\s-]+/).filter(Boolean);
   if(!w.length||w.join('').length<3)return '';return '#'+w.slice(-3).map(s=>s[0].toUpperCase()+s.slice(1)).join('')}
 function isBoxing(p){return /boxing|heavyweight|\bfury\b|\bjoshua\b|\busyk\b|undisputed|\bfight night\b/i.test([p.title,p.caption,p.sport,(p.fields||{}).tag].join(' '))&&!/premier league|\bgoal\b|\bfc\b/i.test(p.title||'')}
@@ -80,7 +80,12 @@ function tagPool(p){
   const type=boxing?(['split','h2h','poll'].includes(p.template)?'#WhoWins':'#Boxing'):(TYPE_TAGS[p.template]||'#FootballNews');
   return {broad,league,clubs,people,own,type,boxing}}
 function dedupe(a){const s=new Set();return a.filter(t=>{if(!t)return false;const k=t.toLowerCase();if(s.has(k))return false;s.add(k);return true})}
-function tagsFor(p,plat){const P=tagPool(p);const niche=dedupe([...P.people,P.clubs[0],...P.own.filter(t=>!/^#(football|soccer|fyp|foryou|premierleague|punditbible|footballnews)$/i.test(t)&&!CLUB_TAGS.some(([re,ct])=>P.clubs.includes(ct)&&re.test(t.slice(1)))&&!COMP_TAGS.some(([re])=>re.test(t.slice(1)))),...P.clubs.slice(1)]);
+// Same 4 hashtags on every platform: the caption's own (researched) tags first, then the most-searched club / competition / player tags
+function tagsFor(p,plat){const P=tagPool(p);
+  const own=P.own.filter(t=>!/^#(punditbible|fyp|foryou|foryoupage|viral)$/i.test(t));
+  const fill=[...own,P.clubs[0],P.league[0],P.people[0],P.clubs[1],P.boxing?'#Boxing':'#FootballNews',P.broad[0]];
+  return dedupe(fill).slice(0,4)}
+function tagsForOld(p,plat){const P=tagPool(p);const niche=dedupe([...P.people,P.clubs[0],...P.own.filter(t=>!/^#(football|soccer|fyp|foryou|premierleague|punditbible|footballnews)$/i.test(t)&&!CLUB_TAGS.some(([re,ct])=>P.clubs.includes(ct)&&re.test(t.slice(1)))&&!COMP_TAGS.some(([re])=>re.test(t.slice(1)))),...P.clubs.slice(1)]);
   let out;
   if(plat==='facebook')out=[niche[0]||P.league[0]||P.broad[1],P.league[0]&&niche[0]?P.league[0]:P.broad[0],P.type];
   else if(plat==='instagram')out=[P.broad[0],P.league[0],niche[0],niche[1],P.type,P.broad[1]];
@@ -102,9 +107,8 @@ function packDefaults(p){
   const main=body+(!hasQ?'\n\n'+q+' 👇':'');
   const fb=main+'\n\n'+tagsFor(p,'facebook').join(' ');
   const ig=main+'\n\n'+tagsFor(p,'instagram').join(' ');
-  let tth=hook;if(tth.length>150){const m=tth.match(/^.{20,150}?[.!?](\s|$)/);tth=m?m[0].trim():tth.slice(0,147).replace(/\s+\S*$/,'')+'…'}
-  const tq=q||(/\?/.test(lastPara)?lastPara.replace(/\s*👇\s*$/,''):'');
-  const tt=tth+'\n\n'+(tq?tq+' 👇\n\n':'')+tagsFor(p,'tiktok').join(' ');
+  // TikTok gets the full news-story caption too (TikTok search reads captions)
+  const tt=main+'\n\n'+tagsFor(p,'tiktok').join(' ');
   const yt=tagsFor(p,'youtube');const titleTags=yt[1]||yt[0];
   const noEmo=x=>String(x||'').replace(/[\u{1F300}-\u{1FAFF}☀-➿️]/gu,'').replace(/\s+/g,' ').trim();
   let tbase=noEmo(p.title&&p.title.length>=12&&p.title.length<=85?p.title:hook);
