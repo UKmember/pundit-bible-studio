@@ -5,15 +5,19 @@ const TPL_NAME={goal:'Goal!',guess:'Guess the player',h2h:'Head to head',quote:'
 
 T.result=function(ctx,f,th,ph,qt){
   tag(ctx,70,70,f.tag,th);
-  const home=U(f.home),away=U(f.away),score=(String(f.hs==null?'':f.hs)+' – '+String(f.as==null?'':f.as));
+  const home=U(f.home),away=U(f.away),score=(String(f.hs==null?'':f.hs)+' – '+String(f.as==null?'':f.as));
   let y;
   const lab=U(f.label||'FULL TIME');
-  if(!ph){text(ctx,lab,W/2,175,BB(60),th.accent,'center');y=260}
-  else{const b=BAND.result;ctx.fillStyle=th.accent;ctx.font=BB(46);const w=ctx.measureText(lab).width;ctx.fillRect(W/2-w/2-22,b-110,w+44,64);const s=SHADOW;SHADOW=false;text(ctx,lab,W/2,b-98,BB(46),'#111','center');SHADOW=s;y=b-20}
   const ns=ph?100:140;
-  y+=text(ctx,home,W/2,y,ANTON(fit(ctx,home,ANTON,W-140,ns)),WHITE,'center')+30;
-  y+=text(ctx,score,W/2,y,ANTON(fit(ctx,score,ANTON,W-140,ph?190:280)),th.accent,'center')+36;
-  y+=text(ctx,away,W/2,y,ANTON(fit(ctx,away,ANTON,W-140,ns)),WHITE,'center')+44;
+  const hS=fit(ctx,home,ANTON,W-140,ns),sS=fit(ctx,score,ANTON,W-140,ph?190:280),aS=fit(ctx,away,ANTON,W-140,ns);
+  if(!ph){text(ctx,lab,W/2,175,BB(60),th.accent,'center');y=260}
+  else{// with a photo the whole block sits at the bottom of the card, over the darkened part of the photo
+    const nS=Math.max((f.homeScorers||[]).length,(f.awayScorers||[]).length);
+    const block=64+28+hS*0.8+30+sS*0.8+36+aS*0.8+(nS?44+nS*40:0);const b=Math.max(330,qt-50-block)+110;
+    ctx.fillStyle=th.accent;ctx.font=BB(46);const w=ctx.measureText(lab).width;ctx.fillRect(W/2-w/2-22,b-110,w+44,64);const s=SHADOW;SHADOW=false;text(ctx,lab,W/2,b-98,BB(46),'#111','center');SHADOW=s;y=b-18}
+  y+=text(ctx,home,W/2,y,ANTON(hS),WHITE,'center')+30;
+  y+=text(ctx,score,W/2,y,ANTON(sS),th.accent,'center')+36;
+  y+=text(ctx,away,W/2,y,ANTON(aS),WHITE,'center')+44;
   const hsL=(f.homeScorers||[]),asL=(f.awayScorers||[]);const n=Math.max(hsL.length,asL.length);
   const lh=Math.min(46,(qt-20-y)/Math.max(1,n));
   if(n&&lh>22){ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillRect(70,y-18,W-140,2);
@@ -165,6 +169,7 @@ function renderCarousel(ctx,post,imgs,th,f,slide){
   text(ctx,'TELL US IN THE COMMENTS',W/2,y+50,BB(50),OFF,'center');
 }
 
+const FULL={result:1};
 function render(canvas,post,imgs,slide){
   imgs=imgs||{};slide=slide||0;
   canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');
@@ -182,6 +187,7 @@ function render(canvas,post,imgs,slide){
     const img=imgs.photo;const ph=(img&&post.photo)?post.photo:null;
     if(ph){const cut=ph.cut!=null?ph.cut:isCutout(img);
       if(LEFT[tpl]){if(cut)photoLeftCut(ctx,img,ph,th,qt);else photoLeftBleed(ctx,img,ph,th,qt)}
+      else if(FULL[tpl])photoFull(ctx,img,ph,th,qt);
       else photoBand(ctx,img,ph,th,BAND[tpl],cut);
       SHADOW=true}
     T[tpl](ctx,f,th,!!ph,qt);

@@ -153,6 +153,17 @@ function photoBand(ctx,img,ph,th,band,cut){
   fadeBottom(o,band,band*0.42);
   ctx.drawImage(oc,0,0);
 }
+// photo filling the whole card, people in the top half, darkened lower down so the score reads clearly
+function photoFull(ctx,img,ph,th,area){
+  const oc=document.createElement('canvas');oc.width=W;oc.height=area;const o=oc.getContext('2d');
+  const cut=ph.cut!=null?ph.cut:isCutout(img);
+  if(cut){const p=place(img,ph.focus,540,area*0.26,area*0.2,W,area,false,ph);glowBehind(o,img,p,th);graded(o,img,p)}
+  else graded(o,img,place(img,ph.focus,540,area*0.24,area*0.16,W,area,true,ph));
+  const d=mix(th,.85);
+  let g=o.createLinearGradient(0,0,0,220);g.addColorStop(0,'rgba(0,0,0,.45)');g.addColorStop(1,'rgba(0,0,0,0)');o.fillStyle=g;o.fillRect(0,0,W,220);
+  g=o.createLinearGradient(0,area*0.3,0,area);g.addColorStop(0,rgb(d,0));g.addColorStop(.38,rgb(d,.72));g.addColorStop(1,rgb(d,.96));o.fillStyle=g;o.fillRect(0,area*0.3,W,area*0.7);
+  ctx.drawImage(oc,0,0);
+}
 function tint(o,th,h){o.save();o.globalCompositeOperation='soft-light';o.fillStyle=rgb(th.glow,.55);o.fillRect(0,0,W,h);o.restore();
   const v=o.createRadialGradient(W*0.6,h*0.4,h*0.25,W*0.6,h*0.4,h*0.95);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.45)');o.fillStyle=v;o.fillRect(0,0,W,h)}
 function glowBehind(o,img,p,th){
